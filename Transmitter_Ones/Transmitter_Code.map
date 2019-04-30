@@ -1,0 +1,349 @@
+Modules linked:
+   'Transmitter_Code' from 'Transmitter_Code.obj'
+   'uint2fs' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'fsgt' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'moduint' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libint.lib'
+   'fslt' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'fsmul' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'modsint' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libint.lib'
+   'crt0' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'fsdiv' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'ulong2fs' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'fscmp' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'fsreturnval' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'fsnormalize' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+   'fsget2args' from 'C:\CrossIDE\Call51\Bin\..\lib\small\libfloat.lib'
+
+Memory use per module linked:
+C:01513 D:012 I:000 B:001 X:00000 - Transmitter_Code
+C:00012 D:000 I:000 B:000 X:00000 - uint2fs
+C:00048 D:000 I:000 B:000 X:00000 - fsgt
+C:00077 D:002 I:000 B:000 X:00000 - moduint
+C:00048 D:000 I:000 B:000 X:00000 - fslt
+C:00163 D:000 I:000 B:000 X:00000 - fsmul
+C:00054 D:000 I:000 B:000 X:00000 - modsint
+C:00113 D:000 I:000 B:000 X:00000 - crt0
+C:00287 D:004 I:000 B:000 X:00000 - fsdiv
+C:00019 D:000 I:000 B:000 X:00000 - ulong2fs
+C:00073 D:000 I:000 B:000 X:00000 - fscmp
+C:00079 D:000 I:000 B:000 X:00000 - fsreturnval
+C:00051 D:000 I:000 B:000 X:00000 - fsnormalize
+C:00046 D:000 I:000 B:000 X:00000 - fsget2args
+C:00007 D:000 I:000 B:000 X:00000 - ABSOLUTE
+------------------------------------------------------
+C:02590 D:018 I:000 B:001 X:00000 - Totals
+
+INTERMAL RAM map (see legend below):
+00: 0 0 0 0 0 0 0 0 a a a a a a a a 
+10: a a a b b b b . . . . . . . . . 
+20: B . . . . . . . . . . . . . . . 
+30: . . . . . . . . . . . . . . . . 
+40: . . . . . . . . . . . . . . . . 
+50: . . . . . . . . . . . . . . . . 
+60: . . . . . . . . . . . . . . . . 
+70: . . . . . . . . . . . . . . . . 
+80: . . . . . . . . . . . . . . . . 
+90: . . . . . . . . . . . . . . . . 
+A0: . . . . . . . . . . . . . . . . 
+B0: . . . . . . . . . . . . . . . . 
+C0: . . . . . . . . . . . . . . . . 
+D0: . . . . . . . . . . . . . . . . 
+E0: . . . . . . . . . . . . . . . . 
+F0: . . . . . . . . . . . . . . . . 
+
+Legend:
+	0: Register bank 0
+	1: Register bank 1
+	2: Register bank 2
+	3: Register bank 3
+	B: bits (see 'BIT map' below)
+	a: Transmitter_Code:R_DSEG
+	b: R_OSEG
+
+BIT map:
+00: U . . . . . . . . . . . . . . . 
+10: . . . . . . . . . . . . . . . . 
+20: . . . . . . . . . . . . . . . . 
+30: . . . . . . . . . . . . . . . . 
+40: . . . . . . . . . . . . . . . . 
+50: . . . . . . . . . . . . . . . . 
+60: . . . . . . . . . . . . . . . . 
+70: . . . . . . . . . . . . . . . . 
+
+CODE usage map:
+0000: 217 256 256 256 256 256 256 256 256 256 069 000 000 000 000 000 
+1000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+2000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+3000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+4000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+5000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+6000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+7000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+8000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+9000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+A000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+B000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+C000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+D000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+E000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+F000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+Total: 2590 bytes
+
+XDATA usage map:
+0000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+1000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+2000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+3000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+4000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+5000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+6000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+7000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+8000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+9000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+A000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+B000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+C000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+D000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+E000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+F000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+Total: 0 bytes
+
+Base Segments:
+   BIT_BANK=D:0000, size=0000
+   R_BSEG=B:0000, size=0001
+   R_CONST=C:0000, size=0000
+   R_CSEG=C:009F, size=09A6
+   R_DINIT=C:0003, size=0000
+   R_DSEG=D:0000, size=000B
+   R_GSINIT=C:002E, size=0071
+   R_HOME=C:0000, size=0000
+   R_ISEG=I:0000, size=0000
+   R_IXSEG=X:0000, size=0000
+   R_OSEG=D:0013, size=0004
+   R_PSEG=X:0000, size=0000
+   R_XINIT=C:0000, size=0000
+   R_XSEG=X:0000, size=0000
+   rbank0=D:0000, size=0008
+
+Module Segments:
+   CSEG=C:0000, size=0007
+   Transmitter_Code:R_BSEG=B:0000, size=0001
+   Transmitter_Code:R_CSEG=C:009F, size=05E9
+   Transmitter_Code:R_DSEG=D:0008, size=000B
+   Transmitter_Code:R_OSEG=D:0013, size=0001
+   crt0:R_GSINIT=C:002E, size=0071
+   fscmp:R_CSEG=C:094C, size=0049
+   fsdiv:R_CSEG=C:081A, size=011F
+   fsdiv:R_OSEG=D:0013, size=0004
+   fsget2args:R_CSEG=C:0A17, size=002E
+   fsgt:R_CSEG=C:0694, size=0030
+   fslt:R_CSEG=C:0711, size=0030
+   fsmul:R_CSEG=C:0741, size=00A3
+   fsnormalize:R_CSEG=C:09E4, size=0033
+   fsreturnval:R_CSEG=C:0995, size=004F
+   modsint:R_CSEG=C:07E4, size=0036
+   moduint:R_CSEG=C:06C4, size=004D
+   moduint:R_OSEG=D:0013, size=0002
+   uint2fs:R_CSEG=C:0688, size=000C
+   ulong2fs:R_CSEG=C:0939, size=0013
+
+Public symbols:
+   _ADC_at_Pin=C:01DD
+   _InitADC=C:0182
+   _InitPinADC=C:019A
+   _InitPinADC_PARM_2=D:0013
+   _R_BSEG_size=L:0001
+   _R_BSEG_start=L:0000
+   _R_CONST_size=L:0000
+   _R_CONST_start=L:0000
+   _R_CSEG_size=L:09A6
+   _R_CSEG_start=L:009F
+   _R_DINIT_size=L:0000
+   _R_DINIT_start=L:0003
+   _R_GSINIT_size=L:0071
+   _R_GSINIT_start=L:002E
+   _R_HOME_size=L:0000
+   _R_HOME_start=L:0000
+   _R_ISEG_size=L:0000
+   _R_ISEG_start=L:0000
+   _R_IXSEG_size=L:0000
+   _R_IXSEG_start=L:0000
+   _R_OSEG_size=L:0004
+   _R_OSEG_start=L:0013
+   _R_PSEG_size=L:0000
+   _R_PSEG_start=L:0000
+   _R_XINIT_size=L:0000
+   _R_XINIT_start=L:0000
+   _R_XSEG_size=L:0000
+   _R_XSEG_start=L:0000
+   _Timer2_ISR=C:0171
+   _Timer3us=C:010E
+   _Transmitter_Code_R_DSEG_size=L:000B
+   _Transmitter_Code_R_DSEG_start=L:0008
+   _Volts_at_Pin=C:01F1
+   ___fsdiv=C:081A
+   ___fsgt=C:0694
+   ___fslt=C:0711
+   ___fsmul=C:0741
+   ___uint2fs=C:0688
+   ___ulong2fs=C:0939
+   __c51_external_startup=C:009F
+   __modsint=C:07E4
+   __modsint_PARM_2=D:0013
+   __moduint=C:06C4
+   __moduint_PARM_2=D:0013
+   _crt0=C:002E
+   _dummy_name_crt0=C:081A
+   _main=C:03CD
+   _on_off=B:0000
+   _overflow_count=D:0008
+   _sendCommand=C:025C
+   _sendMessage=C:031D
+   _sendMessage_PARM_2=D:0009
+   _sendMessage_PARM_3=D:000B
+   _sendMessage_PARM_4=D:000D
+   _sendOne=C:0254
+   _sendOnes=C:039F
+   _sendZero=C:024C
+   _stack_start=L:0021
+   _waitms=C:013F
+   fs_check_negative_zeros=C:096A
+   fs_compare_uint32=C:094C
+   fs_direct_return=C:09BE
+   fs_normalize_a=C:09E4
+   fs_return_inf=C:09CC
+   fs_return_nan=C:09D9
+   fs_return_zero=C:09B6
+   fs_round_and_return=C:0995
+   fs_zerocheck_return=C:09AD
+   fsgetargs=C:0A17
+   ulong2fs_doit=C:0942
+
+Local symbols:
+   Transmitter_Code:L002001?=C:00BD
+   Transmitter_Code:L002004?=C:00C8
+   Transmitter_Code:L003001?=C:0129
+   Transmitter_Code:L003006?=C:0124
+   Transmitter_Code:L003008?=C:0138
+   Transmitter_Code:L003009?=C:013B
+   Transmitter_Code:L003019?=C:0136
+   Transmitter_Code:L004001?=C:0143
+   Transmitter_Code:L004010?=C:014A
+   Transmitter_Code:L004011?=C:016F
+   Transmitter_Code:L007001?=C:01BD
+   Transmitter_Code:L007002?=C:01C7
+   Transmitter_Code:L007003?=C:01D1
+   Transmitter_Code:L007005?=C:01D9
+   Transmitter_Code:L007011?=C:01A5
+   Transmitter_Code:L007013?=C:01A7
+   Transmitter_Code:L007014?=C:01B3
+   Transmitter_Code:L007015?=C:01B8
+   Transmitter_Code:L008001?=C:01E2
+   Transmitter_Code:L008004?=C:01E7
+   Transmitter_Code:L012002?=C:0278
+   Transmitter_Code:L012003?=C:0283
+   Transmitter_Code:L012005?=C:02B4
+   Transmitter_Code:L012006?=C:02BF
+   Transmitter_Code:L012008?=C:02F0
+   Transmitter_Code:L012009?=C:02FB
+   Transmitter_Code:L012011?=C:031A
+   Transmitter_Code:L013002?=C:0351
+   Transmitter_Code:L013003?=C:0363
+   Transmitter_Code:L013005?=C:0382
+   Transmitter_Code:L013006?=C:038E
+   Transmitter_Code:L014001?=C:03A3
+   Transmitter_Code:L014003?=C:03C7
+   Transmitter_Code:L015002?=C:067F
+   Transmitter_Code:L015007?=C:0617
+   Transmitter_Code:L015012?=C:055C
+   Transmitter_Code:L015017?=C:04B2
+   Transmitter_Code:L015022?=C:03EA
+   Transmitter_Code:L015045?=C:0598
+   Transmitter_Code:_main_Vx_1_78=D:000F
+   crt0:PClearLoop?done?=C:0097
+   crt0:PClearLoop?repeat?=C:0089
+   crt0:XClearLoop?done?=C:007F
+   crt0:XClearLoop?repeat?=C:0071
+   crt0:XInitLoop?done?=C:0067
+   crt0:XInitLoop?repeat?=C:0047
+   crt0:__c51_init_data=C:003B
+   crt0:__c51_program_startup=C:009A
+   crt0:forever?home?=C:009D
+   fscmp:_dummy=C:094C
+   fscmp:a_check=C:096A
+   fscmp:a_not_neg_zero=C:097C
+   fscmp:a_not_neg_zero_cleanup=C:097B
+   fscmp:b_check=C:097C
+   fscmp:b_not_neg_zero=C:0994
+   fscmp:b_not_neg_zero_cleanup_1=C:0993
+   fscmp:b_not_neg_zero_cleanup_2=C:0992
+   fscmp:b_not_neg_zero_cleanup_3=C:0991
+   fscmp:compare32_done=C:0969
+   fsdiv:L00001?=C:0822
+   fsdiv:L00002?=C:082B
+   fsdiv:L00003?=C:082E
+   fsdiv:L00004?=C:0834
+   fsdiv:L00005?=C:0841
+   fsdiv:L00006?=C:0844
+   fsdiv:L00007?=C:084C
+   fsdiv:L00008?=C:0858
+   fsdiv:L00009?=C:0860
+   fsdiv:L00010?=C:0876
+   fsdiv:L00011?=C:08C6
+   fsdiv:L00012?=C:08D9
+   fsdiv:L00013?=C:0928
+   fsdiv:L00014?=C:0936
+   fsdiv:_dummy=C:081A
+   fsdiv:saved_b=D:0016
+   fsdiv:saved_r5=D:0013
+   fsdiv:saved_r6=D:0014
+   fsdiv:saved_r7=D:0015
+   fsget2args:L00001?=C:0A24
+   fsget2args:L00002?=C:0A40
+   fsget2args:_dummy=C:0A17
+   fsgt:_dummy=C:0694
+   fsgt:a_negative=C:06A9
+   fsgt:a_positive=C:06A2
+   fsgt:ab_different=C:06BB
+   fsgt:ab_negative=C:06B2
+   fsgt:ab_positive=C:06B0
+   fsgt:skip_invert=C:06BF
+   fslt:_dummy=C:0711
+   fslt:a_negative=C:0726
+   fslt:a_positive=C:071F
+   fslt:ab_different=C:0738
+   fslt:ab_negative=C:072F
+   fslt:ab_positive=C:072D
+   fslt:skip_invert=C:073C
+   fsmul:L00001?=C:0747
+   fsmul:L00002?=C:074A
+   fsmul:L00003?=C:0752
+   fsmul:L00004?=C:075A
+   fsmul:L00005?=C:0762
+   fsmul:L00006?=C:076D
+   fsmul:L00007?=C:0775
+   fsmul:L00010?=C:07E1
+   fsmul:_dummy=C:0741
+   fsnormalize:L00001?=C:09E7
+   fsnormalize:L00002?=C:09F9
+   fsnormalize:L00003?=C:09FA
+   fsnormalize:L00004?=C:09FE
+   fsnormalize:L00005?=C:0A05
+   fsnormalize:L00006?=C:0A14
+   fsnormalize:_dummy=C:09E4
+   fsreturnval:L00001?=C:099B
+   fsreturnval:_dummy=C:0995
+   modsint:__modsint_dummy=C:07E4
+   modsint:a_not_negative=C:07F8
+   modsint:b_not_negative=C:0808
+   modsint:not_negative=C:0819
+   moduint:__moduint_dummy=C:06C4
+   moduint:div_by_0=C:0710
+   moduint:loop1=C:06CC
+   moduint:loop2=C:06F1
+   moduint:msbset=C:06E9
+   moduint:smaller=C:0703
+   moduint:start=C:06E6
+   uint2fs:_dummy=C:0688
+   ulong2fs:_dummy=C:0939
+   ulong2fs:long2fs_doit=C:0944

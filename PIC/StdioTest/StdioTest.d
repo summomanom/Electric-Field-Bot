@@ -1,0 +1,1 @@
+StdioTest.o: StdioTest.c

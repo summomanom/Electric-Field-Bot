@@ -1,0 +1,2577 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Fri Mar 23 21:43:58 2018
+0000              5   ;--------------------------------------------------------
+                  5   $name Controller
+                  6   $optc51 --model-small
+0000              8            R_DSEG    segment data
+0000              9            R_CSEG    segment code
+0000             10            R_BSEG    segment bit
+0000             11            R_XSEG    segment xdata
+0000             12            R_PSEG    segment xdata
+0000             13            R_ISEG    segment idata
+0000             14            R_OSEG    segment data overlay
+0000             15            BIT_BANK  segment data overlay
+0000             16            R_HOME    segment code
+0000             17            R_GSINIT  segment code
+0000             18            R_IXSEG   segment xdata
+0000             19            R_CONST   segment code
+0000             20            R_XINIT   segment code
+0000             21            R_DINIT   segment code
+0000             22   
+0000             23   ;--------------------------------------------------------
+0000             24   ; Public variables in this module
+0000             25   ;--------------------------------------------------------
+0000             26            public _InitPinADC_PARM_2
+0000             27            public _main
+0000             28            public _sendMessage
+0000             29            public _Volts_at_Pin
+0000             30            public _ADC_at_Pin
+0000             31            public _InitPinADC
+0000             32            public _InitADC
+0000             33            public _SPIWrite
+0000             34            public _Timer2_ISR
+0000             35            public _waitms
+0000             36            public _Timer3us
+0000             37            public __c51_external_startup
+0000             38            public _on_off
+0000             39            public _sendMessage_PARM_6
+0000             40            public _sendMessage_PARM_5
+0000             41            public _sendMessage_PARM_4
+0000             42            public _sendMessage_PARM_3
+0000             43            public _sendMessage_PARM_2
+0000             44            public _overflow_count
+0000             45   ;--------------------------------------------------------
+0000             46   ; Special Function Registers
+0000             47   ;--------------------------------------------------------
+0000             48   _ACC            DATA 0xe0
+0000             49   _ADC0ASAH       DATA 0xb6
+0000             50   _ADC0ASAL       DATA 0xb5
+0000             51   _ADC0ASCF       DATA 0xa1
+0000             52   _ADC0ASCT       DATA 0xc7
+0000             53   _ADC0CF0        DATA 0xbc
+0000             54   _ADC0CF1        DATA 0xb9
+0000             55   _ADC0CF2        DATA 0xdf
+0000             56   _ADC0CN0        DATA 0xe8
+0000             57   _ADC0CN1        DATA 0xb2
+0000             58   _ADC0CN2        DATA 0xb3
+0000             59   _ADC0GTH        DATA 0xc4
+0000             60   _ADC0GTL        DATA 0xc3
+0000             61   _ADC0H          DATA 0xbe
+0000             62   _ADC0L          DATA 0xbd
+0000             63   _ADC0LTH        DATA 0xc6
+0000             64   _ADC0LTL        DATA 0xc5
+0000             65   _ADC0MX         DATA 0xbb
+0000             66   _B              DATA 0xf0
+0000             67   _CKCON0         DATA 0x8e
+0000             68   _CKCON1         DATA 0xa6
+0000             69   _CLEN0          DATA 0xc6
+0000             70   _CLIE0          DATA 0xc7
+0000             71   _CLIF0          DATA 0xe8
+0000             72   _CLKSEL         DATA 0xa9
+0000             73   _CLOUT0         DATA 0xd1
+0000             74   _CLU0CF         DATA 0xb1
+0000             75   _CLU0FN         DATA 0xaf
+0000             76   _CLU0MX         DATA 0x84
+0000             77   _CLU1CF         DATA 0xb3
+0000             78   _CLU1FN         DATA 0xb2
+0000             79   _CLU1MX         DATA 0x85
+0000             80   _CLU2CF         DATA 0xb6
+0000             81   _CLU2FN         DATA 0xb5
+0000             82   _CLU2MX         DATA 0x91
+0000             83   _CLU3CF         DATA 0xbf
+0000             84   _CLU3FN         DATA 0xbe
+0000             85   _CLU3MX         DATA 0xae
+0000             86   _CMP0CN0        DATA 0x9b
+0000             87   _CMP0CN1        DATA 0x99
+0000             88   _CMP0MD         DATA 0x9d
+0000             89   _CMP0MX         DATA 0x9f
+0000             90   _CMP1CN0        DATA 0xbf
+0000             91   _CMP1CN1        DATA 0xac
+0000             92   _CMP1MD         DATA 0xab
+0000             93   _CMP1MX         DATA 0xaa
+0000             94   _CRC0CN0        DATA 0xce
+0000             95   _CRC0CN1        DATA 0x86
+0000             96   _CRC0CNT        DATA 0xd3
+0000             97   _CRC0DAT        DATA 0xcb
+0000             98   _CRC0FLIP       DATA 0xcf
+0000             99   _CRC0IN         DATA 0xca
+0000            100   _CRC0ST         DATA 0xd2
+0000            101   _DAC0CF0        DATA 0x91
+0000            102   _DAC0CF1        DATA 0x92
+0000            103   _DAC0H          DATA 0x85
+0000            104   _DAC0L          DATA 0x84
+0000            105   _DAC1CF0        DATA 0x93
+0000            106   _DAC1CF1        DATA 0x94
+0000            107   _DAC1H          DATA 0x8a
+0000            108   _DAC1L          DATA 0x89
+0000            109   _DAC2CF0        DATA 0x95
+0000            110   _DAC2CF1        DATA 0x96
+0000            111   _DAC2H          DATA 0x8c
+0000            112   _DAC2L          DATA 0x8b
+0000            113   _DAC3CF0        DATA 0x9a
+0000            114   _DAC3CF1        DATA 0x9c
+0000            115   _DAC3H          DATA 0x8e
+0000            116   _DAC3L          DATA 0x8d
+0000            117   _DACGCF0        DATA 0x88
+0000            118   _DACGCF1        DATA 0x98
+0000            119   _DACGCF2        DATA 0xa2
+0000            120   _DERIVID        DATA 0xad
+0000            121   _DEVICEID       DATA 0xb5
+0000            122   _DPH            DATA 0x83
+0000            123   _DPL            DATA 0x82
+0000            124   _EIE1           DATA 0xe6
+0000            125   _EIE2           DATA 0xf3
+0000            126   _EIP1           DATA 0xbb
+0000            127   _EIP1H          DATA 0xee
+0000            128   _EIP2           DATA 0xed
+0000            129   _EIP2H          DATA 0xf6
+0000            130   _EMI0CN         DATA 0xe7
+0000            131   _FLKEY          DATA 0xb7
+0000            132   _HFO0CAL        DATA 0xc7
+0000            133   _HFO1CAL        DATA 0xd6
+0000            134   _HFOCN          DATA 0xef
+0000            135   _I2C0ADM        DATA 0xff
+0000            136   _I2C0CN0        DATA 0xba
+0000            137   _I2C0DIN        DATA 0xbc
+0000            138   _I2C0DOUT       DATA 0xbb
+0000            139   _I2C0FCN0       DATA 0xad
+0000            140   _I2C0FCN1       DATA 0xab
+0000            141   _I2C0FCT        DATA 0xf5
+0000            142   _I2C0SLAD       DATA 0xbd
+0000            143   _I2C0STAT       DATA 0xb9
+0000            144   _IE             DATA 0xa8
+0000            145   _IP             DATA 0xb8
+0000            146   _IPH            DATA 0xf2
+0000            147   _IT01CF         DATA 0xe4
+0000            148   _LFO0CN         DATA 0xb1
+0000            149   _P0             DATA 0x80
+0000            150   _P0MASK         DATA 0xfe
+0000            151   _P0MAT          DATA 0xfd
+0000            152   _P0MDIN         DATA 0xf1
+0000            153   _P0MDOUT        DATA 0xa4
+0000            154   _P0SKIP         DATA 0xd4
+0000            155   _P1             DATA 0x90
+0000            156   _P1MASK         DATA 0xee
+0000            157   _P1MAT          DATA 0xed
+0000            158   _P1MDIN         DATA 0xf2
+0000            159   _P1MDOUT        DATA 0xa5
+0000            160   _P1SKIP         DATA 0xd5
+0000            161   _P2             DATA 0xa0
+0000            162   _P2MASK         DATA 0xfc
+0000            163   _P2MAT          DATA 0xfb
+0000            164   _P2MDIN         DATA 0xf3
+0000            165   _P2MDOUT        DATA 0xa6
+0000            166   _P2SKIP         DATA 0xcc
+0000            167   _P3             DATA 0xb0
+0000            168   _P3MDIN         DATA 0xf4
+0000            169   _P3MDOUT        DATA 0x9c
+0000            170   _PCA0CENT       DATA 0x9e
+0000            171   _PCA0CLR        DATA 0x9c
+0000            172   _PCA0CN0        DATA 0xd8
+0000            173   _PCA0CPH0       DATA 0xfc
+0000            174   _PCA0CPH1       DATA 0xea
+0000            175   _PCA0CPH2       DATA 0xec
+0000            176   _PCA0CPH3       DATA 0xf5
+0000            177   _PCA0CPH4       DATA 0x85
+0000            178   _PCA0CPH5       DATA 0xde
+0000            179   _PCA0CPL0       DATA 0xfb
+0000            180   _PCA0CPL1       DATA 0xe9
+0000            181   _PCA0CPL2       DATA 0xeb
+0000            182   _PCA0CPL3       DATA 0xf4
+0000            183   _PCA0CPL4       DATA 0x84
+0000            184   _PCA0CPL5       DATA 0xdd
+0000            185   _PCA0CPM0       DATA 0xda
+0000            186   _PCA0CPM1       DATA 0xdb
+0000            187   _PCA0CPM2       DATA 0xdc
+0000            188   _PCA0CPM3       DATA 0xae
+0000            189   _PCA0CPM4       DATA 0xaf
+0000            190   _PCA0CPM5       DATA 0xcc
+0000            191   _PCA0H          DATA 0xfa
+0000            192   _PCA0L          DATA 0xf9
+0000            193   _PCA0MD         DATA 0xd9
+0000            194   _PCA0POL        DATA 0x96
+0000            195   _PCA0PWM        DATA 0xf7
+0000            196   _PCON0          DATA 0x87
+0000            197   _PCON1          DATA 0xcd
+0000            198   _PFE0CN         DATA 0xc1
+0000            199   _PRTDRV         DATA 0xf6
+0000            200   _PSCTL          DATA 0x8f
+0000            201   _PSTAT0         DATA 0xaa
+0000            202   _PSW            DATA 0xd0
+0000            203   _REF0CN         DATA 0xd1
+0000            204   _REG0CN         DATA 0xc9
+0000            205   _REVID          DATA 0xb6
+0000            206   _RSTSRC         DATA 0xef
+0000            207   _SBCON1         DATA 0x94
+0000            208   _SBRLH1         DATA 0x96
+0000            209   _SBRLL1         DATA 0x95
+0000            210   _SBUF           DATA 0x99
+0000            211   _SBUF0          DATA 0x99
+0000            212   _SBUF1          DATA 0x92
+0000            213   _SCON           DATA 0x98
+0000            214   _SCON0          DATA 0x98
+0000            215   _SCON1          DATA 0xc8
+0000            216   _SFRPAGE        DATA 0xa7
+0000            217   _SFRPGCN        DATA 0xbc
+0000            218   _SFRSTACK       DATA 0xd7
+0000            219   _SMB0ADM        DATA 0xd6
+0000            220   _SMB0ADR        DATA 0xd7
+0000            221   _SMB0CF         DATA 0xc1
+0000            222   _SMB0CN0        DATA 0xc0
+0000            223   _SMB0DAT        DATA 0xc2
+0000            224   _SMB0FCN0       DATA 0xc3
+0000            225   _SMB0FCN1       DATA 0xc4
+0000            226   _SMB0FCT        DATA 0xef
+0000            227   _SMB0RXLN       DATA 0xc5
+0000            228   _SMB0TC         DATA 0xac
+0000            229   _SMOD1          DATA 0x93
+0000            230   _SP             DATA 0x81
+0000            231   _SPI0CFG        DATA 0xa1
+0000            232   _SPI0CKR        DATA 0xa2
+0000            233   _SPI0CN0        DATA 0xf8
+0000            234   _SPI0DAT        DATA 0xa3
+0000            235   _SPI0FCN0       DATA 0x9a
+0000            236   _SPI0FCN1       DATA 0x9b
+0000            237   _SPI0FCT        DATA 0xf7
+0000            238   _SPI0PCF        DATA 0xdf
+0000            239   _TCON           DATA 0x88
+0000            240   _TH0            DATA 0x8c
+0000            241   _TH1            DATA 0x8d
+0000            242   _TL0            DATA 0x8a
+0000            243   _TL1            DATA 0x8b
+0000            244   _TMOD           DATA 0x89
+0000            245   _TMR2CN0        DATA 0xc8
+0000            246   _TMR2CN1        DATA 0xfd
+0000            247   _TMR2H          DATA 0xcf
+0000            248   _TMR2L          DATA 0xce
+0000            249   _TMR2RLH        DATA 0xcb
+0000            250   _TMR2RLL        DATA 0xca
+0000            251   _TMR3CN0        DATA 0x91
+0000            252   _TMR3CN1        DATA 0xfe
+0000            253   _TMR3H          DATA 0x95
+0000            254   _TMR3L          DATA 0x94
+0000            255   _TMR3RLH        DATA 0x93
+0000            256   _TMR3RLL        DATA 0x92
+0000            257   _TMR4CN0        DATA 0x98
+0000            258   _TMR4CN1        DATA 0xff
+0000            259   _TMR4H          DATA 0xa5
+0000            260   _TMR4L          DATA 0xa4
+0000            261   _TMR4RLH        DATA 0xa3
+0000            262   _TMR4RLL        DATA 0xa2
+0000            263   _TMR5CN0        DATA 0xc0
+0000            264   _TMR5CN1        DATA 0xf1
+0000            265   _TMR5H          DATA 0xd5
+0000            266   _TMR5L          DATA 0xd4
+0000            267   _TMR5RLH        DATA 0xd3
+0000            268   _TMR5RLL        DATA 0xd2
+0000            269   _UART0PCF       DATA 0xd9
+0000            270   _UART1FCN0      DATA 0x9d
+0000            271   _UART1FCN1      DATA 0xd8
+0000            272   _UART1FCT       DATA 0xfa
+0000            273   _UART1LIN       DATA 0x9e
+0000            274   _UART1PCF       DATA 0xda
+0000            275   _VDM0CN         DATA 0xff
+0000            276   _WDTCN          DATA 0x97
+0000            277   _XBR0           DATA 0xe1
+0000            278   _XBR1           DATA 0xe2
+0000            279   _XBR2           DATA 0xe3
+0000            280   _XOSC0CN        DATA 0x86
+0000            281   _DPTR           DATA 0x8382
+0000            282   _TMR2RL         DATA 0xcbca
+0000            283   _TMR3RL         DATA 0x9392
+0000            284   _TMR4RL         DATA 0xa3a2
+0000            285   _TMR5RL         DATA 0xd3d2
+0000            286   _TMR0           DATA 0x8c8a
+0000            287   _TMR1           DATA 0x8d8b
+0000            288   _TMR2           DATA 0xcfce
+0000            289   _TMR3           DATA 0x9594
+0000            290   _TMR4           DATA 0xa5a4
+0000            291   _TMR5           DATA 0xd5d4
+0000            292   _SBRL1          DATA 0x9695
+0000            293   _PCA0           DATA 0xfaf9
+0000            294   _PCA0CP0        DATA 0xfcfb
+0000            295   _PCA0CP1        DATA 0xeae9
+0000            296   _PCA0CP2        DATA 0xeceb
+0000            297   _PCA0CP3        DATA 0xf5f4
+0000            298   _PCA0CP4        DATA 0x8584
+0000            299   _PCA0CP5        DATA 0xdedd
+0000            300   _ADC0ASA        DATA 0xb6b5
+0000            301   _ADC0GT         DATA 0xc4c3
+0000            302   _ADC0           DATA 0xbebd
+0000            303   _ADC0LT         DATA 0xc6c5
+0000            304   _DAC0           DATA 0x8584
+0000            305   _DAC1           DATA 0x8a89
+0000            306   _DAC2           DATA 0x8c8b
+0000            307   _DAC3           DATA 0x8e8d
+0000            308   ;--------------------------------------------------------
+0000            309   ; special function bits
+0000            310   ;--------------------------------------------------------
+0000            311   _ACC_0          BIT 0xe0
+0000            312   _ACC_1          BIT 0xe1
+0000            313   _ACC_2          BIT 0xe2
+0000            314   _ACC_3          BIT 0xe3
+0000            315   _ACC_4          BIT 0xe4
+0000            316   _ACC_5          BIT 0xe5
+0000            317   _ACC_6          BIT 0xe6
+0000            318   _ACC_7          BIT 0xe7
+0000            319   _TEMPE          BIT 0xe8
+0000            320   _ADGN0          BIT 0xe9
+0000            321   _ADGN1          BIT 0xea
+0000            322   _ADWINT         BIT 0xeb
+0000            323   _ADBUSY         BIT 0xec
+0000            324   _ADINT          BIT 0xed
+0000            325   _IPOEN          BIT 0xee
+0000            326   _ADEN           BIT 0xef
+0000            327   _B_0            BIT 0xf0
+0000            328   _B_1            BIT 0xf1
+0000            329   _B_2            BIT 0xf2
+0000            330   _B_3            BIT 0xf3
+0000            331   _B_4            BIT 0xf4
+0000            332   _B_5            BIT 0xf5
+0000            333   _B_6            BIT 0xf6
+0000            334   _B_7            BIT 0xf7
+0000            335   _C0FIF          BIT 0xe8
+0000            336   _C0RIF          BIT 0xe9
+0000            337   _C1FIF          BIT 0xea
+0000            338   _C1RIF          BIT 0xeb
+0000            339   _C2FIF          BIT 0xec
+0000            340   _C2RIF          BIT 0xed
+0000            341   _C3FIF          BIT 0xee
+0000            342   _C3RIF          BIT 0xef
+0000            343   _D1SRC0         BIT 0x88
+0000            344   _D1SRC1         BIT 0x89
+0000            345   _D1AMEN         BIT 0x8a
+0000            346   _D01REFSL       BIT 0x8b
+0000            347   _D3SRC0         BIT 0x8c
+0000            348   _D3SRC1         BIT 0x8d
+0000            349   _D3AMEN         BIT 0x8e
+0000            350   _D23REFSL       BIT 0x8f
+0000            351   _D0UDIS         BIT 0x98
+0000            352   _D1UDIS         BIT 0x99
+0000            353   _D2UDIS         BIT 0x9a
+0000            354   _D3UDIS         BIT 0x9b
+0000            355   _EX0            BIT 0xa8
+0000            356   _ET0            BIT 0xa9
+0000            357   _EX1            BIT 0xaa
+0000            358   _ET1            BIT 0xab
+0000            359   _ES0            BIT 0xac
+0000            360   _ET2            BIT 0xad
+0000            361   _ESPI0          BIT 0xae
+0000            362   _EA             BIT 0xaf
+0000            363   _PX0            BIT 0xb8
+0000            364   _PT0            BIT 0xb9
+0000            365   _PX1            BIT 0xba
+0000            366   _PT1            BIT 0xbb
+0000            367   _PS0            BIT 0xbc
+0000            368   _PT2            BIT 0xbd
+0000            369   _PSPI0          BIT 0xbe
+0000            370   _P0_0           BIT 0x80
+0000            371   _P0_1           BIT 0x81
+0000            372   _P0_2           BIT 0x82
+0000            373   _P0_3           BIT 0x83
+0000            374   _P0_4           BIT 0x84
+0000            375   _P0_5           BIT 0x85
+0000            376   _P0_6           BIT 0x86
+0000            377   _P0_7           BIT 0x87
+0000            378   _P1_0           BIT 0x90
+0000            379   _P1_1           BIT 0x91
+0000            380   _P1_2           BIT 0x92
+0000            381   _P1_3           BIT 0x93
+0000            382   _P1_4           BIT 0x94
+0000            383   _P1_5           BIT 0x95
+0000            384   _P1_6           BIT 0x96
+0000            385   _P1_7           BIT 0x97
+0000            386   _P2_0           BIT 0xa0
+0000            387   _P2_1           BIT 0xa1
+0000            388   _P2_2           BIT 0xa2
+0000            389   _P2_3           BIT 0xa3
+0000            390   _P2_4           BIT 0xa4
+0000            391   _P2_5           BIT 0xa5
+0000            392   _P2_6           BIT 0xa6
+0000            393   _P3_0           BIT 0xb0
+0000            394   _P3_1           BIT 0xb1
+0000            395   _P3_2           BIT 0xb2
+0000            396   _P3_3           BIT 0xb3
+0000            397   _P3_4           BIT 0xb4
+0000            398   _P3_7           BIT 0xb7
+0000            399   _CCF0           BIT 0xd8
+0000            400   _CCF1           BIT 0xd9
+0000            401   _CCF2           BIT 0xda
+0000            402   _CCF3           BIT 0xdb
+0000            403   _CCF4           BIT 0xdc
+0000            404   _CCF5           BIT 0xdd
+0000            405   _CR             BIT 0xde
+0000            406   _CF             BIT 0xdf
+0000            407   _PARITY         BIT 0xd0
+0000            408   _F1             BIT 0xd1
+0000            409   _OV             BIT 0xd2
+0000            410   _RS0            BIT 0xd3
+0000            411   _RS1            BIT 0xd4
+0000            412   _F0             BIT 0xd5
+0000            413   _AC             BIT 0xd6
+0000            414   _CY             BIT 0xd7
+0000            415   _RI             BIT 0x98
+0000            416   _TI             BIT 0x99
+0000            417   _RB8            BIT 0x9a
+0000            418   _TB8            BIT 0x9b
+0000            419   _REN            BIT 0x9c
+0000            420   _CE             BIT 0x9d
+0000            421   _SMODE          BIT 0x9e
+0000            422   _RI1            BIT 0xc8
+0000            423   _TI1            BIT 0xc9
+0000            424   _RBX1           BIT 0xca
+0000            425   _TBX1           BIT 0xcb
+0000            426   _REN1           BIT 0xcc
+0000            427   _PERR1          BIT 0xcd
+0000            428   _OVR1           BIT 0xce
+0000            429   _SI             BIT 0xc0
+0000            430   _ACK            BIT 0xc1
+0000            431   _ARBLOST        BIT 0xc2
+0000            432   _ACKRQ          BIT 0xc3
+0000            433   _STO            BIT 0xc4
+0000            434   _STA            BIT 0xc5
+0000            435   _TXMODE         BIT 0xc6
+0000            436   _MASTER         BIT 0xc7
+0000            437   _SPIEN          BIT 0xf8
+0000            438   _TXNF           BIT 0xf9
+0000            439   _NSSMD0         BIT 0xfa
+0000            440   _NSSMD1         BIT 0xfb
+0000            441   _RXOVRN         BIT 0xfc
+0000            442   _MODF           BIT 0xfd
+0000            443   _WCOL           BIT 0xfe
+0000            444   _SPIF           BIT 0xff
+0000            445   _IT0            BIT 0x88
+0000            446   _IE0            BIT 0x89
+0000            447   _IT1            BIT 0x8a
+0000            448   _IE1            BIT 0x8b
+0000            449   _TR0            BIT 0x8c
+0000            450   _TF0            BIT 0x8d
+0000            451   _TR1            BIT 0x8e
+0000            452   _TF1            BIT 0x8f
+0000            453   _T2XCLK0        BIT 0xc8
+0000            454   _T2XCLK1        BIT 0xc9
+0000            455   _TR2            BIT 0xca
+0000            456   _T2SPLIT        BIT 0xcb
+0000            457   _TF2CEN         BIT 0xcc
+0000            458   _TF2LEN         BIT 0xcd
+0000            459   _TF2L           BIT 0xce
+0000            460   _TF2H           BIT 0xcf
+0000            461   _T4XCLK0        BIT 0x98
+0000            462   _T4XCLK1        BIT 0x99
+0000            463   _TR4            BIT 0x9a
+0000            464   _T4SPLIT        BIT 0x9b
+0000            465   _TF4CEN         BIT 0x9c
+0000            466   _TF4LEN         BIT 0x9d
+0000            467   _TF4L           BIT 0x9e
+0000            468   _TF4H           BIT 0x9f
+0000            469   _T5XCLK0        BIT 0xc0
+0000            470   _T5XCLK1        BIT 0xc1
+0000            471   _TR5            BIT 0xc2
+0000            472   _T5SPLIT        BIT 0xc3
+0000            473   _TF5CEN         BIT 0xc4
+0000            474   _TF5LEN         BIT 0xc5
+0000            475   _TF5L           BIT 0xc6
+0000            476   _TF5H           BIT 0xc7
+0000            477   _RIE            BIT 0xd8
+0000            478   _RXTO0          BIT 0xd9
+0000            479   _RXTO1          BIT 0xda
+0000            480   _RFRQ           BIT 0xdb
+0000            481   _TIE            BIT 0xdc
+0000            482   _TXHOLD         BIT 0xdd
+0000            483   _TXNF1          BIT 0xde
+0000            484   _TFRQ           BIT 0xdf
+0000            485   ;--------------------------------------------------------
+0000            486   ; overlayable register banks
+0000            487   ;--------------------------------------------------------
+0000            488            rbank0 segment data overlay
+0000            489   ;--------------------------------------------------------
+0000            490   ; internal ram data
+0000            491   ;--------------------------------------------------------
+0000            492            rseg R_DSEG
+0000            493   _overflow_count:
+0000            494            ds 1
+0001            495   _sendMessage_PARM_2:
+0001            496            ds 2
+0003            497   _sendMessage_PARM_3:
+0003            498            ds 2
+0005            499   _sendMessage_PARM_4:
+0005            500            ds 2
+0007            501   _sendMessage_PARM_5:
+0007            502            ds 1
+0008            503   _sendMessage_PARM_6:
+0008            504            ds 1
+0009            505   _main_Vx_1_71:
+0009            506            ds 4
+000D            507   _main_backward_L_1_71:
+000D            508            ds 2
+000F            509   _main_backward_R_1_71:
+000F            510            ds 2
+0011            511   _main_forward_L_1_71:
+0011            512            ds 2
+0013            513   _main_forward_R_1_71:
+0013            514            ds 2
+0015            515   _main_sloc0_1_0:
+0015            516            ds 4
+0019            517   _main_sloc1_1_0:
+0019            518            ds 4
+001D            519   ;--------------------------------------------------------
+001D            520   ; overlayable items in internal ram 
+001D            521   ;--------------------------------------------------------
+0000            522            rseg    R_OSEG
+0000            523            rseg    R_OSEG
+0000            524            rseg    R_OSEG
+0000            525   _InitPinADC_PARM_2:
+0000            526            ds 1
+0001            527            rseg    R_OSEG
+0001            528   ;--------------------------------------------------------
+0001            529   ; indirectly addressable internal ram data
+0001            530   ;--------------------------------------------------------
+0000            531            rseg R_ISEG
+0000            532   ;--------------------------------------------------------
+0000            533   ; absolute internal ram data
+0000            534   ;--------------------------------------------------------
+0000            535            DSEG
+0000            536   ;--------------------------------------------------------
+0000            537   ; bit data
+0000            538   ;--------------------------------------------------------
+0000            539            rseg R_BSEG
+0000            540   _on_off:
+0000            541            DBIT    1
+0001            542   ;--------------------------------------------------------
+0001            543   ; paged external ram data
+0001            544   ;--------------------------------------------------------
+0000            545            rseg R_PSEG
+0000            546   ;--------------------------------------------------------
+0000            547   ; external ram data
+0000            548   ;--------------------------------------------------------
+0000            549            rseg R_XSEG
+0000            550   ;--------------------------------------------------------
+0000            551   ; absolute external ram data
+0000            552   ;--------------------------------------------------------
+0000            553            XSEG
+0000            554   ;--------------------------------------------------------
+0000            555   ; external initialized ram data
+0000            556   ;--------------------------------------------------------
+0000            557            rseg R_IXSEG
+0000            558            rseg R_HOME
+0000            559            rseg R_GSINIT
+0000            560            rseg R_CSEG
+0000            561   ;--------------------------------------------------------
+0000            562   ; Reset entry point and interrupt vectors
+0000            563   ;--------------------------------------------------------
+0000            564            CSEG at 0x0000
+0000 020100     565            ljmp    _crt0
+002B            566            CSEG at 0x002b
+002B 020100     567            ljmp    _Timer2_ISR
+002E            568   ;--------------------------------------------------------
+002E            569   ; global & static initialisations
+002E            570   ;--------------------------------------------------------
+0000            571            rseg R_HOME
+0000            572            rseg R_GSINIT
+0000            573            rseg R_GSINIT
+0000            574   ;--------------------------------------------------------
+0000            575   ; data variables initialization
+0000            576   ;--------------------------------------------------------
+0000            577            rseg R_DINIT
+0000            578            ; The linker places a 'ret' at the end of segment R_DINIT.
+0000            579   ;--------------------------------------------------------
+0000            580   ; code
+0000            581   ;--------------------------------------------------------
+0000            582            rseg R_CSEG
+0000            583   ;------------------------------------------------------------
+0000            584   ;Allocation info for local variables in function '_c51_external_startup'
+0000            585   ;------------------------------------------------------------
+0000            586   ;------------------------------------------------------------
+0000            587   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:40: char _c51_external_startup (void)
+0000            588   ;        -----------------------------------------
+0000            589   ;         function _c51_external_startup
+0000            590   ;        -----------------------------------------
+0000            591   __c51_external_startup:
+0000            592            using   0
+0000            593   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:43: SFRPAGE = 0x00;
+0000 75A700     594            mov     _SFRPAGE,#0x00
+0003            595   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:44: WDTCN = 0xDE; //First key
+0003 7597DE     596            mov     _WDTCN,#0xDE
+0006            597   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:45: WDTCN = 0xAD; //Second key
+0006 7597AD     598            mov     _WDTCN,#0xAD
+0009            599   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:47: VDM0CN |= 0x80;
+0009 43FF80     600            orl     _VDM0CN,#0x80
+000C            601   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:48: RSTSRC = 0x02;
+000C 75EF02     602            mov     _RSTSRC,#0x02
+000F            603   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:55: SFRPAGE = 0x10;
+000F 75A710     604            mov     _SFRPAGE,#0x10
+0012            605   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:56: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
+0012 75C120     606            mov     _PFE0CN,#0x20
+0015            607   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:57: SFRPAGE = 0x00;
+0015 75A700     608            mov     _SFRPAGE,#0x00
+0018            609   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:78: CLKSEL = 0x00;
+0018 75A900     610            mov     _CLKSEL,#0x00
+001B            611   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:79: CLKSEL = 0x00;
+001B 75A900     612            mov     _CLKSEL,#0x00
+001E            613   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:80: while ((CLKSEL & 0x80) == 0);
+001E            614   L002001?:
+001E E5A9       615            mov     a,_CLKSEL
+0020 30E7B0     616            jnb     acc.7,L002001?
+0023            617   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:81: CLKSEL = 0x03;
+0023 75A903     618            mov     _CLKSEL,#0x03
+0026            619   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:82: CLKSEL = 0x03;
+0026 75A903     620            mov     _CLKSEL,#0x03
+0029            621   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:83: while ((CLKSEL & 0x80) == 0);
+0029            622   L002004?:
+0029 E5A9       623            mov     a,_CLKSEL
+002B 30E730     624            jnb     acc.7,L002004?
+002E            625   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:88: P0MDOUT=0b_0001_1101;//SCK, MOSI, P0.3, TX0 are puspull, all others open-drain
+002E 75A41D     626            mov     _P0MDOUT,#0x1D
+0031            627   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:89: XBR0=0b_0000_0011;//SPI0E=1, URT0E=1
+0031 75E103     628            mov     _XBR0,#0x03
+0034            629   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:90: XBR1=0b_0000_0000;
+0034 75E200     630            mov     _XBR1,#0x00
+0037            631   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:91: XBR2=0b_0100_0000; // Enable crossbar and weak pull-ups
+0037 75E340     632            mov     _XBR2,#0x40
+003A            633   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:97: SCON0 = 0x10;
+003A 759810     634            mov     _SCON0,#0x10
+003D            635   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:98: CKCON0 |= 0b_0000_0000 ; // Timer 1 uses the system clock divided by 12.
+003D 858E8E     636            mov     _CKCON0,_CKCON0
+0040            637   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:99: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
+0040 758DE6     638            mov     _TH1,#0xE6
+0043            639   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:100: TL1 = TH1;      // Init Timer1
+0043 858D8B     640            mov     _TL1,_TH1
+0046            641   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:101: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
+0046 53890F     642            anl     _TMOD,#0x0F
+0049            643   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:102: TMOD |=  0x20;                       
+0049 438920     644            orl     _TMOD,#0x20
+004C            645   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:103: TR1 = 1; // START Timer1
+004C D28E       646            setb    _TR1
+004E            647   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:104: TI = 1;  // Indicate TX0 ready
+004E D299       648            setb    _TI
+0050            649   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:107: TMR2CN0=0x00;   // Stop Timer2; Clear TF2;
+0050 75C800     650            mov     _TMR2CN0,#0x00
+0053            651   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:108: CKCON0|=0b_0001_0000;
+0053 438E10     652            orl     _CKCON0,#0x10
+0056            653   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:109: TMR2RL=(-(SYSCLK/(2*DEFAULT_F))); // Initialize reload value
+0056 75CAEE     654            mov     _TMR2RL,#0xEE
+0059 75CBF6     655            mov     (_TMR2RL >> 8),#0xF6
+005C            656   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:110: TMR2=0xffff;   // Set to reload immediately
+005C 75CEFF     657            mov     _TMR2,#0xFF
+005F 75CFFF     658            mov     (_TMR2 >> 8),#0xFF
+0062            659   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:111: ET2=1;         // Enable Timer2 interrupts
+0062 D2AD       660            setb    _ET2
+0064            661   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:112: TR2=1;         // Start Timer2
+0064 D2CA       662            setb    _TR2
+0066            663   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:113: EA=1; // Global interrupt enable
+0066 D2AF       664            setb    _EA
+0068            665   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:116: SPI0CKR = (SYSCLK/(2*F_SCK_MAX))-1;
+0068 75A223     666            mov     _SPI0CKR,#0x23
+006B            667   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:117: SPI0CFG = 0b_0100_0000; //SPI in master mode
+006B 75A140     668            mov     _SPI0CFG,#0x40
+006E            669   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:118: SPI0CN0 = 0b_0000_0001; //SPI enabled and in three wire mode
+006E 75F801     670            mov     _SPI0CN0,#0x01
+0071            671   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:120: return 0;
+0071 758200     672            mov     dpl,#0x00
+0074 22         673            ret
+0075            674   ;------------------------------------------------------------
+0075            675   ;Allocation info for local variables in function 'Timer3us'
+0075            676   ;------------------------------------------------------------
+0075            677   ;us                        Allocated to registers r2 
+0075            678   ;i                         Allocated to registers r3 
+0075            679   ;------------------------------------------------------------
+0075            680   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:124: void Timer3us(unsigned char us)
+0075            681   ;        -----------------------------------------
+0075            682   ;         function Timer3us
+0075            683   ;        -----------------------------------------
+0075            684   _Timer3us:
+0075 AA82       685            mov     r2,dpl
+0077            686   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:129: CKCON0|=0b_0100_0000;
+0077 438E40     687            orl     _CKCON0,#0x40
+007A            688   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:131: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+007A 7592B8     689            mov     _TMR3RL,#0xB8
+007D 7593FF     690            mov     (_TMR3RL >> 8),#0xFF
+0080            691   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:132: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+0080 859294     692            mov     _TMR3,_TMR3RL
+0083 859395     693            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+0086            694   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:134: TMR3CN0 = 0x04;                 // Start Timer3 and clear overflow flag
+0086 759104     695            mov     _TMR3CN0,#0x04
+0089            696   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:135: for (i = 0; i < us; i++)       // Count <us> overflows
+0089 7B00       697            mov     r3,#0x00
+008B            698   L003006?:
+008B C3         699            clr     c
+008C EB         700            mov     a,r3
+008D 9A         701            subb    a,r2
+008E 5001       702            jnc     L003009?
+0090            703   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:137: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+0090            704   L003001?:
+0090 E591       705            mov     a,_TMR3CN0
+0092 30E730     706            jnb     acc.7,L003001?
+0095            707   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:138: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+0095 53917F     708            anl     _TMR3CN0,#0x7F
+0098            709   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:139: if (TF0)
+0098            710   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:141: TF0=0;
+0098 108D70     711            jbc     _TF0,L003019?
+009B 8001       712            sjmp    L003008?
+009D            713   L003019?:
+009D            714   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:142: overflow_count++;
+009D 0530       715            inc     _overflow_count
+009F            716   L003008?:
+009F            717   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:135: for (i = 0; i < us; i++)       // Count <us> overflows
+009F 0B         718            inc     r3
+00A0 8001       719            sjmp    L003006?
+00A2            720   L003009?:
+00A2            721   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:145: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+00A2 759100     722            mov     _TMR3CN0,#0x00
+00A5 22         723            ret
+00A6            724   ;------------------------------------------------------------
+00A6            725   ;Allocation info for local variables in function 'waitms'
+00A6            726   ;------------------------------------------------------------
+00A6            727   ;ms                        Allocated to registers r2 r3 
+00A6            728   ;j                         Allocated to registers r2 r3 
+00A6            729   ;------------------------------------------------------------
+00A6            730   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:148: void waitms (unsigned int ms)
+00A6            731   ;        -----------------------------------------
+00A6            732   ;         function waitms
+00A6            733   ;        -----------------------------------------
+00A6            734   _waitms:
+00A6 AA82       735            mov     r2,dpl
+00A8 AB83       736            mov     r3,dph
+00AA            737   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:151: for(j=ms; j!=0; j--)
+00AA            738   L004001?:
+00AA BA0070     739            cjne    r2,#0x00,L004010?
+00AD BB0070     740            cjne    r3,#0x00,L004010?
+00B0 22         741            ret
+00B1            742   L004010?:
+00B1            743   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:153: Timer3us(249);
+00B1 7582F9     744            mov     dpl,#0xF9
+00B4 C002       745            push    ar2
+00B6 C003       746            push    ar3
+00B8 120100     747            lcall   _Timer3us
+00BB            748   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:154: Timer3us(249);
+00BB 7582F9     749            mov     dpl,#0xF9
+00BE 120100     750            lcall   _Timer3us
+00C1            751   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:155: Timer3us(249);
+00C1 7582F9     752            mov     dpl,#0xF9
+00C4 120100     753            lcall   _Timer3us
+00C7            754   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:156: Timer3us(250);
+00C7 7582FA     755            mov     dpl,#0xFA
+00CA 120100     756            lcall   _Timer3us
+00CD D003       757            pop     ar3
+00CF D002       758            pop     ar2
+00D1            759   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:151: for(j=ms; j!=0; j--)
+00D1 1A         760            dec     r2
+00D2 BAFFB0     761            cjne    r2,#0xff,L004011?
+00D5 1B         762            dec     r3
+00D6            763   L004011?:
+00D6 8001       764            sjmp    L004001?
+00D8            765   ;------------------------------------------------------------
+00D8            766   ;Allocation info for local variables in function 'Timer2_ISR'
+00D8            767   ;------------------------------------------------------------
+00D8            768   ;------------------------------------------------------------
+00D8            769   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:160: void Timer2_ISR (void) interrupt INTERRUPT_TIMER2
+00D8            770   ;        -----------------------------------------
+00D8            771   ;         function Timer2_ISR
+00D8            772   ;        -----------------------------------------
+00D8            773   _Timer2_ISR:
+00D8 C0D0       774            push    psw
+00DA 75D000     775            mov     psw,#0x00
+00DD            776   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:162: TF2H = 0; // Clear Timer2 interrupt flag
+00DD C2CF       777            clr     _TF2H
+00DF            778   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:163: OUT0=!OUT0;
+00DF B2A0       779            cpl     _P2_0
+00E1            780   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:164: OUT1=!OUT0;
+00E1 A2A0       781            mov     c,_P2_0
+00E3 B3         782            cpl     c
+00E4 92A1       783            mov     _P2_1,c
+00E6 D0D0       784            pop     psw
+00E8 32         785            reti
+00E9            786   ;        eliminated unneeded push/pop dpl
+00E9            787   ;        eliminated unneeded push/pop dph
+00E9            788   ;        eliminated unneeded push/pop b
+00E9            789   ;        eliminated unneeded push/pop acc
+00E9            790   ;------------------------------------------------------------
+00E9            791   ;Allocation info for local variables in function 'SPIWrite'
+00E9            792   ;------------------------------------------------------------
+00E9            793   ;x                         Allocated to registers r2 
+00E9            794   ;------------------------------------------------------------
+00E9            795   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:167: void SPIWrite (unsigned char x)
+00E9            796   ;        -----------------------------------------
+00E9            797   ;         function SPIWrite
+00E9            798   ;        -----------------------------------------
+00E9            799   _SPIWrite:
+00E9 AA82       800            mov     r2,dpl
+00EB            801   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:169: CSN = 0;
+00EB C283       802            clr     _P0_3
+00ED            803   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:170: SPI0DAT=x;
+00ED 8AA3       804            mov     _SPI0DAT,r2
+00EF            805   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:171: while(!SPIF);
+00EF            806   L006001?:
+00EF            807   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:172: SPIF=0;
+00EF 10FF70     808            jbc     _SPIF,L006008?
+00F2 8001       809            sjmp    L006001?
+00F4            810   L006008?:
+00F4            811   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:173: CSN = 1;
+00F4 D283       812            setb    _P0_3
+00F6 22         813            ret
+00F7            814   ;------------------------------------------------------------
+00F7            815   ;Allocation info for local variables in function 'InitADC'
+00F7            816   ;------------------------------------------------------------
+00F7            817   ;------------------------------------------------------------
+00F7            818   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:176: void InitADC (void)
+00F7            819   ;        -----------------------------------------
+00F7            820   ;         function InitADC
+00F7            821   ;        -----------------------------------------
+00F7            822   _InitADC:
+00F7            823   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:178: SFRPAGE = 0x00;
+00F7 75A700     824            mov     _SFRPAGE,#0x00
+00FA            825   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:179: ADC0CN1 = 0b_10_000_000; //14-bit,  Right justified no shifting applied, perform and Accumulate 1 conversion.
+00FA 75B280     826            mov     _ADC0CN1,#0x80
+00FD            827   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:180: ADC0CF0 = 0b_11111_0_00; // SYSCLK/32
+00FD 75BCF8     828            mov     _ADC0CF0,#0xF8
+0100            829   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:181: ADC0CF1 = 0b_0_0_011110; // Same as default for now
+0100 75B91E     830            mov     _ADC0CF1,#0x1E
+0103            831   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:182: ADC0CN0 = 0b_0_0_0_0_0_00_0; // Same as default for now
+0103 75E800     832            mov     _ADC0CN0,#0x00
+0106            833   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:183: ADC0CF2 = 0b_0_01_11111 ; // GND pin, Vref=VDD
+0106 75DF3F     834            mov     _ADC0CF2,#0x3F
+0109            835   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:184: ADC0CN2 = 0b_0_000_0000;  // Same as default for now. ADC0 conversion initiated on write of 1 to ADBUSY.
+0109 75B300     836            mov     _ADC0CN2,#0x00
+010C            837   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:185: ADEN=1; // Enable ADC
+010C D2EF       838            setb    _ADEN
+010E 22         839            ret
+010F            840   ;------------------------------------------------------------
+010F            841   ;Allocation info for local variables in function 'InitPinADC'
+010F            842   ;------------------------------------------------------------
+010F            843   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
+010F            844   ;portno                    Allocated to registers r2 
+010F            845   ;mask                      Allocated to registers r3 
+010F            846   ;------------------------------------------------------------
+010F            847   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:190: void InitPinADC (unsigned char portno, unsigned char pinno)
+010F            848   ;        -----------------------------------------
+010F            849   ;         function InitPinADC
+010F            850   ;        -----------------------------------------
+010F            851   _InitPinADC:
+010F AA82       852            mov     r2,dpl
+0111            853   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:194: mask=1<<pinno;
+0111 8550F0     854            mov     b,_InitPinADC_PARM_2
+0114 05F0       855            inc     b
+0116 7401       856            mov     a,#0x01
+0118 8001       857            sjmp    L008013?
+011A            858   L008011?:
+011A 25E0       859            add     a,acc
+011C            860   L008013?:
+011C D5F030     861            djnz    b,L008011?
+011F FB         862            mov     r3,a
+0120            863   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:196: SFRPAGE = 0x20;
+0120 75A720     864            mov     _SFRPAGE,#0x20
+0123            865   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:197: switch (portno)
+0123 BA0070     866            cjne    r2,#0x00,L008014?
+0126 8001       867            sjmp    L008001?
+0128            868   L008014?:
+0128 BA01F0     869            cjne    r2,#0x01,L008015?
+012B 8001       870            sjmp    L008002?
+012D            871   L008015?:
+012D            872   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:199: case 0:
+012D BA0270     873            cjne    r2,#0x02,L008005?
+0130 8001       874            sjmp    L008003?
+0132            875   L008001?:
+0132            876   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:200: P0MDIN &= (~mask); // Set pin as analog input
+0132 EB         877            mov     a,r3
+0133 F4         878            cpl     a
+0134 FA         879            mov     r2,a
+0135 52F1       880            anl     _P0MDIN,a
+0137            881   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:201: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+0137 EB         882            mov     a,r3
+0138 42D4       883            orl     _P0SKIP,a
+013A            884   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:202: break;
+013A            885   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:203: case 1:
+013A 8001       886            sjmp    L008005?
+013C            887   L008002?:
+013C            888   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:204: P1MDIN &= (~mask); // Set pin as analog input
+013C EB         889            mov     a,r3
+013D F4         890            cpl     a
+013E FA         891            mov     r2,a
+013F 52F2       892            anl     _P1MDIN,a
+0141            893   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:205: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+0141 EB         894            mov     a,r3
+0142 42D5       895            orl     _P1SKIP,a
+0144            896   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:206: break;
+0144            897   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:207: case 2:
+0144 8001       898            sjmp    L008005?
+0146            899   L008003?:
+0146            900   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:208: P2MDIN &= (~mask); // Set pin as analog input
+0146 EB         901            mov     a,r3
+0147 F4         902            cpl     a
+0148 FA         903            mov     r2,a
+0149 52F3       904            anl     _P2MDIN,a
+014B            905   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:209: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+014B EB         906            mov     a,r3
+014C 42CC       907            orl     _P2SKIP,a
+014E            908   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:213: }
+014E            909   L008005?:
+014E            910   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:214: SFRPAGE = 0x00;
+014E 75A700     911            mov     _SFRPAGE,#0x00
+0151 22         912            ret
+0152            913   ;------------------------------------------------------------
+0152            914   ;Allocation info for local variables in function 'ADC_at_Pin'
+0152            915   ;------------------------------------------------------------
+0152            916   ;pin                       Allocated to registers 
+0152            917   ;------------------------------------------------------------
+0152            918   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:217: unsigned int ADC_at_Pin(unsigned char pin)
+0152            919   ;        -----------------------------------------
+0152            920   ;         function ADC_at_Pin
+0152            921   ;        -----------------------------------------
+0152            922   _ADC_at_Pin:
+0152 8582BB     923            mov     _ADC0MX,dpl
+0155            924   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:220: ADBUSY=1;       // Dummy conversion first to select new pin
+0155 D2EC       925            setb    _ADBUSY
+0157            926   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:221: while (ADBUSY); // Wait for dummy conversion to finish
+0157            927   L009001?:
+0157 20ECF0     928            jb      _ADBUSY,L009001?
+015A            929   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:222: ADBUSY = 1;     // Convert voltage at the pin
+015A D2EC       930            setb    _ADBUSY
+015C            931   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:223: while (ADBUSY); // Wait for conversion to complete
+015C            932   L009004?:
+015C 20EC30     933            jb      _ADBUSY,L009004?
+015F            934   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:224: return (ADC0);
+015F 85BD82     935            mov     dpl,_ADC0
+0162 85BE83     936            mov     dph,(_ADC0 >> 8)
+0165 22         937            ret
+0166            938   ;------------------------------------------------------------
+0166            939   ;Allocation info for local variables in function 'Volts_at_Pin'
+0166            940   ;------------------------------------------------------------
+0166            941   ;pin                       Allocated to registers r2 
+0166            942   ;------------------------------------------------------------
+0166            943   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:227: float Volts_at_Pin(unsigned char pin)
+0166            944   ;        -----------------------------------------
+0166            945   ;         function Volts_at_Pin
+0166            946   ;        -----------------------------------------
+0166            947   _Volts_at_Pin:
+0166            948   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:229: return ((ADC_at_Pin(pin)*VDD)/0b_0011_1111_1111_1111);
+0166 120100     949            lcall   _ADC_at_Pin
+0169 120100     950            lcall   ___uint2fs
+016C AA82       951            mov     r2,dpl
+016E AB83       952            mov     r3,dph
+0170 ACF0       953            mov     r4,b
+0172 FD         954            mov     r5,a
+0173 C002       955            push    ar2
+0175 C003       956            push    ar3
+0177 C004       957            push    ar4
+0179 C005       958            push    ar5
+017B 906C8B     959            mov     dptr,#0x6C8B
+017E 75F053     960            mov     b,#0x53
+0181 7440       961            mov     a,#0x40
+0183 120100     962            lcall   ___fsmul
+0186 AA82       963            mov     r2,dpl
+0188 AB83       964            mov     r3,dph
+018A ACF0       965            mov     r4,b
+018C FD         966            mov     r5,a
+018D E581       967            mov     a,sp
+018F 24FC       968            add     a,#0xfc
+0191 F581       969            mov     sp,a
+0193 E4         970            clr     a
+0194 C0E0       971            push    acc
+0196 74FC       972            mov     a,#0xFC
+0198 C0E0       973            push    acc
+019A 747F       974            mov     a,#0x7F
+019C C0E0       975            push    acc
+019E 7446       976            mov     a,#0x46
+01A0 C0E0       977            push    acc
+01A2 8A82       978            mov     dpl,r2
+01A4 8B83       979            mov     dph,r3
+01A6 8CF0       980            mov     b,r4
+01A8 ED         981            mov     a,r5
+01A9 120100     982            lcall   ___fsdiv
+01AC AA82       983            mov     r2,dpl
+01AE AB83       984            mov     r3,dph
+01B0 ACF0       985            mov     r4,b
+01B2 FD         986            mov     r5,a
+01B3 E581       987            mov     a,sp
+01B5 24FC       988            add     a,#0xfc
+01B7 F581       989            mov     sp,a
+01B9 8A82       990            mov     dpl,r2
+01BB 8B83       991            mov     dph,r3
+01BD 8CF0       992            mov     b,r4
+01BF ED         993            mov     a,r5
+01C0 22         994            ret
+01C1            995   ;------------------------------------------------------------
+01C1            996   ;Allocation info for local variables in function 'sendMessage'
+01C1            997   ;------------------------------------------------------------
+01C1            998   ;backward_R                Allocated with name '_sendMessage_PARM_2'
+01C1            999   ;forward_L                 Allocated with name '_sendMessage_PARM_3'
+01C1           1000   ;forward_R                 Allocated with name '_sendMessage_PARM_4'
+01C1           1001   ;byte_1                    Allocated with name '_sendMessage_PARM_5'
+01C1           1002   ;byte_2                    Allocated with name '_sendMessage_PARM_6'
+01C1           1003   ;backward_L                Allocated to registers 
+01C1           1004   ;------------------------------------------------------------
+01C1           1005   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:232: void sendMessage (int backward_L, int backward_R, int forward_L, int forward_R, unsigned char byte_1, unsigned char byte_2)
+01C1           1006   ;        -----------------------------------------
+01C1           1007   ;         function sendMessage
+01C1           1008   ;        -----------------------------------------
+01C1           1009   _sendMessage:
+01C1           1010   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:234: if (forward_L>0)
+01C1 C3        1011            clr     c
+01C2 E4        1012            clr     a
+01C3 95A0      1013            subb    a,_sendMessage_PARM_3
+01C5 E4        1014            clr     a
+01C6 6480      1015            xrl     a,#0x80
+01C8 85A1F0    1016            mov     b,(_sendMessage_PARM_3 + 1)
+01CB 63F080    1017            xrl     b,#0x80
+01CE 95F0      1018            subb    a,b
+01D0 5001      1019            jnc     L011019?
+01D2           1020   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:243: if(forward_L%2>=1)
+01D2 750002    1021            mov     __modsint_PARM_2,#0x02
+01D5 E4        1022            clr     a
+01D6 F501      1023            mov     (__modsint_PARM_2 + 1),a
+01D8 85A082    1024            mov     dpl,_sendMessage_PARM_3
+01DB 85A183    1025            mov     dph,(_sendMessage_PARM_3 + 1)
+01DE 120100    1026            lcall   __modsint
+01E1 AA82      1027            mov     r2,dpl
+01E3 AB83      1028            mov     r3,dph
+01E5 C3        1029            clr     c
+01E6 EA        1030            mov     a,r2
+01E7 9401      1031            subb    a,#0x01
+01E9 EB        1032            mov     a,r3
+01EA 6480      1033            xrl     a,#0x80
+01EC 9480      1034            subb    a,#0x80
+01EE E4        1035            clr     a
+01EF 33        1036            rlc     a
+01F0           1037   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:255: byte_1+=1;
+01F0           1038   L011019?:
+01F0           1039   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:257: if (forward_R>0)
+01F0 C3        1040            clr     c
+01F1 E4        1041            clr     a
+01F2 9550      1042            subb    a,_sendMessage_PARM_4
+01F4 E4        1043            clr     a
+01F5 6480      1044            xrl     a,#0x80
+01F7 8551F0    1045            mov     b,(_sendMessage_PARM_4 + 1)
+01FA 63F080    1046            xrl     b,#0x80
+01FD 95F0      1047            subb    a,b
+01FF 5001      1048            jnc     L011038?
+0201           1049   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:266: if(forward_R%2>=1)
+0201 750002    1050            mov     __modsint_PARM_2,#0x02
+0204 E4        1051            clr     a
+0205 F501      1052            mov     (__modsint_PARM_2 + 1),a
+0207 855082    1053            mov     dpl,_sendMessage_PARM_4
+020A 855183    1054            mov     dph,(_sendMessage_PARM_4 + 1)
+020D 120100    1055            lcall   __modsint
+0210 AA82      1056            mov     r2,dpl
+0212 AB83      1057            mov     r3,dph
+0214 C3        1058            clr     c
+0215 EA        1059            mov     a,r2
+0216 9401      1060            subb    a,#0x01
+0218 EB        1061            mov     a,r3
+0219 6480      1062            xrl     a,#0x80
+021B 9480      1063            subb    a,#0x80
+021D E4        1064            clr     a
+021E 33        1065            rlc     a
+021F           1066   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:278: byte_2+=8;
+021F           1067   L011038?:
+021F           1068   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:280: SPIWrite(0b00100000);
+021F 758220    1069            mov     dpl,#0x20
+0222 120100    1070            lcall   _SPIWrite
+0225           1071   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:281: SPIWrite(0b00001010);
+0225 75820A    1072            mov     dpl,#0x0A
+0228 120100    1073            lcall   _SPIWrite
+022B           1074   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:282: SPIWrite(0b10100000);
+022B 7582A0    1075            mov     dpl,#0xA0
+022E 120100    1076            lcall   _SPIWrite
+0231           1077   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:283: SPIWrite(0b01100010);
+0231 758262    1078            mov     dpl,#0x62
+0234 120100    1079            lcall   _SPIWrite
+0237           1080   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:284: CE = 1;
+0237 D2A0      1081            setb    _P2_0
+0239           1082   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:285: Timer3us(250);
+0239 7582FA    1083            mov     dpl,#0xFA
+023C 120100    1084            lcall   _Timer3us
+023F           1085   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:286: CE = 0;
+023F C2A0      1086            clr     _P2_0
+0241 22        1087            ret
+0242           1088   ;------------------------------------------------------------
+0242           1089   ;Allocation info for local variables in function 'main'
+0242           1090   ;------------------------------------------------------------
+0242           1091   ;Vx                        Allocated with name '_main_Vx_1_71'
+0242           1092   ;Vy                        Allocated to registers r4 r5 r2 r3 
+0242           1093   ;backward_L                Allocated with name '_main_backward_L_1_71'
+0242           1094   ;backward_R                Allocated with name '_main_backward_R_1_71'
+0242           1095   ;forward_L                 Allocated with name '_main_forward_L_1_71'
+0242           1096   ;forward_R                 Allocated with name '_main_forward_R_1_71'
+0242           1097   ;byte_1                    Allocated to registers 
+0242           1098   ;byte_2                    Allocated to registers 
+0242           1099   ;sloc0                     Allocated with name '_main_sloc0_1_0'
+0242           1100   ;sloc1                     Allocated with name '_main_sloc1_1_0'
+0242           1101   ;------------------------------------------------------------
+0242           1102   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:291: void main (void)
+0242           1103   ;        -----------------------------------------
+0242           1104   ;         function main
+0242           1105   ;        -----------------------------------------
+0242           1106   _main:
+0242           1107   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:295: unsigned int backward_L = 0;
+0242           1108   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:296: unsigned int backward_R = 0;
+0242           1109   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:297: unsigned int forward_L = 0;
+0242           1110   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:298: unsigned int forward_R = 0;
+0242 E4        1111            clr     a
+0243 F5C0      1112            mov     _main_backward_L_1_71,a
+0245 F5C1      1113            mov     (_main_backward_L_1_71 + 1),a
+0247 F510      1114            mov     _main_backward_R_1_71,a
+0249 F511      1115            mov     (_main_backward_R_1_71 + 1),a
+024B F560      1116            mov     _main_forward_L_1_71,a
+024D F561      1117            mov     (_main_forward_L_1_71 + 1),a
+024F F5B0      1118            mov     _main_forward_R_1_71,a
+0251 F5B1      1119            mov     (_main_forward_R_1_71 + 1),a
+0253           1120   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:302: CSN = 1;
+0253 D283      1121            setb    _P0_3
+0255           1122   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:303: CE = 0;
+0255 C2A0      1123            clr     _P2_0
+0257           1124   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:308: InitADC();
+0257 120100    1125            lcall   _InitADC
+025A           1126   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:309: InitPinADC(0,1);
+025A 755001    1127            mov     _InitPinADC_PARM_2,#0x01
+025D 758200    1128            mov     dpl,#0x00
+0260 120100    1129            lcall   _InitPinADC
+0263           1130   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:310: InitPinADC(0,2);
+0263 755002    1131            mov     _InitPinADC_PARM_2,#0x02
+0266 758200    1132            mov     dpl,#0x00
+0269 120100    1133            lcall   _InitPinADC
+026C           1134   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:312: TMR2RL=0x10000L-(SYSCLK/(2L*FREQ));
+026C 75CAEE    1135            mov     _TMR2RL,#0xEE
+026F 75CBF6    1136            mov     (_TMR2RL >> 8),#0xF6
+0272           1137   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:313: TR2=0; // Stop timer 2
+0272 C2CA      1138            clr     _TR2
+0274           1139   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:315: while(1)
+0274           1140   L012051?:
+0274           1141   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:317: Vx = Volts_at_Pin(QFP32_MUX_P0_1);
+0274 758200    1142            mov     dpl,#0x00
+0277 120100    1143            lcall   _Volts_at_Pin
+027A 858270    1144            mov     _main_Vx_1_71,dpl
+027D 858371    1145            mov     (_main_Vx_1_71 + 1),dph
+0280 85F072    1146            mov     (_main_Vx_1_71 + 2),b
+0283 F573      1147            mov     (_main_Vx_1_71 + 3),a
+0285           1148   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:318: Vy = Volts_at_Pin(QFP32_MUX_P0_2);
+0285 758201    1149            mov     dpl,#0x01
+0288 120100    1150            lcall   _Volts_at_Pin
+028B AC82      1151            mov     r4,dpl
+028D AD83      1152            mov     r5,dph
+028F AAF0      1153            mov     r2,b
+0291 FB        1154            mov     r3,a
+0292           1155   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:320: if(Vx>VxMidHigh && Vy>VyMidHigh)  //forward right
+0292 C002      1156            push    ar2
+0294 C003      1157            push    ar3
+0296 C004      1158            push    ar4
+0298 C005      1159            push    ar5
+029A 743D      1160            mov     a,#0x3D
+029C C0E0      1161            push    acc
+029E 740A      1162            mov     a,#0x0A
+02A0 C0E0      1163            push    acc
+02A2 74D7      1164            mov     a,#0xD7
+02A4 C0E0      1165            push    acc
+02A6 743F      1166            mov     a,#0x3F
+02A8 C0E0      1167            push    acc
+02AA 857082    1168            mov     dpl,_main_Vx_1_71
+02AD 857183    1169            mov     dph,(_main_Vx_1_71 + 1)
+02B0 8572F0    1170            mov     b,(_main_Vx_1_71 + 2)
+02B3 E573      1171            mov     a,(_main_Vx_1_71 + 3)
+02B5 120100    1172            lcall   ___fsgt
+02B8 AE82      1173            mov     r6,dpl
+02BA E581      1174            mov     a,sp
+02BC 24FC      1175            add     a,#0xfc
+02BE F581      1176            mov     sp,a
+02C0 D005      1177            pop     ar5
+02C2 D004      1178            pop     ar4
+02C4 D003      1179            pop     ar3
+02C6 D002      1180            pop     ar2
+02C8 EE        1181            mov     a,r6
+02C9 7001      1182            jnz     L012084?
+02CB 020100    1183            ljmp    L012039?
+02CE           1184   L012084?:
+02CE C002      1185            push    ar2
+02D0 C003      1186            push    ar3
+02D2 C004      1187            push    ar4
+02D4 C005      1188            push    ar5
+02D6 C006      1189            push    ar6
+02D8 74CD      1190            mov     a,#0xCD
+02DA C0E0      1191            push    acc
+02DC 74CC      1192            mov     a,#0xCC
+02DE C0E0      1193            push    acc
+02E0 C0E0      1194            push    acc
+02E2 743F      1195            mov     a,#0x3F
+02E4 C0E0      1196            push    acc
+02E6 8C82      1197            mov     dpl,r4
+02E8 8D83      1198            mov     dph,r5
+02EA 8AF0      1199            mov     b,r2
+02EC EB        1200            mov     a,r3
+02ED 120100    1201            lcall   ___fsgt
+02F0 AF82      1202            mov     r7,dpl
+02F2 E581      1203            mov     a,sp
+02F4 24FC      1204            add     a,#0xfc
+02F6 F581      1205            mov     sp,a
+02F8 D006      1206            pop     ar6
+02FA D005      1207            pop     ar5
+02FC D004      1208            pop     ar4
+02FE D003      1209            pop     ar3
+0300 D002      1210            pop     ar2
+0302 EF        1211            mov     a,r7
+0303 7001      1212            jnz     L012085?
+0305 020100    1213            ljmp    L012039?
+0308           1214   L012085?:
+0308           1215   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:322: backward_L=0;
+0308           1216   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:323: backward_R=0;
+0308 E4        1217            clr     a
+0309 F5C0      1218            mov     _main_backward_L_1_71,a
+030B F5C1      1219            mov     (_main_backward_L_1_71 + 1),a
+030D F510      1220            mov     _main_backward_R_1_71,a
+030F F511      1221            mov     (_main_backward_R_1_71 + 1),a
+0311           1222   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:324: forward_L=(int)(((Vx-VxMid)/VxMid)*10)+1;
+0311 748F      1223            mov     a,#0x8F
+0313 C0E0      1224            push    acc
+0315 74C2      1225            mov     a,#0xC2
+0317 C0E0      1226            push    acc
+0319 74D5      1227            mov     a,#0xD5
+031B C0E0      1228            push    acc
+031D 743F      1229            mov     a,#0x3F
+031F C0E0      1230            push    acc
+0321 857082    1231            mov     dpl,_main_Vx_1_71
+0324 857183    1232            mov     dph,(_main_Vx_1_71 + 1)
+0327 8572F0    1233            mov     b,(_main_Vx_1_71 + 2)
+032A E573      1234            mov     a,(_main_Vx_1_71 + 3)
+032C 120100    1235            lcall   ___fssub
+032F 8582F0    1236            mov     _main_sloc0_1_0,dpl
+0332 8583F1    1237            mov     (_main_sloc0_1_0 + 1),dph
+0335 85F0F2    1238            mov     (_main_sloc0_1_0 + 2),b
+0338 F5F3      1239            mov     (_main_sloc0_1_0 + 3),a
+033A E581      1240            mov     a,sp
+033C 24FC      1241            add     a,#0xfc
+033E F581      1242            mov     sp,a
+0340 748F      1243            mov     a,#0x8F
+0342 C0E0      1244            push    acc
+0344 74C2      1245            mov     a,#0xC2
+0346 C0E0      1246            push    acc
+0348 74D5      1247            mov     a,#0xD5
+034A C0E0      1248            push    acc
+034C 743F      1249            mov     a,#0x3F
+034E C0E0      1250            push    acc
+0350 85F082    1251            mov     dpl,_main_sloc0_1_0
+0353 85F183    1252            mov     dph,(_main_sloc0_1_0 + 1)
+0356 85F2F0    1253            mov     b,(_main_sloc0_1_0 + 2)
+0359 E5F3      1254            mov     a,(_main_sloc0_1_0 + 3)
+035B 120100    1255            lcall   ___fsdiv
+035E 8582F0    1256            mov     _main_sloc0_1_0,dpl
+0361 8583F1    1257            mov     (_main_sloc0_1_0 + 1),dph
+0364 85F0F2    1258            mov     (_main_sloc0_1_0 + 2),b
+0367 F5F3      1259            mov     (_main_sloc0_1_0 + 3),a
+0369 E581      1260            mov     a,sp
+036B 24FC      1261            add     a,#0xfc
+036D F581      1262            mov     sp,a
+036F C0F0      1263            push    _main_sloc0_1_0
+0371 C0F1      1264            push    (_main_sloc0_1_0 + 1)
+0373 C0F2      1265            push    (_main_sloc0_1_0 + 2)
+0375 C0F3      1266            push    (_main_sloc0_1_0 + 3)
+0377 900000    1267            mov     dptr,#0x0000
+037A 75F020    1268            mov     b,#0x20
+037D 7441      1269            mov     a,#0x41
+037F 120100    1270            lcall   ___fsmul
+0382 8582F0    1271            mov     _main_sloc0_1_0,dpl
+0385 8583F1    1272            mov     (_main_sloc0_1_0 + 1),dph
+0388 85F0F2    1273            mov     (_main_sloc0_1_0 + 2),b
+038B F5F3      1274            mov     (_main_sloc0_1_0 + 3),a
+038D E581      1275            mov     a,sp
+038F 24FC      1276            add     a,#0xfc
+0391 F581      1277            mov     sp,a
+0393 85F082    1278            mov     dpl,_main_sloc0_1_0
+0396 85F183    1279            mov     dph,(_main_sloc0_1_0 + 1)
+0399 85F2F0    1280            mov     b,(_main_sloc0_1_0 + 2)
+039C E5F3      1281            mov     a,(_main_sloc0_1_0 + 3)
+039E 120100    1282            lcall   ___fs2sint
+03A1 E582      1283            mov     a,dpl
+03A3 8583F0    1284            mov     b,dph
+03A6 2401      1285            add     a,#0x01
+03A8 F560      1286            mov     _main_forward_L_1_71,a
+03AA E4        1287            clr     a
+03AB 35F0      1288            addc    a,b
+03AD F561      1289            mov     (_main_forward_L_1_71 + 1),a
+03AF           1290   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:325: forward_R=(int)((((Vx-VxMid)/VxMid)*10+1)/2.0);
+03AF E4        1291            clr     a
+03B0 C0E0      1292            push    acc
+03B2 C0E0      1293            push    acc
+03B4 7480      1294            mov     a,#0x80
+03B6 C0E0      1295            push    acc
+03B8 743F      1296            mov     a,#0x3F
+03BA C0E0      1297            push    acc
+03BC 85F082    1298            mov     dpl,_main_sloc0_1_0
+03BF 85F183    1299            mov     dph,(_main_sloc0_1_0 + 1)
+03C2 85F2F0    1300            mov     b,(_main_sloc0_1_0 + 2)
+03C5 E5F3      1301            mov     a,(_main_sloc0_1_0 + 3)
+03C7 120100    1302            lcall   ___fsadd
+03CA 8582F0    1303            mov     _main_sloc0_1_0,dpl
+03CD 8583F1    1304            mov     (_main_sloc0_1_0 + 1),dph
+03D0 85F0F2    1305            mov     (_main_sloc0_1_0 + 2),b
+03D3 F5F3      1306            mov     (_main_sloc0_1_0 + 3),a
+03D5 E581      1307            mov     a,sp
+03D7 24FC      1308            add     a,#0xfc
+03D9 F581      1309            mov     sp,a
+03DB E4        1310            clr     a
+03DC C0E0      1311            push    acc
+03DE C0E0      1312            push    acc
+03E0 C0E0      1313            push    acc
+03E2 7440      1314            mov     a,#0x40
+03E4 C0E0      1315            push    acc
+03E6 85F082    1316            mov     dpl,_main_sloc0_1_0
+03E9 85F183    1317            mov     dph,(_main_sloc0_1_0 + 1)
+03EC 85F2F0    1318            mov     b,(_main_sloc0_1_0 + 2)
+03EF E5F3      1319            mov     a,(_main_sloc0_1_0 + 3)
+03F1 120100    1320            lcall   ___fsdiv
+03F4 8582F0    1321            mov     _main_sloc0_1_0,dpl
+03F7 8583F1    1322            mov     (_main_sloc0_1_0 + 1),dph
+03FA 85F0F2    1323            mov     (_main_sloc0_1_0 + 2),b
+03FD F5F3      1324            mov     (_main_sloc0_1_0 + 3),a
+03FF E581      1325            mov     a,sp
+0401 24FC      1326            add     a,#0xfc
+0403 F581      1327            mov     sp,a
+0405 85F082    1328            mov     dpl,_main_sloc0_1_0
+0408 85F183    1329            mov     dph,(_main_sloc0_1_0 + 1)
+040B 85F2F0    1330            mov     b,(_main_sloc0_1_0 + 2)
+040E E5F3      1331            mov     a,(_main_sloc0_1_0 + 3)
+0410 120100    1332            lcall   ___fs2sint
+0413 8582B0    1333            mov     _main_forward_R_1_71,dpl
+0416 8583B1    1334            mov     (_main_forward_R_1_71 + 1),dph
+0419 020100    1335            ljmp    L012040?
+041C           1336   L012039?:
+041C           1337   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:327: else if(Vx>VxMidHigh && Vy<VyMidLow) //forward left
+041C EE        1338            mov     a,r6
+041D 7001      1339            jnz     L012086?
+041F 020100    1340            ljmp    L012035?
+0422           1341   L012086?:
+0422 C002      1342            push    ar2
+0424 C003      1343            push    ar3
+0426 C004      1344            push    ar4
+0428 C005      1345            push    ar5
+042A C006      1346            push    ar6
+042C 7471      1347            mov     a,#0x71
+042E C0E0      1348            push    acc
+0430 743D      1349            mov     a,#0x3D
+0432 C0E0      1350            push    acc
+0434 74CA      1351            mov     a,#0xCA
+0436 C0E0      1352            push    acc
+0438 743F      1353            mov     a,#0x3F
+043A C0E0      1354            push    acc
+043C 8C82      1355            mov     dpl,r4
+043E 8D83      1356            mov     dph,r5
+0440 8AF0      1357            mov     b,r2
+0442 EB        1358            mov     a,r3
+0443 120100    1359            lcall   ___fslt
+0446 AF82      1360            mov     r7,dpl
+0448 E581      1361            mov     a,sp
+044A 24FC      1362            add     a,#0xfc
+044C F581      1363            mov     sp,a
+044E D006      1364            pop     ar6
+0450 D005      1365            pop     ar5
+0452 D004      1366            pop     ar4
+0454 D003      1367            pop     ar3
+0456 D002      1368            pop     ar2
+0458 EF        1369            mov     a,r7
+0459 7001      1370            jnz     L012087?
+045B 020100    1371            ljmp    L012035?
+045E           1372   L012087?:
+045E           1373   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:329: backward_L=0;
+045E           1374   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:330: backward_R=0;
+045E E4        1375            clr     a
+045F F5C0      1376            mov     _main_backward_L_1_71,a
+0461 F5C1      1377            mov     (_main_backward_L_1_71 + 1),a
+0463 F510      1378            mov     _main_backward_R_1_71,a
+0465 F511      1379            mov     (_main_backward_R_1_71 + 1),a
+0467           1380   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:331: forward_L=(int)((((Vx-VxMid)/VxMid)*10+1)/2.0);
+0467 748F      1381            mov     a,#0x8F
+0469 C0E0      1382            push    acc
+046B 74C2      1383            mov     a,#0xC2
+046D C0E0      1384            push    acc
+046F 74D5      1385            mov     a,#0xD5
+0471 C0E0      1386            push    acc
+0473 743F      1387            mov     a,#0x3F
+0475 C0E0      1388            push    acc
+0477 857082    1389            mov     dpl,_main_Vx_1_71
+047A 857183    1390            mov     dph,(_main_Vx_1_71 + 1)
+047D 8572F0    1391            mov     b,(_main_Vx_1_71 + 2)
+0480 E573      1392            mov     a,(_main_Vx_1_71 + 3)
+0482 120100    1393            lcall   ___fssub
+0485 8582F0    1394            mov     _main_sloc0_1_0,dpl
+0488 8583F1    1395            mov     (_main_sloc0_1_0 + 1),dph
+048B 85F0F2    1396            mov     (_main_sloc0_1_0 + 2),b
+048E F5F3      1397            mov     (_main_sloc0_1_0 + 3),a
+0490 E581      1398            mov     a,sp
+0492 24FC      1399            add     a,#0xfc
+0494 F581      1400            mov     sp,a
+0496 748F      1401            mov     a,#0x8F
+0498 C0E0      1402            push    acc
+049A 74C2      1403            mov     a,#0xC2
+049C C0E0      1404            push    acc
+049E 74D5      1405            mov     a,#0xD5
+04A0 C0E0      1406            push    acc
+04A2 743F      1407            mov     a,#0x3F
+04A4 C0E0      1408            push    acc
+04A6 85F082    1409            mov     dpl,_main_sloc0_1_0
+04A9 85F183    1410            mov     dph,(_main_sloc0_1_0 + 1)
+04AC 85F2F0    1411            mov     b,(_main_sloc0_1_0 + 2)
+04AF E5F3      1412            mov     a,(_main_sloc0_1_0 + 3)
+04B1 120100    1413            lcall   ___fsdiv
+04B4 8582F0    1414            mov     _main_sloc0_1_0,dpl
+04B7 8583F1    1415            mov     (_main_sloc0_1_0 + 1),dph
+04BA 85F0F2    1416            mov     (_main_sloc0_1_0 + 2),b
+04BD F5F3      1417            mov     (_main_sloc0_1_0 + 3),a
+04BF E581      1418            mov     a,sp
+04C1 24FC      1419            add     a,#0xfc
+04C3 F581      1420            mov     sp,a
+04C5 C0F0      1421            push    _main_sloc0_1_0
+04C7 C0F1      1422            push    (_main_sloc0_1_0 + 1)
+04C9 C0F2      1423            push    (_main_sloc0_1_0 + 2)
+04CB C0F3      1424            push    (_main_sloc0_1_0 + 3)
+04CD 900000    1425            mov     dptr,#0x0000
+04D0 75F020    1426            mov     b,#0x20
+04D3 7441      1427            mov     a,#0x41
+04D5 120100    1428            lcall   ___fsmul
+04D8 8582F0    1429            mov     _main_sloc0_1_0,dpl
+04DB 8583F1    1430            mov     (_main_sloc0_1_0 + 1),dph
+04DE 85F0F2    1431            mov     (_main_sloc0_1_0 + 2),b
+04E1 F5F3      1432            mov     (_main_sloc0_1_0 + 3),a
+04E3 E581      1433            mov     a,sp
+04E5 24FC      1434            add     a,#0xfc
+04E7 F581      1435            mov     sp,a
+04E9 E4        1436            clr     a
+04EA C0E0      1437            push    acc
+04EC C0E0      1438            push    acc
+04EE 7480      1439            mov     a,#0x80
+04F0 C0E0      1440            push    acc
+04F2 743F      1441            mov     a,#0x3F
+04F4 C0E0      1442            push    acc
+04F6 85F082    1443            mov     dpl,_main_sloc0_1_0
+04F9 85F183    1444            mov     dph,(_main_sloc0_1_0 + 1)
+04FC 85F2F0    1445            mov     b,(_main_sloc0_1_0 + 2)
+04FF E5F3      1446            mov     a,(_main_sloc0_1_0 + 3)
+0501 120100    1447            lcall   ___fsadd
+0504 858230    1448            mov     _main_sloc1_1_0,dpl
+0507 858331    1449            mov     (_main_sloc1_1_0 + 1),dph
+050A 85F032    1450            mov     (_main_sloc1_1_0 + 2),b
+050D F533      1451            mov     (_main_sloc1_1_0 + 3),a
+050F E581      1452            mov     a,sp
+0511 24FC      1453            add     a,#0xfc
+0513 F581      1454            mov     sp,a
+0515 E4        1455            clr     a
+0516 C0E0      1456            push    acc
+0518 C0E0      1457            push    acc
+051A C0E0      1458            push    acc
+051C 7440      1459            mov     a,#0x40
+051E C0E0      1460            push    acc
+0520 853082    1461            mov     dpl,_main_sloc1_1_0
+0523 853183    1462            mov     dph,(_main_sloc1_1_0 + 1)
+0526 8532F0    1463            mov     b,(_main_sloc1_1_0 + 2)
+0529 E533      1464            mov     a,(_main_sloc1_1_0 + 3)
+052B 120100    1465            lcall   ___fsdiv
+052E 858230    1466            mov     _main_sloc1_1_0,dpl
+0531 858331    1467            mov     (_main_sloc1_1_0 + 1),dph
+0534 85F032    1468            mov     (_main_sloc1_1_0 + 2),b
+0537 F533      1469            mov     (_main_sloc1_1_0 + 3),a
+0539 E581      1470            mov     a,sp
+053B 24FC      1471            add     a,#0xfc
+053D F581      1472            mov     sp,a
+053F 853082    1473            mov     dpl,_main_sloc1_1_0
+0542 853183    1474            mov     dph,(_main_sloc1_1_0 + 1)
+0545 8532F0    1475            mov     b,(_main_sloc1_1_0 + 2)
+0548 E533      1476            mov     a,(_main_sloc1_1_0 + 3)
+054A 120100    1477            lcall   ___fs2sint
+054D 858260    1478            mov     _main_forward_L_1_71,dpl
+0550 858361    1479            mov     (_main_forward_L_1_71 + 1),dph
+0553           1480   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:332: forward_R=(int)(((Vx-VxMid)/VxMid)*10)+1;    
+0553 85F082    1481            mov     dpl,_main_sloc0_1_0
+0556 85F183    1482            mov     dph,(_main_sloc0_1_0 + 1)
+0559 85F2F0    1483            mov     b,(_main_sloc0_1_0 + 2)
+055C E5F3      1484            mov     a,(_main_sloc0_1_0 + 3)
+055E 120100    1485            lcall   ___fs2sint
+0561 E582      1486            mov     a,dpl
+0563 8583F0    1487            mov     b,dph
+0566 2401      1488            add     a,#0x01
+0568 F5B0      1489            mov     _main_forward_R_1_71,a
+056A E4        1490            clr     a
+056B 35F0      1491            addc    a,b
+056D F5B1      1492            mov     (_main_forward_R_1_71 + 1),a
+056F 020100    1493            ljmp    L012040?
+0572           1494   L012035?:
+0572           1495   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:334: else if(Vx>VxMidHigh && Vy>VyMidLow && Vy<VyMidHigh) //forward
+0572 EE        1496            mov     a,r6
+0573 7001      1497            jnz     L012088?
+0575 020100    1498            ljmp    L012030?
+0578           1499   L012088?:
+0578 C002      1500            push    ar2
+057A C003      1501            push    ar3
+057C C004      1502            push    ar4
+057E C005      1503            push    ar5
+0580 7471      1504            mov     a,#0x71
+0582 C0E0      1505            push    acc
+0584 743D      1506            mov     a,#0x3D
+0586 C0E0      1507            push    acc
+0588 74CA      1508            mov     a,#0xCA
+058A C0E0      1509            push    acc
+058C 743F      1510            mov     a,#0x3F
+058E C0E0      1511            push    acc
+0590 8C82      1512            mov     dpl,r4
+0592 8D83      1513            mov     dph,r5
+0594 8AF0      1514            mov     b,r2
+0596 EB        1515            mov     a,r3
+0597 120100    1516            lcall   ___fsgt
+059A AE82      1517            mov     r6,dpl
+059C E581      1518            mov     a,sp
+059E 24FC      1519            add     a,#0xfc
+05A0 F581      1520            mov     sp,a
+05A2 D005      1521            pop     ar5
+05A4 D004      1522            pop     ar4
+05A6 D003      1523            pop     ar3
+05A8 D002      1524            pop     ar2
+05AA EE        1525            mov     a,r6
+05AB 7001      1526            jnz     L012089?
+05AD 020100    1527            ljmp    L012030?
+05B0           1528   L012089?:
+05B0 C002      1529            push    ar2
+05B2 C003      1530            push    ar3
+05B4 C004      1531            push    ar4
+05B6 C005      1532            push    ar5
+05B8 74CD      1533            mov     a,#0xCD
+05BA C0E0      1534            push    acc
+05BC 74CC      1535            mov     a,#0xCC
+05BE C0E0      1536            push    acc
+05C0 C0E0      1537            push    acc
+05C2 743F      1538            mov     a,#0x3F
+05C4 C0E0      1539            push    acc
+05C6 8C82      1540            mov     dpl,r4
+05C8 8D83      1541            mov     dph,r5
+05CA 8AF0      1542            mov     b,r2
+05CC EB        1543            mov     a,r3
+05CD 120100    1544            lcall   ___fslt
+05D0 AE82      1545            mov     r6,dpl
+05D2 E581      1546            mov     a,sp
+05D4 24FC      1547            add     a,#0xfc
+05D6 F581      1548            mov     sp,a
+05D8 D005      1549            pop     ar5
+05DA D004      1550            pop     ar4
+05DC D003      1551            pop     ar3
+05DE D002      1552            pop     ar2
+05E0 EE        1553            mov     a,r6
+05E1 7001      1554            jnz     L012090?
+05E3 020100    1555            ljmp    L012030?
+05E6           1556   L012090?:
+05E6           1557   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:336: backward_L=0;
+05E6           1558   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:337: backward_R=0;
+05E6 E4        1559            clr     a
+05E7 F5C0      1560            mov     _main_backward_L_1_71,a
+05E9 F5C1      1561            mov     (_main_backward_L_1_71 + 1),a
+05EB F510      1562            mov     _main_backward_R_1_71,a
+05ED F511      1563            mov     (_main_backward_R_1_71 + 1),a
+05EF           1564   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:338: forward_L=(int)(((Vx-VxMid)/VxMid)*10)+1;
+05EF 748F      1565            mov     a,#0x8F
+05F1 C0E0      1566            push    acc
+05F3 74C2      1567            mov     a,#0xC2
+05F5 C0E0      1568            push    acc
+05F7 74D5      1569            mov     a,#0xD5
+05F9 C0E0      1570            push    acc
+05FB 743F      1571            mov     a,#0x3F
+05FD C0E0      1572            push    acc
+05FF 857082    1573            mov     dpl,_main_Vx_1_71
+0602 857183    1574            mov     dph,(_main_Vx_1_71 + 1)
+0605 8572F0    1575            mov     b,(_main_Vx_1_71 + 2)
+0608 E573      1576            mov     a,(_main_Vx_1_71 + 3)
+060A 120100    1577            lcall   ___fssub
+060D AE82      1578            mov     r6,dpl
+060F AF83      1579            mov     r7,dph
+0611 A8F0      1580            mov     r0,b
+0613 F9        1581            mov     r1,a
+0614 E581      1582            mov     a,sp
+0616 24FC      1583            add     a,#0xfc
+0618 F581      1584            mov     sp,a
+061A 748F      1585            mov     a,#0x8F
+061C C0E0      1586            push    acc
+061E 74C2      1587            mov     a,#0xC2
+0620 C0E0      1588            push    acc
+0622 74D5      1589            mov     a,#0xD5
+0624 C0E0      1590            push    acc
+0626 743F      1591            mov     a,#0x3F
+0628 C0E0      1592            push    acc
+062A 8E82      1593            mov     dpl,r6
+062C 8F83      1594            mov     dph,r7
+062E 88F0      1595            mov     b,r0
+0630 E9        1596            mov     a,r1
+0631 120100    1597            lcall   ___fsdiv
+0634 AE82      1598            mov     r6,dpl
+0636 AF83      1599            mov     r7,dph
+0638 A8F0      1600            mov     r0,b
+063A F9        1601            mov     r1,a
+063B E581      1602            mov     a,sp
+063D 24FC      1603            add     a,#0xfc
+063F F581      1604            mov     sp,a
+0641 C006      1605            push    ar6
+0643 C007      1606            push    ar7
+0645 C000      1607            push    ar0
+0647 C001      1608            push    ar1
+0649 900000    1609            mov     dptr,#0x0000
+064C 75F020    1610            mov     b,#0x20
+064F 7441      1611            mov     a,#0x41
+0651 120100    1612            lcall   ___fsmul
+0654 AE82      1613            mov     r6,dpl
+0656 AF83      1614            mov     r7,dph
+0658 A8F0      1615            mov     r0,b
+065A F9        1616            mov     r1,a
+065B E581      1617            mov     a,sp
+065D 24FC      1618            add     a,#0xfc
+065F F581      1619            mov     sp,a
+0661 8E82      1620            mov     dpl,r6
+0663 8F83      1621            mov     dph,r7
+0665 88F0      1622            mov     b,r0
+0667 E9        1623            mov     a,r1
+0668 120100    1624            lcall   ___fs2sint
+066B E582      1625            mov     a,dpl
+066D 8583F0    1626            mov     b,dph
+0670 2401      1627            add     a,#0x01
+0672 FE        1628            mov     r6,a
+0673 E4        1629            clr     a
+0674 35F0      1630            addc    a,b
+0676 FF        1631            mov     r7,a
+0677 8E60      1632            mov     _main_forward_L_1_71,r6
+0679 8F61      1633            mov     (_main_forward_L_1_71 + 1),r7
+067B           1634   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:339: forward_R=(int)(((Vx-VxMid)/VxMid)*10)+1;
+067B 8EB0      1635            mov     _main_forward_R_1_71,r6
+067D 8FB1      1636            mov     (_main_forward_R_1_71 + 1),r7
+067F 020100    1637            ljmp    L012040?
+0682           1638   L012030?:
+0682           1639   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:341: else if(Vx<VxMidLow && Vy>VyMidHigh) //back right
+0682 C002      1640            push    ar2
+0684 C003      1641            push    ar3
+0686 C004      1642            push    ar4
+0688 C005      1643            push    ar5
+068A 74E1      1644            mov     a,#0xE1
+068C C0E0      1645            push    acc
+068E 747A      1646            mov     a,#0x7A
+0690 C0E0      1647            push    acc
+0692 74D4      1648            mov     a,#0xD4
+0694 C0E0      1649            push    acc
+0696 743F      1650            mov     a,#0x3F
+0698 C0E0      1651            push    acc
+069A 857082    1652            mov     dpl,_main_Vx_1_71
+069D 857183    1653            mov     dph,(_main_Vx_1_71 + 1)
+06A0 8572F0    1654            mov     b,(_main_Vx_1_71 + 2)
+06A3 E573      1655            mov     a,(_main_Vx_1_71 + 3)
+06A5 120100    1656            lcall   ___fslt
+06A8 AE82      1657            mov     r6,dpl
+06AA E581      1658            mov     a,sp
+06AC 24FC      1659            add     a,#0xfc
+06AE F581      1660            mov     sp,a
+06B0 D005      1661            pop     ar5
+06B2 D004      1662            pop     ar4
+06B4 D003      1663            pop     ar3
+06B6 D002      1664            pop     ar2
+06B8 EE        1665            mov     a,r6
+06B9 7001      1666            jnz     L012091?
+06BB 020100    1667            ljmp    L012026?
+06BE           1668   L012091?:
+06BE C002      1669            push    ar2
+06C0 C003      1670            push    ar3
+06C2 C004      1671            push    ar4
+06C4 C005      1672            push    ar5
+06C6 C006      1673            push    ar6
+06C8 74CD      1674            mov     a,#0xCD
+06CA C0E0      1675            push    acc
+06CC 74CC      1676            mov     a,#0xCC
+06CE C0E0      1677            push    acc
+06D0 C0E0      1678            push    acc
+06D2 743F      1679            mov     a,#0x3F
+06D4 C0E0      1680            push    acc
+06D6 8C82      1681            mov     dpl,r4
+06D8 8D83      1682            mov     dph,r5
+06DA 8AF0      1683            mov     b,r2
+06DC EB        1684            mov     a,r3
+06DD 120100    1685            lcall   ___fsgt
+06E0 AF82      1686            mov     r7,dpl
+06E2 E581      1687            mov     a,sp
+06E4 24FC      1688            add     a,#0xfc
+06E6 F581      1689            mov     sp,a
+06E8 D006      1690            pop     ar6
+06EA D005      1691            pop     ar5
+06EC D004      1692            pop     ar4
+06EE D003      1693            pop     ar3
+06F0 D002      1694            pop     ar2
+06F2 EF        1695            mov     a,r7
+06F3 7001      1696            jnz     L012092?
+06F5 020100    1697            ljmp    L012026?
+06F8           1698   L012092?:
+06F8           1699   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:343: backward_L=(int)(((VxMid-Vx)/VxMid)*10)+1;
+06F8 C070      1700            push    _main_Vx_1_71
+06FA C071      1701            push    (_main_Vx_1_71 + 1)
+06FC C072      1702            push    (_main_Vx_1_71 + 2)
+06FE C073      1703            push    (_main_Vx_1_71 + 3)
+0700 90C28F    1704            mov     dptr,#0xC28F
+0703 75F0D5    1705            mov     b,#0xD5
+0706 743F      1706            mov     a,#0x3F
+0708 120100    1707            lcall   ___fssub
+070B 858230    1708            mov     _main_sloc1_1_0,dpl
+070E 858331    1709            mov     (_main_sloc1_1_0 + 1),dph
+0711 85F032    1710            mov     (_main_sloc1_1_0 + 2),b
+0714 F533      1711            mov     (_main_sloc1_1_0 + 3),a
+0716 E581      1712            mov     a,sp
+0718 24FC      1713            add     a,#0xfc
+071A F581      1714            mov     sp,a
+071C 748F      1715            mov     a,#0x8F
+071E C0E0      1716            push    acc
+0720 74C2      1717            mov     a,#0xC2
+0722 C0E0      1718            push    acc
+0724 74D5      1719            mov     a,#0xD5
+0726 C0E0      1720            push    acc
+0728 743F      1721            mov     a,#0x3F
+072A C0E0      1722            push    acc
+072C 853082    1723            mov     dpl,_main_sloc1_1_0
+072F 853183    1724            mov     dph,(_main_sloc1_1_0 + 1)
+0732 8532F0    1725            mov     b,(_main_sloc1_1_0 + 2)
+0735 E533      1726            mov     a,(_main_sloc1_1_0 + 3)
+0737 120100    1727            lcall   ___fsdiv
+073A 858230    1728            mov     _main_sloc1_1_0,dpl
+073D 858331    1729            mov     (_main_sloc1_1_0 + 1),dph
+0740 85F032    1730            mov     (_main_sloc1_1_0 + 2),b
+0743 F533      1731            mov     (_main_sloc1_1_0 + 3),a
+0745 E581      1732            mov     a,sp
+0747 24FC      1733            add     a,#0xfc
+0749 F581      1734            mov     sp,a
+074B C030      1735            push    _main_sloc1_1_0
+074D C031      1736            push    (_main_sloc1_1_0 + 1)
+074F C032      1737            push    (_main_sloc1_1_0 + 2)
+0751 C033      1738            push    (_main_sloc1_1_0 + 3)
+0753 900000    1739            mov     dptr,#0x0000
+0756 75F020    1740            mov     b,#0x20
+0759 7441      1741            mov     a,#0x41
+075B 120100    1742            lcall   ___fsmul
+075E 858230    1743            mov     _main_sloc1_1_0,dpl
+0761 858331    1744            mov     (_main_sloc1_1_0 + 1),dph
+0764 85F032    1745            mov     (_main_sloc1_1_0 + 2),b
+0767 F533      1746            mov     (_main_sloc1_1_0 + 3),a
+0769 E581      1747            mov     a,sp
+076B 24FC      1748            add     a,#0xfc
+076D F581      1749            mov     sp,a
+076F 853082    1750            mov     dpl,_main_sloc1_1_0
+0772 853183    1751            mov     dph,(_main_sloc1_1_0 + 1)
+0775 8532F0    1752            mov     b,(_main_sloc1_1_0 + 2)
+0778 E533      1753            mov     a,(_main_sloc1_1_0 + 3)
+077A 120100    1754            lcall   ___fs2sint
+077D E582      1755            mov     a,dpl
+077F 8583F0    1756            mov     b,dph
+0782 2401      1757            add     a,#0x01
+0784 F5C0      1758            mov     _main_backward_L_1_71,a
+0786 E4        1759            clr     a
+0787 35F0      1760            addc    a,b
+0789 F5C1      1761            mov     (_main_backward_L_1_71 + 1),a
+078B           1762   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:344: backward_R=(int)((((VxMid-Vx)/VxMid)*10+1)/2.0);
+078B E4        1763            clr     a
+078C C0E0      1764            push    acc
+078E C0E0      1765            push    acc
+0790 7480      1766            mov     a,#0x80
+0792 C0E0      1767            push    acc
+0794 743F      1768            mov     a,#0x3F
+0796 C0E0      1769            push    acc
+0798 853082    1770            mov     dpl,_main_sloc1_1_0
+079B 853183    1771            mov     dph,(_main_sloc1_1_0 + 1)
+079E 8532F0    1772            mov     b,(_main_sloc1_1_0 + 2)
+07A1 E533      1773            mov     a,(_main_sloc1_1_0 + 3)
+07A3 120100    1774            lcall   ___fsadd
+07A6 858230    1775            mov     _main_sloc1_1_0,dpl
+07A9 858331    1776            mov     (_main_sloc1_1_0 + 1),dph
+07AC 85F032    1777            mov     (_main_sloc1_1_0 + 2),b
+07AF F533      1778            mov     (_main_sloc1_1_0 + 3),a
+07B1 E581      1779            mov     a,sp
+07B3 24FC      1780            add     a,#0xfc
+07B5 F581      1781            mov     sp,a
+07B7 E4        1782            clr     a
+07B8 C0E0      1783            push    acc
+07BA C0E0      1784            push    acc
+07BC C0E0      1785            push    acc
+07BE 7440      1786            mov     a,#0x40
+07C0 C0E0      1787            push    acc
+07C2 853082    1788            mov     dpl,_main_sloc1_1_0
+07C5 853183    1789            mov     dph,(_main_sloc1_1_0 + 1)
+07C8 8532F0    1790            mov     b,(_main_sloc1_1_0 + 2)
+07CB E533      1791            mov     a,(_main_sloc1_1_0 + 3)
+07CD 120100    1792            lcall   ___fsdiv
+07D0 858230    1793            mov     _main_sloc1_1_0,dpl
+07D3 858331    1794            mov     (_main_sloc1_1_0 + 1),dph
+07D6 85F032    1795            mov     (_main_sloc1_1_0 + 2),b
+07D9 F533      1796            mov     (_main_sloc1_1_0 + 3),a
+07DB E581      1797            mov     a,sp
+07DD 24FC      1798            add     a,#0xfc
+07DF F581      1799            mov     sp,a
+07E1 853082    1800            mov     dpl,_main_sloc1_1_0
+07E4 853183    1801            mov     dph,(_main_sloc1_1_0 + 1)
+07E7 8532F0    1802            mov     b,(_main_sloc1_1_0 + 2)
+07EA E533      1803            mov     a,(_main_sloc1_1_0 + 3)
+07EC 120100    1804            lcall   ___fs2sint
+07EF 858210    1805            mov     _main_backward_R_1_71,dpl
+07F2 858311    1806            mov     (_main_backward_R_1_71 + 1),dph
+07F5           1807   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:345: forward_L=0;
+07F5           1808   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:346: forward_R=0;         
+07F5 E4        1809            clr     a
+07F6 F560      1810            mov     _main_forward_L_1_71,a
+07F8 F561      1811            mov     (_main_forward_L_1_71 + 1),a
+07FA F5B0      1812            mov     _main_forward_R_1_71,a
+07FC F5B1      1813            mov     (_main_forward_R_1_71 + 1),a
+07FE 020100    1814            ljmp    L012040?
+0801           1815   L012026?:
+0801           1816   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:348: else if(Vx<VxMidLow && Vy<VyMidLow)  //back left
+0801 EE        1817            mov     a,r6
+0802 7001      1818            jnz     L012093?
+0804 020100    1819            ljmp    L012022?
+0807           1820   L012093?:
+0807 C002      1821            push    ar2
+0809 C003      1822            push    ar3
+080B C004      1823            push    ar4
+080D C005      1824            push    ar5
+080F C006      1825            push    ar6
+0811 7471      1826            mov     a,#0x71
+0813 C0E0      1827            push    acc
+0815 743D      1828            mov     a,#0x3D
+0817 C0E0      1829            push    acc
+0819 74CA      1830            mov     a,#0xCA
+081B C0E0      1831            push    acc
+081D 743F      1832            mov     a,#0x3F
+081F C0E0      1833            push    acc
+0821 8C82      1834            mov     dpl,r4
+0823 8D83      1835            mov     dph,r5
+0825 8AF0      1836            mov     b,r2
+0827 EB        1837            mov     a,r3
+0828 120100    1838            lcall   ___fslt
+082B AF82      1839            mov     r7,dpl
+082D E581      1840            mov     a,sp
+082F 24FC      1841            add     a,#0xfc
+0831 F581      1842            mov     sp,a
+0833 D006      1843            pop     ar6
+0835 D005      1844            pop     ar5
+0837 D004      1845            pop     ar4
+0839 D003      1846            pop     ar3
+083B D002      1847            pop     ar2
+083D EF        1848            mov     a,r7
+083E 7001      1849            jnz     L012094?
+0840 020100    1850            ljmp    L012022?
+0843           1851   L012094?:
+0843           1852   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:350: backward_L=(int)((((VxMid-Vx)/VxMid)*10+1)/2.0);
+0843 C070      1853            push    _main_Vx_1_71
+0845 C071      1854            push    (_main_Vx_1_71 + 1)
+0847 C072      1855            push    (_main_Vx_1_71 + 2)
+0849 C073      1856            push    (_main_Vx_1_71 + 3)
+084B 90C28F    1857            mov     dptr,#0xC28F
+084E 75F0D5    1858            mov     b,#0xD5
+0851 743F      1859            mov     a,#0x3F
+0853 120100    1860            lcall   ___fssub
+0856 858230    1861            mov     _main_sloc1_1_0,dpl
+0859 858331    1862            mov     (_main_sloc1_1_0 + 1),dph
+085C 85F032    1863            mov     (_main_sloc1_1_0 + 2),b
+085F F533      1864            mov     (_main_sloc1_1_0 + 3),a
+0861 E581      1865            mov     a,sp
+0863 24FC      1866            add     a,#0xfc
+0865 F581      1867            mov     sp,a
+0867 748F      1868            mov     a,#0x8F
+0869 C0E0      1869            push    acc
+086B 74C2      1870            mov     a,#0xC2
+086D C0E0      1871            push    acc
+086F 74D5      1872            mov     a,#0xD5
+0871 C0E0      1873            push    acc
+0873 743F      1874            mov     a,#0x3F
+0875 C0E0      1875            push    acc
+0877 853082    1876            mov     dpl,_main_sloc1_1_0
+087A 853183    1877            mov     dph,(_main_sloc1_1_0 + 1)
+087D 8532F0    1878            mov     b,(_main_sloc1_1_0 + 2)
+0880 E533      1879            mov     a,(_main_sloc1_1_0 + 3)
+0882 120100    1880            lcall   ___fsdiv
+0885 858230    1881            mov     _main_sloc1_1_0,dpl
+0888 858331    1882            mov     (_main_sloc1_1_0 + 1),dph
+088B 85F032    1883            mov     (_main_sloc1_1_0 + 2),b
+088E F533      1884            mov     (_main_sloc1_1_0 + 3),a
+0890 E581      1885            mov     a,sp
+0892 24FC      1886            add     a,#0xfc
+0894 F581      1887            mov     sp,a
+0896 C030      1888            push    _main_sloc1_1_0
+0898 C031      1889            push    (_main_sloc1_1_0 + 1)
+089A C032      1890            push    (_main_sloc1_1_0 + 2)
+089C C033      1891            push    (_main_sloc1_1_0 + 3)
+089E 900000    1892            mov     dptr,#0x0000
+08A1 75F020    1893            mov     b,#0x20
+08A4 7441      1894            mov     a,#0x41
+08A6 120100    1895            lcall   ___fsmul
+08A9 858230    1896            mov     _main_sloc1_1_0,dpl
+08AC 858331    1897            mov     (_main_sloc1_1_0 + 1),dph
+08AF 85F032    1898            mov     (_main_sloc1_1_0 + 2),b
+08B2 F533      1899            mov     (_main_sloc1_1_0 + 3),a
+08B4 E581      1900            mov     a,sp
+08B6 24FC      1901            add     a,#0xfc
+08B8 F581      1902            mov     sp,a
+08BA E4        1903            clr     a
+08BB C0E0      1904            push    acc
+08BD C0E0      1905            push    acc
+08BF 7480      1906            mov     a,#0x80
+08C1 C0E0      1907            push    acc
+08C3 743F      1908            mov     a,#0x3F
+08C5 C0E0      1909            push    acc
+08C7 853082    1910            mov     dpl,_main_sloc1_1_0
+08CA 853183    1911            mov     dph,(_main_sloc1_1_0 + 1)
+08CD 8532F0    1912            mov     b,(_main_sloc1_1_0 + 2)
+08D0 E533      1913            mov     a,(_main_sloc1_1_0 + 3)
+08D2 120100    1914            lcall   ___fsadd
+08D5 8582F0    1915            mov     _main_sloc0_1_0,dpl
+08D8 8583F1    1916            mov     (_main_sloc0_1_0 + 1),dph
+08DB 85F0F2    1917            mov     (_main_sloc0_1_0 + 2),b
+08DE F5F3      1918            mov     (_main_sloc0_1_0 + 3),a
+08E0 E581      1919            mov     a,sp
+08E2 24FC      1920            add     a,#0xfc
+08E4 F581      1921            mov     sp,a
+08E6 E4        1922            clr     a
+08E7 C0E0      1923            push    acc
+08E9 C0E0      1924            push    acc
+08EB C0E0      1925            push    acc
+08ED 7440      1926            mov     a,#0x40
+08EF C0E0      1927            push    acc
+08F1 85F082    1928            mov     dpl,_main_sloc0_1_0
+08F4 85F183    1929            mov     dph,(_main_sloc0_1_0 + 1)
+08F7 85F2F0    1930            mov     b,(_main_sloc0_1_0 + 2)
+08FA E5F3      1931            mov     a,(_main_sloc0_1_0 + 3)
+08FC 120100    1932            lcall   ___fsdiv
+08FF 8582F0    1933            mov     _main_sloc0_1_0,dpl
+0902 8583F1    1934            mov     (_main_sloc0_1_0 + 1),dph
+0905 85F0F2    1935            mov     (_main_sloc0_1_0 + 2),b
+0908 F5F3      1936            mov     (_main_sloc0_1_0 + 3),a
+090A E581      1937            mov     a,sp
+090C 24FC      1938            add     a,#0xfc
+090E F581      1939            mov     sp,a
+0910 85F082    1940            mov     dpl,_main_sloc0_1_0
+0913 85F183    1941            mov     dph,(_main_sloc0_1_0 + 1)
+0916 85F2F0    1942            mov     b,(_main_sloc0_1_0 + 2)
+0919 E5F3      1943            mov     a,(_main_sloc0_1_0 + 3)
+091B 120100    1944            lcall   ___fs2sint
+091E 8582C0    1945            mov     _main_backward_L_1_71,dpl
+0921 8583C1    1946            mov     (_main_backward_L_1_71 + 1),dph
+0924           1947   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:351: backward_R=(int)(((VxMid-Vx)/VxMid)*10)+1;
+0924 853082    1948            mov     dpl,_main_sloc1_1_0
+0927 853183    1949            mov     dph,(_main_sloc1_1_0 + 1)
+092A 8532F0    1950            mov     b,(_main_sloc1_1_0 + 2)
+092D E533      1951            mov     a,(_main_sloc1_1_0 + 3)
+092F 120100    1952            lcall   ___fs2sint
+0932 E582      1953            mov     a,dpl
+0934 8583F0    1954            mov     b,dph
+0937 2401      1955            add     a,#0x01
+0939 F510      1956            mov     _main_backward_R_1_71,a
+093B E4        1957            clr     a
+093C 35F0      1958            addc    a,b
+093E F511      1959            mov     (_main_backward_R_1_71 + 1),a
+0940           1960   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:352: forward_L=0;
+0940           1961   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:353: forward_R=0;
+0940 E4        1962            clr     a
+0941 F560      1963            mov     _main_forward_L_1_71,a
+0943 F561      1964            mov     (_main_forward_L_1_71 + 1),a
+0945 F5B0      1965            mov     _main_forward_R_1_71,a
+0947 F5B1      1966            mov     (_main_forward_R_1_71 + 1),a
+0949 020100    1967            ljmp    L012040?
+094C           1968   L012022?:
+094C           1969   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:355: else if(Vx<VxMidLow && Vy>VyMidLow && Vy<VyMidHigh) //backward
+094C EE        1970            mov     a,r6
+094D 7001      1971            jnz     L012095?
+094F 020100    1972            ljmp    L012017?
+0952           1973   L012095?:
+0952 C002      1974            push    ar2
+0954 C003      1975            push    ar3
+0956 C004      1976            push    ar4
+0958 C005      1977            push    ar5
+095A 7471      1978            mov     a,#0x71
+095C C0E0      1979            push    acc
+095E 743D      1980            mov     a,#0x3D
+0960 C0E0      1981            push    acc
+0962 74CA      1982            mov     a,#0xCA
+0964 C0E0      1983            push    acc
+0966 743F      1984            mov     a,#0x3F
+0968 C0E0      1985            push    acc
+096A 8C82      1986            mov     dpl,r4
+096C 8D83      1987            mov     dph,r5
+096E 8AF0      1988            mov     b,r2
+0970 EB        1989            mov     a,r3
+0971 120100    1990            lcall   ___fsgt
+0974 AE82      1991            mov     r6,dpl
+0976 E581      1992            mov     a,sp
+0978 24FC      1993            add     a,#0xfc
+097A F581      1994            mov     sp,a
+097C D005      1995            pop     ar5
+097E D004      1996            pop     ar4
+0980 D003      1997            pop     ar3
+0982 D002      1998            pop     ar2
+0984 EE        1999            mov     a,r6
+0985 7001      2000            jnz     L012096?
+0987 020100    2001            ljmp    L012017?
+098A           2002   L012096?:
+098A C002      2003            push    ar2
+098C C003      2004            push    ar3
+098E C004      2005            push    ar4
+0990 C005      2006            push    ar5
+0992 74CD      2007            mov     a,#0xCD
+0994 C0E0      2008            push    acc
+0996 74CC      2009            mov     a,#0xCC
+0998 C0E0      2010            push    acc
+099A C0E0      2011            push    acc
+099C 743F      2012            mov     a,#0x3F
+099E C0E0      2013            push    acc
+09A0 8C82      2014            mov     dpl,r4
+09A2 8D83      2015            mov     dph,r5
+09A4 8AF0      2016            mov     b,r2
+09A6 EB        2017            mov     a,r3
+09A7 120100    2018            lcall   ___fslt
+09AA AE82      2019            mov     r6,dpl
+09AC E581      2020            mov     a,sp
+09AE 24FC      2021            add     a,#0xfc
+09B0 F581      2022            mov     sp,a
+09B2 D005      2023            pop     ar5
+09B4 D004      2024            pop     ar4
+09B6 D003      2025            pop     ar3
+09B8 D002      2026            pop     ar2
+09BA EE        2027            mov     a,r6
+09BB 7001      2028            jnz     L012097?
+09BD 020100    2029            ljmp    L012017?
+09C0           2030   L012097?:
+09C0           2031   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:357: backward_L=(int)(((VxMid-Vx)/VxMid)*10)+1;
+09C0 C070      2032            push    _main_Vx_1_71
+09C2 C071      2033            push    (_main_Vx_1_71 + 1)
+09C4 C072      2034            push    (_main_Vx_1_71 + 2)
+09C6 C073      2035            push    (_main_Vx_1_71 + 3)
+09C8 90C28F    2036            mov     dptr,#0xC28F
+09CB 75F0D5    2037            mov     b,#0xD5
+09CE 743F      2038            mov     a,#0x3F
+09D0 120100    2039            lcall   ___fssub
+09D3 AE82      2040            mov     r6,dpl
+09D5 AF83      2041            mov     r7,dph
+09D7 A8F0      2042            mov     r0,b
+09D9 F9        2043            mov     r1,a
+09DA E581      2044            mov     a,sp
+09DC 24FC      2045            add     a,#0xfc
+09DE F581      2046            mov     sp,a
+09E0 748F      2047            mov     a,#0x8F
+09E2 C0E0      2048            push    acc
+09E4 74C2      2049            mov     a,#0xC2
+09E6 C0E0      2050            push    acc
+09E8 74D5      2051            mov     a,#0xD5
+09EA C0E0      2052            push    acc
+09EC 743F      2053            mov     a,#0x3F
+09EE C0E0      2054            push    acc
+09F0 8E82      2055            mov     dpl,r6
+09F2 8F83      2056            mov     dph,r7
+09F4 88F0      2057            mov     b,r0
+09F6 E9        2058            mov     a,r1
+09F7 120100    2059            lcall   ___fsdiv
+09FA AE82      2060            mov     r6,dpl
+09FC AF83      2061            mov     r7,dph
+09FE A8F0      2062            mov     r0,b
+0A00 F9        2063            mov     r1,a
+0A01 E581      2064            mov     a,sp
+0A03 24FC      2065            add     a,#0xfc
+0A05 F581      2066            mov     sp,a
+0A07 C006      2067            push    ar6
+0A09 C007      2068            push    ar7
+0A0B C000      2069            push    ar0
+0A0D C001      2070            push    ar1
+0A0F 900000    2071            mov     dptr,#0x0000
+0A12 75F020    2072            mov     b,#0x20
+0A15 7441      2073            mov     a,#0x41
+0A17 120100    2074            lcall   ___fsmul
+0A1A AE82      2075            mov     r6,dpl
+0A1C AF83      2076            mov     r7,dph
+0A1E A8F0      2077            mov     r0,b
+0A20 F9        2078            mov     r1,a
+0A21 E581      2079            mov     a,sp
+0A23 24FC      2080            add     a,#0xfc
+0A25 F581      2081            mov     sp,a
+0A27 8E82      2082            mov     dpl,r6
+0A29 8F83      2083            mov     dph,r7
+0A2B 88F0      2084            mov     b,r0
+0A2D E9        2085            mov     a,r1
+0A2E 120100    2086            lcall   ___fs2sint
+0A31 E582      2087            mov     a,dpl
+0A33 8583F0    2088            mov     b,dph
+0A36 2401      2089            add     a,#0x01
+0A38 FE        2090            mov     r6,a
+0A39 E4        2091            clr     a
+0A3A 35F0      2092            addc    a,b
+0A3C FF        2093            mov     r7,a
+0A3D 8EC0      2094            mov     _main_backward_L_1_71,r6
+0A3F 8FC1      2095            mov     (_main_backward_L_1_71 + 1),r7
+0A41           2096   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:358: backward_R=(int)(((VxMid-Vx)/VxMid)*10)+1;
+0A41 8E10      2097            mov     _main_backward_R_1_71,r6
+0A43 8F11      2098            mov     (_main_backward_R_1_71 + 1),r7
+0A45           2099   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:359: forward_L=0;
+0A45           2100   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:360: forward_R=0;                 
+0A45 E4        2101            clr     a
+0A46 F560      2102            mov     _main_forward_L_1_71,a
+0A48 F561      2103            mov     (_main_forward_L_1_71 + 1),a
+0A4A F5B0      2104            mov     _main_forward_R_1_71,a
+0A4C F5B1      2105            mov     (_main_forward_R_1_71 + 1),a
+0A4E 020100    2106            ljmp    L012040?
+0A51           2107   L012017?:
+0A51           2108   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:362: else if(Vx<VxMidHigh && Vx>VxMidLow && Vy>VyMidHigh) // right
+0A51 C002      2109            push    ar2
+0A53 C003      2110            push    ar3
+0A55 C004      2111            push    ar4
+0A57 C005      2112            push    ar5
+0A59 743D      2113            mov     a,#0x3D
+0A5B C0E0      2114            push    acc
+0A5D 740A      2115            mov     a,#0x0A
+0A5F C0E0      2116            push    acc
+0A61 74D7      2117            mov     a,#0xD7
+0A63 C0E0      2118            push    acc
+0A65 743F      2119            mov     a,#0x3F
+0A67 C0E0      2120            push    acc
+0A69 857082    2121            mov     dpl,_main_Vx_1_71
+0A6C 857183    2122            mov     dph,(_main_Vx_1_71 + 1)
+0A6F 8572F0    2123            mov     b,(_main_Vx_1_71 + 2)
+0A72 E573      2124            mov     a,(_main_Vx_1_71 + 3)
+0A74 120100    2125            lcall   ___fslt
+0A77 AE82      2126            mov     r6,dpl
+0A79 E581      2127            mov     a,sp
+0A7B 24FC      2128            add     a,#0xfc
+0A7D F581      2129            mov     sp,a
+0A7F D005      2130            pop     ar5
+0A81 D004      2131            pop     ar4
+0A83 D003      2132            pop     ar3
+0A85 D002      2133            pop     ar2
+0A87 EE        2134            mov     a,r6
+0A88 7001      2135            jnz     L012098?
+0A8A 020100    2136            ljmp    L012012?
+0A8D           2137   L012098?:
+0A8D C002      2138            push    ar2
+0A8F C003      2139            push    ar3
+0A91 C004      2140            push    ar4
+0A93 C005      2141            push    ar5
+0A95 C006      2142            push    ar6
+0A97 74E1      2143            mov     a,#0xE1
+0A99 C0E0      2144            push    acc
+0A9B 747A      2145            mov     a,#0x7A
+0A9D C0E0      2146            push    acc
+0A9F 74D4      2147            mov     a,#0xD4
+0AA1 C0E0      2148            push    acc
+0AA3 743F      2149            mov     a,#0x3F
+0AA5 C0E0      2150            push    acc
+0AA7 857082    2151            mov     dpl,_main_Vx_1_71
+0AAA 857183    2152            mov     dph,(_main_Vx_1_71 + 1)
+0AAD 8572F0    2153            mov     b,(_main_Vx_1_71 + 2)
+0AB0 E573      2154            mov     a,(_main_Vx_1_71 + 3)
+0AB2 120100    2155            lcall   ___fsgt
+0AB5 AF82      2156            mov     r7,dpl
+0AB7 E581      2157            mov     a,sp
+0AB9 24FC      2158            add     a,#0xfc
+0ABB F581      2159            mov     sp,a
+0ABD D006      2160            pop     ar6
+0ABF D005      2161            pop     ar5
+0AC1 D004      2162            pop     ar4
+0AC3 D003      2163            pop     ar3
+0AC5 D002      2164            pop     ar2
+0AC7 EF        2165            mov     a,r7
+0AC8 7001      2166            jnz     L012099?
+0ACA 020100    2167            ljmp    L012012?
+0ACD           2168   L012099?:
+0ACD C002      2169            push    ar2
+0ACF C003      2170            push    ar3
+0AD1 C004      2171            push    ar4
+0AD3 C005      2172            push    ar5
+0AD5 C006      2173            push    ar6
+0AD7 74CD      2174            mov     a,#0xCD
+0AD9 C0E0      2175            push    acc
+0ADB 74CC      2176            mov     a,#0xCC
+0ADD C0E0      2177            push    acc
+0ADF C0E0      2178            push    acc
+0AE1 743F      2179            mov     a,#0x3F
+0AE3 C0E0      2180            push    acc
+0AE5 8C82      2181            mov     dpl,r4
+0AE7 8D83      2182            mov     dph,r5
+0AE9 8AF0      2183            mov     b,r2
+0AEB EB        2184            mov     a,r3
+0AEC 120100    2185            lcall   ___fsgt
+0AEF AF82      2186            mov     r7,dpl
+0AF1 E581      2187            mov     a,sp
+0AF3 24FC      2188            add     a,#0xfc
+0AF5 F581      2189            mov     sp,a
+0AF7 D006      2190            pop     ar6
+0AF9 D005      2191            pop     ar5
+0AFB D004      2192            pop     ar4
+0AFD D003      2193            pop     ar3
+0AFF D002      2194            pop     ar2
+0B01 EF        2195            mov     a,r7
+0B02 7001      2196            jnz     L012100?
+0B04 020100    2197            ljmp    L012012?
+0B07           2198   L012100?:
+0B07           2199   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:364: backward_L=0;
+0B07           2200   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:365: backward_R=0;
+0B07 E4        2201            clr     a
+0B08 F5C0      2202            mov     _main_backward_L_1_71,a
+0B0A F5C1      2203            mov     (_main_backward_L_1_71 + 1),a
+0B0C F510      2204            mov     _main_backward_R_1_71,a
+0B0E F511      2205            mov     (_main_backward_R_1_71 + 1),a
+0B10           2206   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:366: forward_L=(int)(((Vy-VyMid)/VyMid)*10);
+0B10 741F      2207            mov     a,#0x1F
+0B12 C0E0      2208            push    acc
+0B14 7485      2209            mov     a,#0x85
+0B16 C0E0      2210            push    acc
+0B18 74CB      2211            mov     a,#0xCB
+0B1A C0E0      2212            push    acc
+0B1C 743F      2213            mov     a,#0x3F
+0B1E C0E0      2214            push    acc
+0B20 8C82      2215            mov     dpl,r4
+0B22 8D83      2216            mov     dph,r5
+0B24 8AF0      2217            mov     b,r2
+0B26 EB        2218            mov     a,r3
+0B27 120100    2219            lcall   ___fssub
+0B2A 858230    2220            mov     _main_sloc1_1_0,dpl
+0B2D 858331    2221            mov     (_main_sloc1_1_0 + 1),dph
+0B30 85F032    2222            mov     (_main_sloc1_1_0 + 2),b
+0B33 F533      2223            mov     (_main_sloc1_1_0 + 3),a
+0B35 E581      2224            mov     a,sp
+0B37 24FC      2225            add     a,#0xfc
+0B39 F581      2226            mov     sp,a
+0B3B 741F      2227            mov     a,#0x1F
+0B3D C0E0      2228            push    acc
+0B3F 7485      2229            mov     a,#0x85
+0B41 C0E0      2230            push    acc
+0B43 74CB      2231            mov     a,#0xCB
+0B45 C0E0      2232            push    acc
+0B47 743F      2233            mov     a,#0x3F
+0B49 C0E0      2234            push    acc
+0B4B 853082    2235            mov     dpl,_main_sloc1_1_0
+0B4E 853183    2236            mov     dph,(_main_sloc1_1_0 + 1)
+0B51 8532F0    2237            mov     b,(_main_sloc1_1_0 + 2)
+0B54 E533      2238            mov     a,(_main_sloc1_1_0 + 3)
+0B56 120100    2239            lcall   ___fsdiv
+0B59 858230    2240            mov     _main_sloc1_1_0,dpl
+0B5C 858331    2241            mov     (_main_sloc1_1_0 + 1),dph
+0B5F 85F032    2242            mov     (_main_sloc1_1_0 + 2),b
+0B62 F533      2243            mov     (_main_sloc1_1_0 + 3),a
+0B64 E581      2244            mov     a,sp
+0B66 24FC      2245            add     a,#0xfc
+0B68 F581      2246            mov     sp,a
+0B6A C030      2247            push    _main_sloc1_1_0
+0B6C C031      2248            push    (_main_sloc1_1_0 + 1)
+0B6E C032      2249            push    (_main_sloc1_1_0 + 2)
+0B70 C033      2250            push    (_main_sloc1_1_0 + 3)
+0B72 900000    2251            mov     dptr,#0x0000
+0B75 75F020    2252            mov     b,#0x20
+0B78 7441      2253            mov     a,#0x41
+0B7A 120100    2254            lcall   ___fsmul
+0B7D 858230    2255            mov     _main_sloc1_1_0,dpl
+0B80 858331    2256            mov     (_main_sloc1_1_0 + 1),dph
+0B83 85F032    2257            mov     (_main_sloc1_1_0 + 2),b
+0B86 F533      2258            mov     (_main_sloc1_1_0 + 3),a
+0B88 E581      2259            mov     a,sp
+0B8A 24FC      2260            add     a,#0xfc
+0B8C F581      2261            mov     sp,a
+0B8E 853082    2262            mov     dpl,_main_sloc1_1_0
+0B91 853183    2263            mov     dph,(_main_sloc1_1_0 + 1)
+0B94 8532F0    2264            mov     b,(_main_sloc1_1_0 + 2)
+0B97 E533      2265            mov     a,(_main_sloc1_1_0 + 3)
+0B99 120100    2266            lcall   ___fs2sint
+0B9C 858260    2267            mov     _main_forward_L_1_71,dpl
+0B9F 858361    2268            mov     (_main_forward_L_1_71 + 1),dph
+0BA2           2269   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:367: forward_R=0;
+0BA2 E4        2270            clr     a
+0BA3 F5B0      2271            mov     _main_forward_R_1_71,a
+0BA5 F5B1      2272            mov     (_main_forward_R_1_71 + 1),a
+0BA7 020100    2273            ljmp    L012040?
+0BAA           2274   L012012?:
+0BAA           2275   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:369: else if(Vx<VxMidHigh && Vx>VxMidLow && Vy<VyMidLow) // left
+0BAA EE        2276            mov     a,r6
+0BAB 7001      2277            jnz     L012101?
+0BAD 020100    2278            ljmp    L012007?
+0BB0           2279   L012101?:
+0BB0 C002      2280            push    ar2
+0BB2 C003      2281            push    ar3
+0BB4 C004      2282            push    ar4
+0BB6 C005      2283            push    ar5
+0BB8 C006      2284            push    ar6
+0BBA 74E1      2285            mov     a,#0xE1
+0BBC C0E0      2286            push    acc
+0BBE 747A      2287            mov     a,#0x7A
+0BC0 C0E0      2288            push    acc
+0BC2 74D4      2289            mov     a,#0xD4
+0BC4 C0E0      2290            push    acc
+0BC6 743F      2291            mov     a,#0x3F
+0BC8 C0E0      2292            push    acc
+0BCA 857082    2293            mov     dpl,_main_Vx_1_71
+0BCD 857183    2294            mov     dph,(_main_Vx_1_71 + 1)
+0BD0 8572F0    2295            mov     b,(_main_Vx_1_71 + 2)
+0BD3 E573      2296            mov     a,(_main_Vx_1_71 + 3)
+0BD5 120100    2297            lcall   ___fsgt
+0BD8 AF82      2298            mov     r7,dpl
+0BDA E581      2299            mov     a,sp
+0BDC 24FC      2300            add     a,#0xfc
+0BDE F581      2301            mov     sp,a
+0BE0 D006      2302            pop     ar6
+0BE2 D005      2303            pop     ar5
+0BE4 D004      2304            pop     ar4
+0BE6 D003      2305            pop     ar3
+0BE8 D002      2306            pop     ar2
+0BEA EF        2307            mov     a,r7
+0BEB 7001      2308            jnz     L012102?
+0BED 020100    2309            ljmp    L012007?
+0BF0           2310   L012102?:
+0BF0 C002      2311            push    ar2
+0BF2 C003      2312            push    ar3
+0BF4 C004      2313            push    ar4
+0BF6 C005      2314            push    ar5
+0BF8 C006      2315            push    ar6
+0BFA 7471      2316            mov     a,#0x71
+0BFC C0E0      2317            push    acc
+0BFE 743D      2318            mov     a,#0x3D
+0C00 C0E0      2319            push    acc
+0C02 74CA      2320            mov     a,#0xCA
+0C04 C0E0      2321            push    acc
+0C06 743F      2322            mov     a,#0x3F
+0C08 C0E0      2323            push    acc
+0C0A 8C82      2324            mov     dpl,r4
+0C0C 8D83      2325            mov     dph,r5
+0C0E 8AF0      2326            mov     b,r2
+0C10 EB        2327            mov     a,r3
+0C11 120100    2328            lcall   ___fslt
+0C14 AF82      2329            mov     r7,dpl
+0C16 E581      2330            mov     a,sp
+0C18 24FC      2331            add     a,#0xfc
+0C1A F581      2332            mov     sp,a
+0C1C D006      2333            pop     ar6
+0C1E D005      2334            pop     ar5
+0C20 D004      2335            pop     ar4
+0C22 D003      2336            pop     ar3
+0C24 D002      2337            pop     ar2
+0C26 EF        2338            mov     a,r7
+0C27 7001      2339            jnz     L012103?
+0C29 020100    2340            ljmp    L012007?
+0C2C           2341   L012103?:
+0C2C           2342   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:371: backward_L=0;
+0C2C           2343   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:372: backward_R=0;
+0C2C           2344   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:373: forward_L=0;
+0C2C E4        2345            clr     a
+0C2D F5C0      2346            mov     _main_backward_L_1_71,a
+0C2F F5C1      2347            mov     (_main_backward_L_1_71 + 1),a
+0C31 F510      2348            mov     _main_backward_R_1_71,a
+0C33 F511      2349            mov     (_main_backward_R_1_71 + 1),a
+0C35 F560      2350            mov     _main_forward_L_1_71,a
+0C37 F561      2351            mov     (_main_forward_L_1_71 + 1),a
+0C39           2352   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:374: forward_R=(int)(((VyMid-Vy)/VyMid)*10)+1;
+0C39 C004      2353            push    ar4
+0C3B C005      2354            push    ar5
+0C3D C002      2355            push    ar2
+0C3F C003      2356            push    ar3
+0C41 90851F    2357            mov     dptr,#0x851F
+0C44 75F0CB    2358            mov     b,#0xCB
+0C47 743F      2359            mov     a,#0x3F
+0C49 120100    2360            lcall   ___fssub
+0C4C 858230    2361            mov     _main_sloc1_1_0,dpl
+0C4F 858331    2362            mov     (_main_sloc1_1_0 + 1),dph
+0C52 85F032    2363            mov     (_main_sloc1_1_0 + 2),b
+0C55 F533      2364            mov     (_main_sloc1_1_0 + 3),a
+0C57 E581      2365            mov     a,sp
+0C59 24FC      2366            add     a,#0xfc
+0C5B F581      2367            mov     sp,a
+0C5D 741F      2368            mov     a,#0x1F
+0C5F C0E0      2369            push    acc
+0C61 7485      2370            mov     a,#0x85
+0C63 C0E0      2371            push    acc
+0C65 74CB      2372            mov     a,#0xCB
+0C67 C0E0      2373            push    acc
+0C69 743F      2374            mov     a,#0x3F
+0C6B C0E0      2375            push    acc
+0C6D 853082    2376            mov     dpl,_main_sloc1_1_0
+0C70 853183    2377            mov     dph,(_main_sloc1_1_0 + 1)
+0C73 8532F0    2378            mov     b,(_main_sloc1_1_0 + 2)
+0C76 E533      2379            mov     a,(_main_sloc1_1_0 + 3)
+0C78 120100    2380            lcall   ___fsdiv
+0C7B 858230    2381            mov     _main_sloc1_1_0,dpl
+0C7E 858331    2382            mov     (_main_sloc1_1_0 + 1),dph
+0C81 85F032    2383            mov     (_main_sloc1_1_0 + 2),b
+0C84 F533      2384            mov     (_main_sloc1_1_0 + 3),a
+0C86 E581      2385            mov     a,sp
+0C88 24FC      2386            add     a,#0xfc
+0C8A F581      2387            mov     sp,a
+0C8C C030      2388            push    _main_sloc1_1_0
+0C8E C031      2389            push    (_main_sloc1_1_0 + 1)
+0C90 C032      2390            push    (_main_sloc1_1_0 + 2)
+0C92 C033      2391            push    (_main_sloc1_1_0 + 3)
+0C94 900000    2392            mov     dptr,#0x0000
+0C97 75F020    2393            mov     b,#0x20
+0C9A 7441      2394            mov     a,#0x41
+0C9C 120100    2395            lcall   ___fsmul
+0C9F 858230    2396            mov     _main_sloc1_1_0,dpl
+0CA2 858331    2397            mov     (_main_sloc1_1_0 + 1),dph
+0CA5 85F032    2398            mov     (_main_sloc1_1_0 + 2),b
+0CA8 F533      2399            mov     (_main_sloc1_1_0 + 3),a
+0CAA E581      2400            mov     a,sp
+0CAC 24FC      2401            add     a,#0xfc
+0CAE F581      2402            mov     sp,a
+0CB0 853082    2403            mov     dpl,_main_sloc1_1_0
+0CB3 853183    2404            mov     dph,(_main_sloc1_1_0 + 1)
+0CB6 8532F0    2405            mov     b,(_main_sloc1_1_0 + 2)
+0CB9 E533      2406            mov     a,(_main_sloc1_1_0 + 3)
+0CBB 120100    2407            lcall   ___fs2sint
+0CBE E582      2408            mov     a,dpl
+0CC0 8583F0    2409            mov     b,dph
+0CC3 2401      2410            add     a,#0x01
+0CC5 F5B0      2411            mov     _main_forward_R_1_71,a
+0CC7 E4        2412            clr     a
+0CC8 35F0      2413            addc    a,b
+0CCA F5B1      2414            mov     (_main_forward_R_1_71 + 1),a
+0CCC 020100    2415            ljmp    L012040?
+0CCF           2416   L012007?:
+0CCF           2417   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:376: else if(Vx<VxMidHigh && Vx>VxMidLow && Vy>VyMidLow && Vy<VyMidHigh) // stop
+0CCF EE        2418            mov     a,r6
+0CD0 7001      2419            jnz     L012104?
+0CD2 020100    2420            ljmp    L012040?
+0CD5           2421   L012104?:
+0CD5 C002      2422            push    ar2
+0CD7 C003      2423            push    ar3
+0CD9 C004      2424            push    ar4
+0CDB C005      2425            push    ar5
+0CDD 74E1      2426            mov     a,#0xE1
+0CDF C0E0      2427            push    acc
+0CE1 747A      2428            mov     a,#0x7A
+0CE3 C0E0      2429            push    acc
+0CE5 74D4      2430            mov     a,#0xD4
+0CE7 C0E0      2431            push    acc
+0CE9 743F      2432            mov     a,#0x3F
+0CEB C0E0      2433            push    acc
+0CED 857082    2434            mov     dpl,_main_Vx_1_71
+0CF0 857183    2435            mov     dph,(_main_Vx_1_71 + 1)
+0CF3 8572F0    2436            mov     b,(_main_Vx_1_71 + 2)
+0CF6 E573      2437            mov     a,(_main_Vx_1_71 + 3)
+0CF8 120100    2438            lcall   ___fsgt
+0CFB AE82      2439            mov     r6,dpl
+0CFD E581      2440            mov     a,sp
+0CFF 24FC      2441            add     a,#0xfc
+0D01 F581      2442            mov     sp,a
+0D03 D005      2443            pop     ar5
+0D05 D004      2444            pop     ar4
+0D07 D003      2445            pop     ar3
+0D09 D002      2446            pop     ar2
+0D0B EE        2447            mov     a,r6
+0D0C 6001      2448            jz      L012040?
+0D0E C002      2449            push    ar2
+0D10 C003      2450            push    ar3
+0D12 C004      2451            push    ar4
+0D14 C005      2452            push    ar5
+0D16 7471      2453            mov     a,#0x71
+0D18 C0E0      2454            push    acc
+0D1A 743D      2455            mov     a,#0x3D
+0D1C C0E0      2456            push    acc
+0D1E 74CA      2457            mov     a,#0xCA
+0D20 C0E0      2458            push    acc
+0D22 743F      2459            mov     a,#0x3F
+0D24 C0E0      2460            push    acc
+0D26 8C82      2461            mov     dpl,r4
+0D28 8D83      2462            mov     dph,r5
+0D2A 8AF0      2463            mov     b,r2
+0D2C EB        2464            mov     a,r3
+0D2D 120100    2465            lcall   ___fsgt
+0D30 AE82      2466            mov     r6,dpl
+0D32 E581      2467            mov     a,sp
+0D34 24FC      2468            add     a,#0xfc
+0D36 F581      2469            mov     sp,a
+0D38 D005      2470            pop     ar5
+0D3A D004      2471            pop     ar4
+0D3C D003      2472            pop     ar3
+0D3E D002      2473            pop     ar2
+0D40 EE        2474            mov     a,r6
+0D41 6001      2475            jz      L012040?
+0D43 74CD      2476            mov     a,#0xCD
+0D45 C0E0      2477            push    acc
+0D47 74CC      2478            mov     a,#0xCC
+0D49 C0E0      2479            push    acc
+0D4B C0E0      2480            push    acc
+0D4D 743F      2481            mov     a,#0x3F
+0D4F C0E0      2482            push    acc
+0D51 8C82      2483            mov     dpl,r4
+0D53 8D83      2484            mov     dph,r5
+0D55 8AF0      2485            mov     b,r2
+0D57 EB        2486            mov     a,r3
+0D58 120100    2487            lcall   ___fslt
+0D5B AA82      2488            mov     r2,dpl
+0D5D E581      2489            mov     a,sp
+0D5F 24FC      2490            add     a,#0xfc
+0D61 F581      2491            mov     sp,a
+0D63 EA        2492            mov     a,r2
+0D64 6001      2493            jz      L012040?
+0D66           2494   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:378: backward_L=0;
+0D66           2495   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:379: backward_R=0;
+0D66           2496   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:380: forward_L=0;
+0D66           2497   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:381: forward_R=0;                 
+0D66 E4        2498            clr     a
+0D67 F5C0      2499            mov     _main_backward_L_1_71,a
+0D69 F5C1      2500            mov     (_main_backward_L_1_71 + 1),a
+0D6B F510      2501            mov     _main_backward_R_1_71,a
+0D6D F511      2502            mov     (_main_backward_R_1_71 + 1),a
+0D6F F560      2503            mov     _main_forward_L_1_71,a
+0D71 F561      2504            mov     (_main_forward_L_1_71 + 1),a
+0D73 F5B0      2505            mov     _main_forward_R_1_71,a
+0D75 F5B1      2506            mov     (_main_forward_R_1_71 + 1),a
+0D77           2507   L012040?:
+0D77           2508   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:383: if (backward_L>10)
+0D77 C3        2509            clr     c
+0D78 740A      2510            mov     a,#0x0A
+0D7A 95C0      2511            subb    a,_main_backward_L_1_71
+0D7C E4        2512            clr     a
+0D7D 95C1      2513            subb    a,(_main_backward_L_1_71 + 1)
+0D7F 5001      2514            jnc     L012043?
+0D81           2515   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:384: backward_L = 10;
+0D81 75C00A    2516            mov     _main_backward_L_1_71,#0x0A
+0D84 E4        2517            clr     a
+0D85 F5C1      2518            mov     (_main_backward_L_1_71 + 1),a
+0D87           2519   L012043?:
+0D87           2520   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:385: if (backward_R>10)
+0D87 C3        2521            clr     c
+0D88 740A      2522            mov     a,#0x0A
+0D8A 9510      2523            subb    a,_main_backward_R_1_71
+0D8C E4        2524            clr     a
+0D8D 9511      2525            subb    a,(_main_backward_R_1_71 + 1)
+0D8F 5001      2526            jnc     L012045?
+0D91           2527   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:386: backward_R = 10;
+0D91 75100A    2528            mov     _main_backward_R_1_71,#0x0A
+0D94 E4        2529            clr     a
+0D95 F511      2530            mov     (_main_backward_R_1_71 + 1),a
+0D97           2531   L012045?:
+0D97           2532   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:387: if (forward_L>10)
+0D97 C3        2533            clr     c
+0D98 740A      2534            mov     a,#0x0A
+0D9A 9560      2535            subb    a,_main_forward_L_1_71
+0D9C E4        2536            clr     a
+0D9D 9561      2537            subb    a,(_main_forward_L_1_71 + 1)
+0D9F 5001      2538            jnc     L012047?
+0DA1           2539   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:388: forward_L = 10;
+0DA1 75600A    2540            mov     _main_forward_L_1_71,#0x0A
+0DA4 E4        2541            clr     a
+0DA5 F561      2542            mov     (_main_forward_L_1_71 + 1),a
+0DA7           2543   L012047?:
+0DA7           2544   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:389: if (forward_R>10)
+0DA7 C3        2545            clr     c
+0DA8 740A      2546            mov     a,#0x0A
+0DAA 95B0      2547            subb    a,_main_forward_R_1_71
+0DAC E4        2548            clr     a
+0DAD 95B1      2549            subb    a,(_main_forward_R_1_71 + 1)
+0DAF 5001      2550            jnc     L012049?
+0DB1           2551   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:390: forward_R = 10;
+0DB1 75B00A    2552            mov     _main_forward_R_1_71,#0x0A
+0DB4 E4        2553            clr     a
+0DB5 F5B1      2554            mov     (_main_forward_R_1_71 + 1),a
+0DB7           2555   L012049?:
+0DB7           2556   ;        C:\Users\Grant\Documents\UBC\Year 2\Elec291\Project 2\EM-Tether-Robot\Controller\Controller.c:392: sendMessage(backward_L,backward_R,forward_L,forward_R,byte_1,byte_2);
+0DB7 8510F0    2557            mov     _sendMessage_PARM_2,_main_backward_R_1_71
+0DBA 8511F1    2558            mov     (_sendMessage_PARM_2 + 1),(_main_backward_R_1_71 + 1)
+0DBD 8560A0    2559            mov     _sendMessage_PARM_3,_main_forward_L_1_71
+0DC0 8561A1    2560            mov     (_sendMessage_PARM_3 + 1),(_main_forward_L_1_71 + 1)
+0DC3 85B050    2561            mov     _sendMessage_PARM_4,_main_forward_R_1_71
+0DC6 85B151    2562            mov     (_sendMessage_PARM_4 + 1),(_main_forward_R_1_71 + 1)
+0DC9 7500C0    2563            mov     _sendMessage_PARM_5,#0xC0
+0DCC 75B001    2564            mov     _sendMessage_PARM_6,#0x01
+0DCF 85C082    2565            mov     dpl,_main_backward_L_1_71
+0DD2 85C183    2566            mov     dph,(_main_backward_L_1_71 + 1)
+0DD5 120100    2567            lcall   _sendMessage
+0DD8 020100    2568            ljmp    L012051?
+0DDB           2569            rseg R_CSEG
+0DDB           2570   
+0000           2571            rseg R_XINIT
+0000           2572   
+0000           2573            rseg R_CONST
+0000           2574   
+002E           2575            CSEG
+002E           2576   
+002E           2577   end

@@ -1,0 +1,1330 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Fri Mar 30 19:27:22 2018
+0000              5   ;--------------------------------------------------------
+                  5   $name irrecievertest
+                  6   $optc51 --model-small
+0000              8            R_DSEG    segment data
+0000              9            R_CSEG    segment code
+0000             10            R_BSEG    segment bit
+0000             11            R_XSEG    segment xdata
+0000             12            R_PSEG    segment xdata
+0000             13            R_ISEG    segment idata
+0000             14            R_OSEG    segment data overlay
+0000             15            BIT_BANK  segment data overlay
+0000             16            R_HOME    segment code
+0000             17            R_GSINIT  segment code
+0000             18            R_IXSEG   segment xdata
+0000             19            R_CONST   segment code
+0000             20            R_XINIT   segment code
+0000             21            R_DINIT   segment code
+0000             22   
+0000             23   ;--------------------------------------------------------
+0000             24   ; Public variables in this module
+0000             25   ;--------------------------------------------------------
+0000             26            public _main
+0000             27            public _sendOnes
+0000             28            public _sendMessage
+0000             29            public _sendCommand
+0000             30            public _sendOne
+0000             31            public _sendZero
+0000             32            public _Timer0_ISR
+0000             33            public _Timer2_ISR
+0000             34            public _waitms
+0000             35            public _Timer3us
+0000             36            public __c51_external_startup
+0000             37            public _on_off
+0000             38            public _sendMessage_PARM_4
+0000             39            public _sendMessage_PARM_3
+0000             40            public _sendMessage_PARM_2
+0000             41            public _overflow_count
+0000             42            public _flag
+0000             43            public _command
+0000             44            public _counter2
+0000             45            public _counter
+0000             46            public _pwm_count
+0000             47   ;--------------------------------------------------------
+0000             48   ; Special Function Registers
+0000             49   ;--------------------------------------------------------
+0000             50   _ACC            DATA 0xe0
+0000             51   _ADC0ASAH       DATA 0xb6
+0000             52   _ADC0ASAL       DATA 0xb5
+0000             53   _ADC0ASCF       DATA 0xa1
+0000             54   _ADC0ASCT       DATA 0xc7
+0000             55   _ADC0CF0        DATA 0xbc
+0000             56   _ADC0CF1        DATA 0xb9
+0000             57   _ADC0CF2        DATA 0xdf
+0000             58   _ADC0CN0        DATA 0xe8
+0000             59   _ADC0CN1        DATA 0xb2
+0000             60   _ADC0CN2        DATA 0xb3
+0000             61   _ADC0GTH        DATA 0xc4
+0000             62   _ADC0GTL        DATA 0xc3
+0000             63   _ADC0H          DATA 0xbe
+0000             64   _ADC0L          DATA 0xbd
+0000             65   _ADC0LTH        DATA 0xc6
+0000             66   _ADC0LTL        DATA 0xc5
+0000             67   _ADC0MX         DATA 0xbb
+0000             68   _B              DATA 0xf0
+0000             69   _CKCON0         DATA 0x8e
+0000             70   _CKCON1         DATA 0xa6
+0000             71   _CLEN0          DATA 0xc6
+0000             72   _CLIE0          DATA 0xc7
+0000             73   _CLIF0          DATA 0xe8
+0000             74   _CLKSEL         DATA 0xa9
+0000             75   _CLOUT0         DATA 0xd1
+0000             76   _CLU0CF         DATA 0xb1
+0000             77   _CLU0FN         DATA 0xaf
+0000             78   _CLU0MX         DATA 0x84
+0000             79   _CLU1CF         DATA 0xb3
+0000             80   _CLU1FN         DATA 0xb2
+0000             81   _CLU1MX         DATA 0x85
+0000             82   _CLU2CF         DATA 0xb6
+0000             83   _CLU2FN         DATA 0xb5
+0000             84   _CLU2MX         DATA 0x91
+0000             85   _CLU3CF         DATA 0xbf
+0000             86   _CLU3FN         DATA 0xbe
+0000             87   _CLU3MX         DATA 0xae
+0000             88   _CMP0CN0        DATA 0x9b
+0000             89   _CMP0CN1        DATA 0x99
+0000             90   _CMP0MD         DATA 0x9d
+0000             91   _CMP0MX         DATA 0x9f
+0000             92   _CMP1CN0        DATA 0xbf
+0000             93   _CMP1CN1        DATA 0xac
+0000             94   _CMP1MD         DATA 0xab
+0000             95   _CMP1MX         DATA 0xaa
+0000             96   _CRC0CN0        DATA 0xce
+0000             97   _CRC0CN1        DATA 0x86
+0000             98   _CRC0CNT        DATA 0xd3
+0000             99   _CRC0DAT        DATA 0xcb
+0000            100   _CRC0FLIP       DATA 0xcf
+0000            101   _CRC0IN         DATA 0xca
+0000            102   _CRC0ST         DATA 0xd2
+0000            103   _DAC0CF0        DATA 0x91
+0000            104   _DAC0CF1        DATA 0x92
+0000            105   _DAC0H          DATA 0x85
+0000            106   _DAC0L          DATA 0x84
+0000            107   _DAC1CF0        DATA 0x93
+0000            108   _DAC1CF1        DATA 0x94
+0000            109   _DAC1H          DATA 0x8a
+0000            110   _DAC1L          DATA 0x89
+0000            111   _DAC2CF0        DATA 0x95
+0000            112   _DAC2CF1        DATA 0x96
+0000            113   _DAC2H          DATA 0x8c
+0000            114   _DAC2L          DATA 0x8b
+0000            115   _DAC3CF0        DATA 0x9a
+0000            116   _DAC3CF1        DATA 0x9c
+0000            117   _DAC3H          DATA 0x8e
+0000            118   _DAC3L          DATA 0x8d
+0000            119   _DACGCF0        DATA 0x88
+0000            120   _DACGCF1        DATA 0x98
+0000            121   _DACGCF2        DATA 0xa2
+0000            122   _DERIVID        DATA 0xad
+0000            123   _DEVICEID       DATA 0xb5
+0000            124   _DPH            DATA 0x83
+0000            125   _DPL            DATA 0x82
+0000            126   _EIE1           DATA 0xe6
+0000            127   _EIE2           DATA 0xf3
+0000            128   _EIP1           DATA 0xbb
+0000            129   _EIP1H          DATA 0xee
+0000            130   _EIP2           DATA 0xed
+0000            131   _EIP2H          DATA 0xf6
+0000            132   _EMI0CN         DATA 0xe7
+0000            133   _FLKEY          DATA 0xb7
+0000            134   _HFO0CAL        DATA 0xc7
+0000            135   _HFO1CAL        DATA 0xd6
+0000            136   _HFOCN          DATA 0xef
+0000            137   _I2C0ADM        DATA 0xff
+0000            138   _I2C0CN0        DATA 0xba
+0000            139   _I2C0DIN        DATA 0xbc
+0000            140   _I2C0DOUT       DATA 0xbb
+0000            141   _I2C0FCN0       DATA 0xad
+0000            142   _I2C0FCN1       DATA 0xab
+0000            143   _I2C0FCT        DATA 0xf5
+0000            144   _I2C0SLAD       DATA 0xbd
+0000            145   _I2C0STAT       DATA 0xb9
+0000            146   _IE             DATA 0xa8
+0000            147   _IP             DATA 0xb8
+0000            148   _IPH            DATA 0xf2
+0000            149   _IT01CF         DATA 0xe4
+0000            150   _LFO0CN         DATA 0xb1
+0000            151   _P0             DATA 0x80
+0000            152   _P0MASK         DATA 0xfe
+0000            153   _P0MAT          DATA 0xfd
+0000            154   _P0MDIN         DATA 0xf1
+0000            155   _P0MDOUT        DATA 0xa4
+0000            156   _P0SKIP         DATA 0xd4
+0000            157   _P1             DATA 0x90
+0000            158   _P1MASK         DATA 0xee
+0000            159   _P1MAT          DATA 0xed
+0000            160   _P1MDIN         DATA 0xf2
+0000            161   _P1MDOUT        DATA 0xa5
+0000            162   _P1SKIP         DATA 0xd5
+0000            163   _P2             DATA 0xa0
+0000            164   _P2MASK         DATA 0xfc
+0000            165   _P2MAT          DATA 0xfb
+0000            166   _P2MDIN         DATA 0xf3
+0000            167   _P2MDOUT        DATA 0xa6
+0000            168   _P2SKIP         DATA 0xcc
+0000            169   _P3             DATA 0xb0
+0000            170   _P3MDIN         DATA 0xf4
+0000            171   _P3MDOUT        DATA 0x9c
+0000            172   _PCA0CENT       DATA 0x9e
+0000            173   _PCA0CLR        DATA 0x9c
+0000            174   _PCA0CN0        DATA 0xd8
+0000            175   _PCA0CPH0       DATA 0xfc
+0000            176   _PCA0CPH1       DATA 0xea
+0000            177   _PCA0CPH2       DATA 0xec
+0000            178   _PCA0CPH3       DATA 0xf5
+0000            179   _PCA0CPH4       DATA 0x85
+0000            180   _PCA0CPH5       DATA 0xde
+0000            181   _PCA0CPL0       DATA 0xfb
+0000            182   _PCA0CPL1       DATA 0xe9
+0000            183   _PCA0CPL2       DATA 0xeb
+0000            184   _PCA0CPL3       DATA 0xf4
+0000            185   _PCA0CPL4       DATA 0x84
+0000            186   _PCA0CPL5       DATA 0xdd
+0000            187   _PCA0CPM0       DATA 0xda
+0000            188   _PCA0CPM1       DATA 0xdb
+0000            189   _PCA0CPM2       DATA 0xdc
+0000            190   _PCA0CPM3       DATA 0xae
+0000            191   _PCA0CPM4       DATA 0xaf
+0000            192   _PCA0CPM5       DATA 0xcc
+0000            193   _PCA0H          DATA 0xfa
+0000            194   _PCA0L          DATA 0xf9
+0000            195   _PCA0MD         DATA 0xd9
+0000            196   _PCA0POL        DATA 0x96
+0000            197   _PCA0PWM        DATA 0xf7
+0000            198   _PCON0          DATA 0x87
+0000            199   _PCON1          DATA 0xcd
+0000            200   _PFE0CN         DATA 0xc1
+0000            201   _PRTDRV         DATA 0xf6
+0000            202   _PSCTL          DATA 0x8f
+0000            203   _PSTAT0         DATA 0xaa
+0000            204   _PSW            DATA 0xd0
+0000            205   _REF0CN         DATA 0xd1
+0000            206   _REG0CN         DATA 0xc9
+0000            207   _REVID          DATA 0xb6
+0000            208   _RSTSRC         DATA 0xef
+0000            209   _SBCON1         DATA 0x94
+0000            210   _SBRLH1         DATA 0x96
+0000            211   _SBRLL1         DATA 0x95
+0000            212   _SBUF           DATA 0x99
+0000            213   _SBUF0          DATA 0x99
+0000            214   _SBUF1          DATA 0x92
+0000            215   _SCON           DATA 0x98
+0000            216   _SCON0          DATA 0x98
+0000            217   _SCON1          DATA 0xc8
+0000            218   _SFRPAGE        DATA 0xa7
+0000            219   _SFRPGCN        DATA 0xbc
+0000            220   _SFRSTACK       DATA 0xd7
+0000            221   _SMB0ADM        DATA 0xd6
+0000            222   _SMB0ADR        DATA 0xd7
+0000            223   _SMB0CF         DATA 0xc1
+0000            224   _SMB0CN0        DATA 0xc0
+0000            225   _SMB0DAT        DATA 0xc2
+0000            226   _SMB0FCN0       DATA 0xc3
+0000            227   _SMB0FCN1       DATA 0xc4
+0000            228   _SMB0FCT        DATA 0xef
+0000            229   _SMB0RXLN       DATA 0xc5
+0000            230   _SMB0TC         DATA 0xac
+0000            231   _SMOD1          DATA 0x93
+0000            232   _SP             DATA 0x81
+0000            233   _SPI0CFG        DATA 0xa1
+0000            234   _SPI0CKR        DATA 0xa2
+0000            235   _SPI0CN0        DATA 0xf8
+0000            236   _SPI0DAT        DATA 0xa3
+0000            237   _SPI0FCN0       DATA 0x9a
+0000            238   _SPI0FCN1       DATA 0x9b
+0000            239   _SPI0FCT        DATA 0xf7
+0000            240   _SPI0PCF        DATA 0xdf
+0000            241   _TCON           DATA 0x88
+0000            242   _TH0            DATA 0x8c
+0000            243   _TH1            DATA 0x8d
+0000            244   _TL0            DATA 0x8a
+0000            245   _TL1            DATA 0x8b
+0000            246   _TMOD           DATA 0x89
+0000            247   _TMR2CN0        DATA 0xc8
+0000            248   _TMR2CN1        DATA 0xfd
+0000            249   _TMR2H          DATA 0xcf
+0000            250   _TMR2L          DATA 0xce
+0000            251   _TMR2RLH        DATA 0xcb
+0000            252   _TMR2RLL        DATA 0xca
+0000            253   _TMR3CN0        DATA 0x91
+0000            254   _TMR3CN1        DATA 0xfe
+0000            255   _TMR3H          DATA 0x95
+0000            256   _TMR3L          DATA 0x94
+0000            257   _TMR3RLH        DATA 0x93
+0000            258   _TMR3RLL        DATA 0x92
+0000            259   _TMR4CN0        DATA 0x98
+0000            260   _TMR4CN1        DATA 0xff
+0000            261   _TMR4H          DATA 0xa5
+0000            262   _TMR4L          DATA 0xa4
+0000            263   _TMR4RLH        DATA 0xa3
+0000            264   _TMR4RLL        DATA 0xa2
+0000            265   _TMR5CN0        DATA 0xc0
+0000            266   _TMR5CN1        DATA 0xf1
+0000            267   _TMR5H          DATA 0xd5
+0000            268   _TMR5L          DATA 0xd4
+0000            269   _TMR5RLH        DATA 0xd3
+0000            270   _TMR5RLL        DATA 0xd2
+0000            271   _UART0PCF       DATA 0xd9
+0000            272   _UART1FCN0      DATA 0x9d
+0000            273   _UART1FCN1      DATA 0xd8
+0000            274   _UART1FCT       DATA 0xfa
+0000            275   _UART1LIN       DATA 0x9e
+0000            276   _UART1PCF       DATA 0xda
+0000            277   _VDM0CN         DATA 0xff
+0000            278   _WDTCN          DATA 0x97
+0000            279   _XBR0           DATA 0xe1
+0000            280   _XBR1           DATA 0xe2
+0000            281   _XBR2           DATA 0xe3
+0000            282   _XOSC0CN        DATA 0x86
+0000            283   _DPTR           DATA 0x8382
+0000            284   _TMR2RL         DATA 0xcbca
+0000            285   _TMR3RL         DATA 0x9392
+0000            286   _TMR4RL         DATA 0xa3a2
+0000            287   _TMR5RL         DATA 0xd3d2
+0000            288   _TMR0           DATA 0x8c8a
+0000            289   _TMR1           DATA 0x8d8b
+0000            290   _TMR2           DATA 0xcfce
+0000            291   _TMR3           DATA 0x9594
+0000            292   _TMR4           DATA 0xa5a4
+0000            293   _TMR5           DATA 0xd5d4
+0000            294   _SBRL1          DATA 0x9695
+0000            295   _PCA0           DATA 0xfaf9
+0000            296   _PCA0CP0        DATA 0xfcfb
+0000            297   _PCA0CP1        DATA 0xeae9
+0000            298   _PCA0CP2        DATA 0xeceb
+0000            299   _PCA0CP3        DATA 0xf5f4
+0000            300   _PCA0CP4        DATA 0x8584
+0000            301   _PCA0CP5        DATA 0xdedd
+0000            302   _ADC0ASA        DATA 0xb6b5
+0000            303   _ADC0GT         DATA 0xc4c3
+0000            304   _ADC0           DATA 0xbebd
+0000            305   _ADC0LT         DATA 0xc6c5
+0000            306   _DAC0           DATA 0x8584
+0000            307   _DAC1           DATA 0x8a89
+0000            308   _DAC2           DATA 0x8c8b
+0000            309   _DAC3           DATA 0x8e8d
+0000            310   ;--------------------------------------------------------
+0000            311   ; special function bits
+0000            312   ;--------------------------------------------------------
+0000            313   _ACC_0          BIT 0xe0
+0000            314   _ACC_1          BIT 0xe1
+0000            315   _ACC_2          BIT 0xe2
+0000            316   _ACC_3          BIT 0xe3
+0000            317   _ACC_4          BIT 0xe4
+0000            318   _ACC_5          BIT 0xe5
+0000            319   _ACC_6          BIT 0xe6
+0000            320   _ACC_7          BIT 0xe7
+0000            321   _TEMPE          BIT 0xe8
+0000            322   _ADGN0          BIT 0xe9
+0000            323   _ADGN1          BIT 0xea
+0000            324   _ADWINT         BIT 0xeb
+0000            325   _ADBUSY         BIT 0xec
+0000            326   _ADINT          BIT 0xed
+0000            327   _IPOEN          BIT 0xee
+0000            328   _ADEN           BIT 0xef
+0000            329   _B_0            BIT 0xf0
+0000            330   _B_1            BIT 0xf1
+0000            331   _B_2            BIT 0xf2
+0000            332   _B_3            BIT 0xf3
+0000            333   _B_4            BIT 0xf4
+0000            334   _B_5            BIT 0xf5
+0000            335   _B_6            BIT 0xf6
+0000            336   _B_7            BIT 0xf7
+0000            337   _C0FIF          BIT 0xe8
+0000            338   _C0RIF          BIT 0xe9
+0000            339   _C1FIF          BIT 0xea
+0000            340   _C1RIF          BIT 0xeb
+0000            341   _C2FIF          BIT 0xec
+0000            342   _C2RIF          BIT 0xed
+0000            343   _C3FIF          BIT 0xee
+0000            344   _C3RIF          BIT 0xef
+0000            345   _D1SRC0         BIT 0x88
+0000            346   _D1SRC1         BIT 0x89
+0000            347   _D1AMEN         BIT 0x8a
+0000            348   _D01REFSL       BIT 0x8b
+0000            349   _D3SRC0         BIT 0x8c
+0000            350   _D3SRC1         BIT 0x8d
+0000            351   _D3AMEN         BIT 0x8e
+0000            352   _D23REFSL       BIT 0x8f
+0000            353   _D0UDIS         BIT 0x98
+0000            354   _D1UDIS         BIT 0x99
+0000            355   _D2UDIS         BIT 0x9a
+0000            356   _D3UDIS         BIT 0x9b
+0000            357   _EX0            BIT 0xa8
+0000            358   _ET0            BIT 0xa9
+0000            359   _EX1            BIT 0xaa
+0000            360   _ET1            BIT 0xab
+0000            361   _ES0            BIT 0xac
+0000            362   _ET2            BIT 0xad
+0000            363   _ESPI0          BIT 0xae
+0000            364   _EA             BIT 0xaf
+0000            365   _PX0            BIT 0xb8
+0000            366   _PT0            BIT 0xb9
+0000            367   _PX1            BIT 0xba
+0000            368   _PT1            BIT 0xbb
+0000            369   _PS0            BIT 0xbc
+0000            370   _PT2            BIT 0xbd
+0000            371   _PSPI0          BIT 0xbe
+0000            372   _P0_0           BIT 0x80
+0000            373   _P0_1           BIT 0x81
+0000            374   _P0_2           BIT 0x82
+0000            375   _P0_3           BIT 0x83
+0000            376   _P0_4           BIT 0x84
+0000            377   _P0_5           BIT 0x85
+0000            378   _P0_6           BIT 0x86
+0000            379   _P0_7           BIT 0x87
+0000            380   _P1_0           BIT 0x90
+0000            381   _P1_1           BIT 0x91
+0000            382   _P1_2           BIT 0x92
+0000            383   _P1_3           BIT 0x93
+0000            384   _P1_4           BIT 0x94
+0000            385   _P1_5           BIT 0x95
+0000            386   _P1_6           BIT 0x96
+0000            387   _P1_7           BIT 0x97
+0000            388   _P2_0           BIT 0xa0
+0000            389   _P2_1           BIT 0xa1
+0000            390   _P2_2           BIT 0xa2
+0000            391   _P2_3           BIT 0xa3
+0000            392   _P2_4           BIT 0xa4
+0000            393   _P2_5           BIT 0xa5
+0000            394   _P2_6           BIT 0xa6
+0000            395   _P3_0           BIT 0xb0
+0000            396   _P3_1           BIT 0xb1
+0000            397   _P3_2           BIT 0xb2
+0000            398   _P3_3           BIT 0xb3
+0000            399   _P3_4           BIT 0xb4
+0000            400   _P3_7           BIT 0xb7
+0000            401   _CCF0           BIT 0xd8
+0000            402   _CCF1           BIT 0xd9
+0000            403   _CCF2           BIT 0xda
+0000            404   _CCF3           BIT 0xdb
+0000            405   _CCF4           BIT 0xdc
+0000            406   _CCF5           BIT 0xdd
+0000            407   _CR             BIT 0xde
+0000            408   _CF             BIT 0xdf
+0000            409   _PARITY         BIT 0xd0
+0000            410   _F1             BIT 0xd1
+0000            411   _OV             BIT 0xd2
+0000            412   _RS0            BIT 0xd3
+0000            413   _RS1            BIT 0xd4
+0000            414   _F0             BIT 0xd5
+0000            415   _AC             BIT 0xd6
+0000            416   _CY             BIT 0xd7
+0000            417   _RI             BIT 0x98
+0000            418   _TI             BIT 0x99
+0000            419   _RB8            BIT 0x9a
+0000            420   _TB8            BIT 0x9b
+0000            421   _REN            BIT 0x9c
+0000            422   _CE             BIT 0x9d
+0000            423   _SMODE          BIT 0x9e
+0000            424   _RI1            BIT 0xc8
+0000            425   _TI1            BIT 0xc9
+0000            426   _RBX1           BIT 0xca
+0000            427   _TBX1           BIT 0xcb
+0000            428   _REN1           BIT 0xcc
+0000            429   _PERR1          BIT 0xcd
+0000            430   _OVR1           BIT 0xce
+0000            431   _SI             BIT 0xc0
+0000            432   _ACK            BIT 0xc1
+0000            433   _ARBLOST        BIT 0xc2
+0000            434   _ACKRQ          BIT 0xc3
+0000            435   _STO            BIT 0xc4
+0000            436   _STA            BIT 0xc5
+0000            437   _TXMODE         BIT 0xc6
+0000            438   _MASTER         BIT 0xc7
+0000            439   _SPIEN          BIT 0xf8
+0000            440   _TXNF           BIT 0xf9
+0000            441   _NSSMD0         BIT 0xfa
+0000            442   _NSSMD1         BIT 0xfb
+0000            443   _RXOVRN         BIT 0xfc
+0000            444   _MODF           BIT 0xfd
+0000            445   _WCOL           BIT 0xfe
+0000            446   _SPIF           BIT 0xff
+0000            447   _IT0            BIT 0x88
+0000            448   _IE0            BIT 0x89
+0000            449   _IT1            BIT 0x8a
+0000            450   _IE1            BIT 0x8b
+0000            451   _TR0            BIT 0x8c
+0000            452   _TF0            BIT 0x8d
+0000            453   _TR1            BIT 0x8e
+0000            454   _TF1            BIT 0x8f
+0000            455   _T2XCLK0        BIT 0xc8
+0000            456   _T2XCLK1        BIT 0xc9
+0000            457   _TR2            BIT 0xca
+0000            458   _T2SPLIT        BIT 0xcb
+0000            459   _TF2CEN         BIT 0xcc
+0000            460   _TF2LEN         BIT 0xcd
+0000            461   _TF2L           BIT 0xce
+0000            462   _TF2H           BIT 0xcf
+0000            463   _T4XCLK0        BIT 0x98
+0000            464   _T4XCLK1        BIT 0x99
+0000            465   _TR4            BIT 0x9a
+0000            466   _T4SPLIT        BIT 0x9b
+0000            467   _TF4CEN         BIT 0x9c
+0000            468   _TF4LEN         BIT 0x9d
+0000            469   _TF4L           BIT 0x9e
+0000            470   _TF4H           BIT 0x9f
+0000            471   _T5XCLK0        BIT 0xc0
+0000            472   _T5XCLK1        BIT 0xc1
+0000            473   _TR5            BIT 0xc2
+0000            474   _T5SPLIT        BIT 0xc3
+0000            475   _TF5CEN         BIT 0xc4
+0000            476   _TF5LEN         BIT 0xc5
+0000            477   _TF5L           BIT 0xc6
+0000            478   _TF5H           BIT 0xc7
+0000            479   _RIE            BIT 0xd8
+0000            480   _RXTO0          BIT 0xd9
+0000            481   _RXTO1          BIT 0xda
+0000            482   _RFRQ           BIT 0xdb
+0000            483   _TIE            BIT 0xdc
+0000            484   _TXHOLD         BIT 0xdd
+0000            485   _TXNF1          BIT 0xde
+0000            486   _TFRQ           BIT 0xdf
+0000            487   ;--------------------------------------------------------
+0000            488   ; overlayable register banks
+0000            489   ;--------------------------------------------------------
+0000            490            rbank0 segment data overlay
+0000            491   ;--------------------------------------------------------
+0000            492   ; internal ram data
+0000            493   ;--------------------------------------------------------
+0000            494            rseg R_DSEG
+0000            495   _pwm_count:
+0000            496            ds 1
+0001            497   _counter:
+0001            498            ds 1
+0002            499   _counter2:
+0002            500            ds 1
+0003            501   _command:
+0003            502            ds 1
+0004            503   _flag:
+0004            504            ds 1
+0005            505   _overflow_count:
+0005            506            ds 1
+0006            507   _sendMessage_PARM_2:
+0006            508            ds 2
+0008            509   _sendMessage_PARM_3:
+0008            510            ds 2
+000A            511   _sendMessage_PARM_4:
+000A            512            ds 2
+000C            513   ;--------------------------------------------------------
+000C            514   ; overlayable items in internal ram 
+000C            515   ;--------------------------------------------------------
+0000            516            rseg    R_OSEG
+0000            517   ;--------------------------------------------------------
+0000            518   ; indirectly addressable internal ram data
+0000            519   ;--------------------------------------------------------
+0000            520            rseg R_ISEG
+0000            521   ;--------------------------------------------------------
+0000            522   ; absolute internal ram data
+0000            523   ;--------------------------------------------------------
+0000            524            DSEG
+0000            525   ;--------------------------------------------------------
+0000            526   ; bit data
+0000            527   ;--------------------------------------------------------
+0000            528            rseg R_BSEG
+0000            529   _on_off:
+0000            530            DBIT    1
+0001            531   ;--------------------------------------------------------
+0001            532   ; paged external ram data
+0001            533   ;--------------------------------------------------------
+0000            534            rseg R_PSEG
+0000            535   ;--------------------------------------------------------
+0000            536   ; external ram data
+0000            537   ;--------------------------------------------------------
+0000            538            rseg R_XSEG
+0000            539   ;--------------------------------------------------------
+0000            540   ; absolute external ram data
+0000            541   ;--------------------------------------------------------
+0000            542            XSEG
+0000            543   ;--------------------------------------------------------
+0000            544   ; external initialized ram data
+0000            545   ;--------------------------------------------------------
+0000            546            rseg R_IXSEG
+0000            547            rseg R_HOME
+0000            548            rseg R_GSINIT
+0000            549            rseg R_CSEG
+0000            550   ;--------------------------------------------------------
+0000            551   ; Reset entry point and interrupt vectors
+0000            552   ;--------------------------------------------------------
+0000            553            CSEG at 0x0000
+0000 020100     554            ljmp    _crt0
+000B            555            CSEG at 0x000b
+000B 020100     556            ljmp    _Timer0_ISR
+002B            557            CSEG at 0x002b
+002B 020100     558            ljmp    _Timer2_ISR
+002E            559   ;--------------------------------------------------------
+002E            560   ; global & static initialisations
+002E            561   ;--------------------------------------------------------
+0000            562            rseg R_HOME
+0000            563            rseg R_GSINIT
+0000            564            rseg R_GSINIT
+0000            565   ;--------------------------------------------------------
+0000            566   ; data variables initialization
+0000            567   ;--------------------------------------------------------
+0000            568            rseg R_DINIT
+0000            569   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:30: volatile unsigned char pwm_count=0;
+0000 758000     570            mov     _pwm_count,#0x00
+0003            571            ; The linker places a 'ret' at the end of segment R_DINIT.
+0003            572   ;--------------------------------------------------------
+0003            573   ; code
+0003            574   ;--------------------------------------------------------
+0000            575            rseg R_CSEG
+0000            576   ;------------------------------------------------------------
+0000            577   ;Allocation info for local variables in function '_c51_external_startup'
+0000            578   ;------------------------------------------------------------
+0000            579   ;------------------------------------------------------------
+0000            580   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:39: char _c51_external_startup (void)
+0000            581   ;        -----------------------------------------
+0000            582   ;         function _c51_external_startup
+0000            583   ;        -----------------------------------------
+0000            584   __c51_external_startup:
+0000            585            using   0
+0000            586   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:42: SFRPAGE = 0x00;
+0000 75A700     587            mov     _SFRPAGE,#0x00
+0003            588   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:43: WDTCN = 0xDE; //First key
+0003 7597DE     589            mov     _WDTCN,#0xDE
+0006            590   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:44: WDTCN = 0xAD; //Second key
+0006 7597AD     591            mov     _WDTCN,#0xAD
+0009            592   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:46: VDM0CN |= 0x80;
+0009 43FF80     593            orl     _VDM0CN,#0x80
+000C            594   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:47: RSTSRC = 0x02;
+000C 75EF02     595            mov     _RSTSRC,#0x02
+000F            596   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:54: SFRPAGE = 0x10;
+000F 75A710     597            mov     _SFRPAGE,#0x10
+0012            598   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:55: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
+0012 75C120     599            mov     _PFE0CN,#0x20
+0015            600   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:56: SFRPAGE = 0x00;
+0015 75A700     601            mov     _SFRPAGE,#0x00
+0018            602   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:77: CLKSEL = 0x00;
+0018 75A900     603            mov     _CLKSEL,#0x00
+001B            604   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:78: CLKSEL = 0x00;
+001B 75A900     605            mov     _CLKSEL,#0x00
+001E            606   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:79: while ((CLKSEL & 0x80) == 0);
+001E            607   L002001?:
+001E E5A9       608            mov     a,_CLKSEL
+0020 30E7C0     609            jnb     acc.7,L002001?
+0023            610   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:80: CLKSEL = 0x03;
+0023 75A903     611            mov     _CLKSEL,#0x03
+0026            612   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:81: CLKSEL = 0x03;
+0026 75A903     613            mov     _CLKSEL,#0x03
+0029            614   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:82: while ((CLKSEL & 0x80) == 0);
+0029            615   L002004?:
+0029 E5A9       616            mov     a,_CLKSEL
+002B 30E740     617            jnb     acc.7,L002004?
+002E            618   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:88: P2MDOUT|=0b_0000_0011;
+002E 43A603     619            orl     _P2MDOUT,#0x03
+0031            620   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:89: P0MDOUT |= 0x10; // Enable UART0 TX as push-pull output
+0031 43A410     621            orl     _P0MDOUT,#0x10
+0034            622   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:90: XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)
+0034 75E101     623            mov     _XBR0,#0x01
+0037            624   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:91: XBR1     = 0X10; // Enable T0 on P0.0
+0037 75E210     625            mov     _XBR1,#0x10
+003A            626   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:92: XBR2     = 0x40; // Enable crossbar and weak pull-ups
+003A 75E340     627            mov     _XBR2,#0x40
+003D            628   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:98: SCON0 = 0x10;
+003D 759810     629            mov     _SCON0,#0x10
+0040            630   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:99: CKCON0 |= 0b_0000_0000 ; // Timer 1 uses the system clock divided by 12.
+0040 858E8E     631            mov     _CKCON0,_CKCON0
+0043            632   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:100: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
+0043 758DE6     633            mov     _TH1,#0xE6
+0046            634   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:101: TL1 = TH1;      // Init Timer1
+0046 858D8B     635            mov     _TL1,_TH1
+0049            636   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:102: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
+0049 53890F     637            anl     _TMOD,#0x0F
+004C            638   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:103: TMOD |=  0x20;
+004C 438920     639            orl     _TMOD,#0x20
+004F            640   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:104: TR1 = 1; // START Timer1
+004F D28E       641            setb    _TR1
+0051            642   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:105: TI = 1;  // Indicate TX0 ready
+0051 D299       643            setb    _TI
+0053            644   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:108: TR0=0;
+0053 C28C       645            clr     _TR0
+0055            646   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:109: TF0=0;
+0055 C28D       647            clr     _TF0
+0057            648   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:110: CKCON0|=0b_0000_0100; // Timer 0 uses the system clock
+0057 438E04     649            orl     _CKCON0,#0x04
+005A            650   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:111: TMOD&=0xf0;
+005A 5389F0     651            anl     _TMOD,#0xF0
+005D            652   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:112: TMOD|=0x01; // Timer 0 in mode 1: 16-bit timer
+005D 438901     653            orl     _TMOD,#0x01
+0060            654   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:114: TMR0=65536L-(SYSCLK/(2*TIMER_0_FREQ));
+0060 758AF0     655            mov     _TMR0,#0xF0
+0063 758CF1     656            mov     (_TMR0 >> 8),#0xF1
+0066            657   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:115: ET0=1;     // Enable Timer0 interrupts
+0066 D2A9       658            setb    _ET0
+0068            659   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:119: TMR2CN0=0x00;   // Stop Timer2; Clear TF2;
+0068 75C800     660            mov     _TMR2CN0,#0x00
+006B            661   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:120: CKCON0|=0b_0001_0000;
+006B 438E10     662            orl     _CKCON0,#0x10
+006E            663   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:121: TMR2RL=(-(SYSCLK/(2*DEFAULT_F))); // Initialize reload value
+006E 75CAEE     664            mov     _TMR2RL,#0xEE
+0071 75CBF6     665            mov     (_TMR2RL >> 8),#0xF6
+0074            666   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:122: TMR2=0xffff;   // Set to reload immediately
+0074 75CEFF     667            mov     _TMR2,#0xFF
+0077 75CFFF     668            mov     (_TMR2 >> 8),#0xFF
+007A            669   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:123: ET2=1;         // Enable Timer2 interrupts
+007A D2AD       670            setb    _ET2
+007C            671   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:124: TR2=0;         // Start Timer2
+007C C2CA       672            clr     _TR2
+007E            673   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:125: TR0=0;     // Start Timer0
+007E C28C       674            clr     _TR0
+0080            675   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:126: EA=1; // Global interrupt enable
+0080 D2AF       676            setb    _EA
+0082            677   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:128: return 0;
+0082 758200     678            mov     dpl,#0x00
+0085 22         679            ret
+0086            680   ;------------------------------------------------------------
+0086            681   ;Allocation info for local variables in function 'Timer3us'
+0086            682   ;------------------------------------------------------------
+0086            683   ;us                        Allocated to registers r2 
+0086            684   ;i                         Allocated to registers r3 
+0086            685   ;------------------------------------------------------------
+0086            686   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:132: void Timer3us(unsigned char us)
+0086            687   ;        -----------------------------------------
+0086            688   ;         function Timer3us
+0086            689   ;        -----------------------------------------
+0086            690   _Timer3us:
+0086 AA82       691            mov     r2,dpl
+0088            692   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:137: CKCON0|=0b_0100_0000;
+0088 438E40     693            orl     _CKCON0,#0x40
+008B            694   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:139: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+008B 7592B8     695            mov     _TMR3RL,#0xB8
+008E 7593FF     696            mov     (_TMR3RL >> 8),#0xFF
+0091            697   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:140: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+0091 859294     698            mov     _TMR3,_TMR3RL
+0094 859395     699            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+0097            700   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:142: TMR3CN0 = 0x04;                 // Start Timer3 and clear overflow flag
+0097 759104     701            mov     _TMR3CN0,#0x04
+009A            702   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:143: for (i = 0; i < us; i++)       // Count <us> overflows
+009A 7B00       703            mov     r3,#0x00
+009C            704   L003006?:
+009C C3         705            clr     c
+009D EB         706            mov     a,r3
+009E 9A         707            subb    a,r2
+009F 5001       708            jnc     L003009?
+00A1            709   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:145: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+00A1            710   L003001?:
+00A1 E591       711            mov     a,_TMR3CN0
+00A3 30E740     712            jnb     acc.7,L003001?
+00A6            713   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:146: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+00A6 53917F     714            anl     _TMR3CN0,#0x7F
+00A9            715   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:147: if (TF0)
+00A9            716   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:149: TF0=0;
+00A9 108D80     717            jbc     _TF0,L003019?
+00AC 8001       718            sjmp    L003008?
+00AE            719   L003019?:
+00AE            720   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:150: overflow_count++;
+00AE 0540       721            inc     _overflow_count
+00B0            722   L003008?:
+00B0            723   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:143: for (i = 0; i < us; i++)       // Count <us> overflows
+00B0 0B         724            inc     r3
+00B1 8001       725            sjmp    L003006?
+00B3            726   L003009?:
+00B3            727   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:153: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+00B3 759100     728            mov     _TMR3CN0,#0x00
+00B6 22         729            ret
+00B7            730   ;------------------------------------------------------------
+00B7            731   ;Allocation info for local variables in function 'waitms'
+00B7            732   ;------------------------------------------------------------
+00B7            733   ;ms                        Allocated to registers r2 r3 
+00B7            734   ;j                         Allocated to registers r2 r3 
+00B7            735   ;------------------------------------------------------------
+00B7            736   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:156: void waitms (unsigned int ms)
+00B7            737   ;        -----------------------------------------
+00B7            738   ;         function waitms
+00B7            739   ;        -----------------------------------------
+00B7            740   _waitms:
+00B7 AA82       741            mov     r2,dpl
+00B9 AB83       742            mov     r3,dph
+00BB            743   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:159: for(j=ms; j!=0; j--)
+00BB            744   L004001?:
+00BB BA0080     745            cjne    r2,#0x00,L004010?
+00BE BB0080     746            cjne    r3,#0x00,L004010?
+00C1 22         747            ret
+00C2            748   L004010?:
+00C2            749   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:161: Timer3us(249);
+00C2 7582F9     750            mov     dpl,#0xF9
+00C5 C002       751            push    ar2
+00C7 C003       752            push    ar3
+00C9 120100     753            lcall   _Timer3us
+00CC            754   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:162: Timer3us(249);
+00CC 7582F9     755            mov     dpl,#0xF9
+00CF 120100     756            lcall   _Timer3us
+00D2            757   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:163: Timer3us(249);
+00D2 7582F9     758            mov     dpl,#0xF9
+00D5 120100     759            lcall   _Timer3us
+00D8            760   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:164: Timer3us(250);
+00D8 7582FA     761            mov     dpl,#0xFA
+00DB 120100     762            lcall   _Timer3us
+00DE D003       763            pop     ar3
+00E0 D002       764            pop     ar2
+00E2            765   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:159: for(j=ms; j!=0; j--)
+00E2 1A         766            dec     r2
+00E3 BAFFC0     767            cjne    r2,#0xff,L004011?
+00E6 1B         768            dec     r3
+00E7            769   L004011?:
+00E7 8001       770            sjmp    L004001?
+00E9            771   ;------------------------------------------------------------
+00E9            772   ;Allocation info for local variables in function 'Timer2_ISR'
+00E9            773   ;------------------------------------------------------------
+00E9            774   ;------------------------------------------------------------
+00E9            775   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:168: void Timer2_ISR (void) interrupt INTERRUPT_TIMER2
+00E9            776   ;        -----------------------------------------
+00E9            777   ;         function Timer2_ISR
+00E9            778   ;        -----------------------------------------
+00E9            779   _Timer2_ISR:
+00E9 C0D0       780            push    psw
+00EB 75D000     781            mov     psw,#0x00
+00EE            782   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:170: TF2H = 0; // Clear Timer2 interrupt flag
+00EE C2CF       783            clr     _TF2H
+00F0            784   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:171: OUT0=!OUT0;
+00F0 B2A0       785            cpl     _P2_0
+00F2            786   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:172: OUT1=!OUT0;
+00F2 A2A0       787            mov     c,_P2_0
+00F4 B3         788            cpl     c
+00F5 92A1       789            mov     _P2_1,c
+00F7 D0D0       790            pop     psw
+00F9 32         791            reti
+00FA            792   ;        eliminated unneeded push/pop dpl
+00FA            793   ;        eliminated unneeded push/pop dph
+00FA            794   ;        eliminated unneeded push/pop b
+00FA            795   ;        eliminated unneeded push/pop acc
+00FA            796   ;------------------------------------------------------------
+00FA            797   ;Allocation info for local variables in function 'Timer0_ISR'
+00FA            798   ;------------------------------------------------------------
+00FA            799   ;------------------------------------------------------------
+00FA            800   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:175: void Timer0_ISR (void) interrupt INTERRUPT_TIMER0
+00FA            801   ;        -----------------------------------------
+00FA            802   ;         function Timer0_ISR
+00FA            803   ;        -----------------------------------------
+00FA            804   _Timer0_ISR:
+00FA            805   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:177: SFRPAGE=0x0;
+00FA 75A700     806            mov     _SFRPAGE,#0x00
+00FD            807   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:179: TMR0=0x10000L-(SYSCLK/(2*TIMER_0_FREQ));
+00FD 758AF0     808            mov     _TMR0,#0xF0
+0100 758CF1     809            mov     (_TMR0 >> 8),#0xF1
+0103            810   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:180: counter2++;
+0103 0500       811            inc     _counter2
+0105 32         812            reti
+0106            813   ;        eliminated unneeded push/pop psw
+0106            814   ;        eliminated unneeded push/pop dpl
+0106            815   ;        eliminated unneeded push/pop dph
+0106            816   ;        eliminated unneeded push/pop b
+0106            817   ;        eliminated unneeded push/pop acc
+0106            818   ;------------------------------------------------------------
+0106            819   ;Allocation info for local variables in function 'sendZero'
+0106            820   ;------------------------------------------------------------
+0106            821   ;------------------------------------------------------------
+0106            822   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:184: void sendZero(void)
+0106            823   ;        -----------------------------------------
+0106            824   ;         function sendZero
+0106            825   ;        -----------------------------------------
+0106            826   _sendZero:
+0106            827   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:186: TR2=0; // Stop timer 2
+0106 C2CA       828            clr     _TR2
+0108            829   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:187: waitms(BITWIDTH);
+0108 90000A     830            mov     dptr,#0x000A
+010B 020100     831            ljmp    _waitms
+010E            832   ;------------------------------------------------------------
+010E            833   ;Allocation info for local variables in function 'sendOne'
+010E            834   ;------------------------------------------------------------
+010E            835   ;------------------------------------------------------------
+010E            836   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:190: void sendOne(void)
+010E            837   ;        -----------------------------------------
+010E            838   ;         function sendOne
+010E            839   ;        -----------------------------------------
+010E            840   _sendOne:
+010E            841   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:192: TR2=1; //Start timer 2
+010E D2CA       842            setb    _TR2
+0110            843   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:193: waitms(BITWIDTH);
+0110 90000A     844            mov     dptr,#0x000A
+0113 020100     845            ljmp    _waitms
+0116            846   ;------------------------------------------------------------
+0116            847   ;Allocation info for local variables in function 'sendCommand'
+0116            848   ;------------------------------------------------------------
+0116            849   ;number_send               Allocated to registers r2 r3 
+0116            850   ;------------------------------------------------------------
+0116            851   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:196: void sendCommand (int number_send)
+0116            852   ;        -----------------------------------------
+0116            853   ;         function sendCommand
+0116            854   ;        -----------------------------------------
+0116            855   _sendCommand:
+0116 AA82       856            mov     r2,dpl
+0118 AB83       857            mov     r3,dph
+011A            858   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:198: if(number_send>=8)
+011A C3         859            clr     c
+011B EA         860            mov     a,r2
+011C 9408       861            subb    a,#0x08
+011E EB         862            mov     a,r3
+011F 6480       863            xrl     a,#0x80
+0121 9480       864            subb    a,#0x80
+0123 4001       865            jc      L009002?
+0125            866   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:199: sendOne();
+0125 C002       867            push    ar2
+0127 C003       868            push    ar3
+0129 120100     869            lcall   _sendOne
+012C D003       870            pop     ar3
+012E D002       871            pop     ar2
+0130 8001       872            sjmp    L009003?
+0132            873   L009002?:
+0132            874   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:201: sendZero();
+0132 C002       875            push    ar2
+0134 C003       876            push    ar3
+0136 120100     877            lcall   _sendZero
+0139 D003       878            pop     ar3
+013B D002       879            pop     ar2
+013D            880   L009003?:
+013D            881   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:202: if(number_send%8>=4)
+013D 750008     882            mov     __modsint_PARM_2,#0x08
+0140 E4         883            clr     a
+0141 F501       884            mov     (__modsint_PARM_2 + 1),a
+0143 8A82       885            mov     dpl,r2
+0145 8B83       886            mov     dph,r3
+0147 C002       887            push    ar2
+0149 C003       888            push    ar3
+014B 120100     889            lcall   __modsint
+014E AC82       890            mov     r4,dpl
+0150 AD83       891            mov     r5,dph
+0152 D003       892            pop     ar3
+0154 D002       893            pop     ar2
+0156 C3         894            clr     c
+0157 EC         895            mov     a,r4
+0158 9404       896            subb    a,#0x04
+015A ED         897            mov     a,r5
+015B 6480       898            xrl     a,#0x80
+015D 9480       899            subb    a,#0x80
+015F 4001       900            jc      L009005?
+0161            901   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:203: sendOne();
+0161 C002       902            push    ar2
+0163 C003       903            push    ar3
+0165 120100     904            lcall   _sendOne
+0168 D003       905            pop     ar3
+016A D002       906            pop     ar2
+016C 8001       907            sjmp    L009006?
+016E            908   L009005?:
+016E            909   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:205: sendZero();
+016E C002       910            push    ar2
+0170 C003       911            push    ar3
+0172 120100     912            lcall   _sendZero
+0175 D003       913            pop     ar3
+0177 D002       914            pop     ar2
+0179            915   L009006?:
+0179            916   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:206: if(number_send%4>=2)
+0179 750004     917            mov     __modsint_PARM_2,#0x04
+017C E4         918            clr     a
+017D F501       919            mov     (__modsint_PARM_2 + 1),a
+017F 8A82       920            mov     dpl,r2
+0181 8B83       921            mov     dph,r3
+0183 C002       922            push    ar2
+0185 C003       923            push    ar3
+0187 120100     924            lcall   __modsint
+018A AC82       925            mov     r4,dpl
+018C AD83       926            mov     r5,dph
+018E D003       927            pop     ar3
+0190 D002       928            pop     ar2
+0192 C3         929            clr     c
+0193 EC         930            mov     a,r4
+0194 9402       931            subb    a,#0x02
+0196 ED         932            mov     a,r5
+0197 6480       933            xrl     a,#0x80
+0199 9480       934            subb    a,#0x80
+019B 4001       935            jc      L009008?
+019D            936   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:207: sendOne();
+019D C002       937            push    ar2
+019F C003       938            push    ar3
+01A1 120100     939            lcall   _sendOne
+01A4 D003       940            pop     ar3
+01A6 D002       941            pop     ar2
+01A8 8001       942            sjmp    L009009?
+01AA            943   L009008?:
+01AA            944   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:209: sendZero();
+01AA C002       945            push    ar2
+01AC C003       946            push    ar3
+01AE 120100     947            lcall   _sendZero
+01B1 D003       948            pop     ar3
+01B3 D002       949            pop     ar2
+01B5            950   L009009?:
+01B5            951   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:210: if(number_send%2>=1)
+01B5 750002     952            mov     __modsint_PARM_2,#0x02
+01B8 E4         953            clr     a
+01B9 F501       954            mov     (__modsint_PARM_2 + 1),a
+01BB 8A82       955            mov     dpl,r2
+01BD 8B83       956            mov     dph,r3
+01BF 120100     957            lcall   __modsint
+01C2 AA82       958            mov     r2,dpl
+01C4 AB83       959            mov     r3,dph
+01C6 C3         960            clr     c
+01C7 EA         961            mov     a,r2
+01C8 9401       962            subb    a,#0x01
+01CA EB         963            mov     a,r3
+01CB 6480       964            xrl     a,#0x80
+01CD 9480       965            subb    a,#0x80
+01CF 4001       966            jc      L009011?
+01D1            967   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:211: sendOne();
+01D1 020100     968            ljmp    _sendOne
+01D4            969   L009011?:
+01D4            970   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:213: sendZero();
+01D4 020100     971            ljmp    _sendZero
+01D7            972   ;------------------------------------------------------------
+01D7            973   ;Allocation info for local variables in function 'sendMessage'
+01D7            974   ;------------------------------------------------------------
+01D7            975   ;backward_R                Allocated with name '_sendMessage_PARM_2'
+01D7            976   ;forward_L                 Allocated with name '_sendMessage_PARM_3'
+01D7            977   ;forward_R                 Allocated with name '_sendMessage_PARM_4'
+01D7            978   ;backward_L                Allocated to registers r2 r3 
+01D7            979   ;------------------------------------------------------------
+01D7            980   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:216: void sendMessage (int backward_L, int backward_R, int forward_L, int forward_R)
+01D7            981   ;        -----------------------------------------
+01D7            982   ;         function sendMessage
+01D7            983   ;        -----------------------------------------
+01D7            984   _sendMessage:
+01D7 AA82       985            mov     r2,dpl
+01D9 AB83       986            mov     r3,dph
+01DB            987   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:218: sendOne();
+01DB C002       988            push    ar2
+01DD C003       989            push    ar3
+01DF 120100     990            lcall   _sendOne
+01E2            991   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:219: sendOne();
+01E2 120100     992            lcall   _sendOne
+01E5            993   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:220: sendZero();
+01E5 120100     994            lcall   _sendZero
+01E8 D003       995            pop     ar3
+01EA D002       996            pop     ar2
+01EC            997   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:221: if (forward_L>0)
+01EC C3         998            clr     c
+01ED E4         999            clr     a
+01EE 95B0      1000            subb    a,_sendMessage_PARM_3
+01F0 E4        1001            clr     a
+01F1 6480      1002            xrl     a,#0x80
+01F3 85B1F0    1003            mov     b,(_sendMessage_PARM_3 + 1)
+01F6 63F080    1004            xrl     b,#0x80
+01F9 95F0      1005            subb    a,b
+01FB 5001      1006            jnc     L010002?
+01FD           1007   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:223: sendOne();
+01FD 120100    1008            lcall   _sendOne
+0200           1009   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:224: sendCommand(forward_L);
+0200 85B082    1010            mov     dpl,_sendMessage_PARM_3
+0203 85B183    1011            mov     dph,(_sendMessage_PARM_3 + 1)
+0206 120100    1012            lcall   _sendCommand
+0209 8001      1013            sjmp    L010003?
+020B           1014   L010002?:
+020B           1015   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:228: sendZero();
+020B C002      1016            push    ar2
+020D C003      1017            push    ar3
+020F 120100    1018            lcall   _sendZero
+0212 D003      1019            pop     ar3
+0214 D002      1020            pop     ar2
+0216           1021   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:229: sendCommand(backward_L);
+0216 8A82      1022            mov     dpl,r2
+0218 8B83      1023            mov     dph,r3
+021A 120100    1024            lcall   _sendCommand
+021D           1025   L010003?:
+021D           1026   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:231: if (forward_R>0)
+021D C3        1027            clr     c
+021E E4        1028            clr     a
+021F 9560      1029            subb    a,_sendMessage_PARM_4
+0221 E4        1030            clr     a
+0222 6480      1031            xrl     a,#0x80
+0224 8561F0    1032            mov     b,(_sendMessage_PARM_4 + 1)
+0227 63F080    1033            xrl     b,#0x80
+022A 95F0      1034            subb    a,b
+022C 5001      1035            jnc     L010005?
+022E           1036   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:233: sendOne();
+022E 120100    1037            lcall   _sendOne
+0231           1038   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:234: sendCommand(forward_R);
+0231 856082    1039            mov     dpl,_sendMessage_PARM_4
+0234 856183    1040            mov     dph,(_sendMessage_PARM_4 + 1)
+0237 120100    1041            lcall   _sendCommand
+023A 8001      1042            sjmp    L010006?
+023C           1043   L010005?:
+023C           1044   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:238: sendZero();
+023C 120100    1045            lcall   _sendZero
+023F           1046   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:239: sendCommand(backward_R);
+023F 850082    1047            mov     dpl,_sendMessage_PARM_2
+0242 850183    1048            mov     dph,(_sendMessage_PARM_2 + 1)
+0245 120100    1049            lcall   _sendCommand
+0248           1050   L010006?:
+0248           1051   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:241: sendZero();
+0248 120100    1052            lcall   _sendZero
+024B           1053   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:242: sendZero();
+024B 120100    1054            lcall   _sendZero
+024E           1055   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:243: sendOne();
+024E 120100    1056            lcall   _sendOne
+0251           1057   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:244: TR2=0;
+0251 C2CA      1058            clr     _TR2
+0253           1059   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:245: waitms(DELAY*BITWIDTH);
+0253 9000A0    1060            mov     dptr,#0x00A0
+0256 020100    1061            ljmp    _waitms
+0259           1062   ;------------------------------------------------------------
+0259           1063   ;Allocation info for local variables in function 'sendOnes'
+0259           1064   ;------------------------------------------------------------
+0259           1065   ;number                    Allocated to registers r2 r3 
+0259           1066   ;------------------------------------------------------------
+0259           1067   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:248: void sendOnes(int number)
+0259           1068   ;        -----------------------------------------
+0259           1069   ;         function sendOnes
+0259           1070   ;        -----------------------------------------
+0259           1071   _sendOnes:
+0259 AA82      1072            mov     r2,dpl
+025B AB83      1073            mov     r3,dph
+025D           1074   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:250: while(number>0)
+025D           1075   L011001?:
+025D C3        1076            clr     c
+025E E4        1077            clr     a
+025F 9A        1078            subb    a,r2
+0260 E4        1079            clr     a
+0261 6480      1080            xrl     a,#0x80
+0263 8BF0      1081            mov     b,r3
+0265 63F080    1082            xrl     b,#0x80
+0268 95F0      1083            subb    a,b
+026A 5001      1084            jnc     L011003?
+026C           1085   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:252: sendOne();
+026C C002      1086            push    ar2
+026E C003      1087            push    ar3
+0270 120100    1088            lcall   _sendOne
+0273           1089   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:253: sendZero();
+0273 120100    1090            lcall   _sendZero
+0276 D003      1091            pop     ar3
+0278 D002      1092            pop     ar2
+027A           1093   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:254: number--;
+027A 1A        1094            dec     r2
+027B BAFFD0    1095            cjne    r2,#0xff,L011001?
+027E 1B        1096            dec     r3
+027F 8001      1097            sjmp    L011001?
+0281           1098   L011003?:
+0281           1099   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:256: sendZero();
+0281 120100    1100            lcall   _sendZero
+0284           1101   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:257: sendZero();
+0284 020100    1102            ljmp    _sendZero
+0287           1103   ;------------------------------------------------------------
+0287           1104   ;Allocation info for local variables in function 'main'
+0287           1105   ;------------------------------------------------------------
+0287           1106   ;backward_L                Allocated to registers 
+0287           1107   ;backward_R                Allocated to registers 
+0287           1108   ;forward_L                 Allocated to registers 
+0287           1109   ;forward_R                 Allocated to registers 
+0287           1110   ;------------------------------------------------------------
+0287           1111   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:264: void main (void)
+0287           1112   ;        -----------------------------------------
+0287           1113   ;         function main
+0287           1114   ;        -----------------------------------------
+0287           1115   _main:
+0287           1116   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:270: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+0287 7450      1117            mov     a,#__str_0
+0289 C0E0      1118            push    acc
+028B 74BD      1119            mov     a,#(__str_0 >> 8)
+028D C0E0      1120            push    acc
+028F 7480      1121            mov     a,#0x80
+0291 C0E0      1122            push    acc
+0293 120100    1123            lcall   _printf
+0296 1581      1124            dec     sp
+0298 1581      1125            dec     sp
+029A 1581      1126            dec     sp
+029C           1127   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:272: "Check pins P2.0 and P2.1 with the oscilloscope.\r\n");
+029C 7410      1128            mov     a,#__str_1
+029E C0E0      1129            push    acc
+02A0 74BE      1130            mov     a,#(__str_1 >> 8)
+02A2 C0E0      1131            push    acc
+02A4 7480      1132            mov     a,#0x80
+02A6 C0E0      1133            push    acc
+02A8 120100    1134            lcall   _printf
+02AB 1581      1135            dec     sp
+02AD 1581      1136            dec     sp
+02AF 1581      1137            dec     sp
+02B1           1138   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:273: command = 0;
+02B1 75C000    1139            mov     _command,#0x00
+02B4           1140   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:274: TR2=0;
+02B4 C2CA      1141            clr     _TR2
+02B6           1142   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:276: while(1)
+02B6           1143   L012031?:
+02B6           1144   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:279: if(command == 2) //forward
+02B6 7402      1145            mov     a,#0x02
+02B8 B5C090    1146            cjne    a,_command,L012011?
+02BB           1147   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:281: sendOnes(2);
+02BB 900002    1148            mov     dptr,#0x0002
+02BE 120100    1149            lcall   _sendOnes
+02C1           1150   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:282: command = 0;
+02C1 75C000    1151            mov     _command,#0x00
+02C4 8001      1152            sjmp    L012012?
+02C6           1153   L012011?:
+02C6           1154   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:284: else if(command == 3) //backward
+02C6 7403      1155            mov     a,#0x03
+02C8 B5C010    1156            cjne    a,_command,L012008?
+02CB           1157   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:286: sendOnes(3);
+02CB 900003    1158            mov     dptr,#0x0003
+02CE 120100    1159            lcall   _sendOnes
+02D1           1160   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:287: command = 0;
+02D1 75C000    1161            mov     _command,#0x00
+02D4 8001      1162            sjmp    L012012?
+02D6           1163   L012008?:
+02D6           1164   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:289: else if(command ==4) // left
+02D6 7404      1165            mov     a,#0x04
+02D8 B5C050    1166            cjne    a,_command,L012005?
+02DB           1167   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:291: sendOnes(4);
+02DB 900004    1168            mov     dptr,#0x0004
+02DE 120100    1169            lcall   _sendOnes
+02E1           1170   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:292: command = 0;
+02E1 75C000    1171            mov     _command,#0x00
+02E4 8001      1172            sjmp    L012012?
+02E6           1173   L012005?:
+02E6           1174   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:294: else if(command == 5) // right
+02E6 7405      1175            mov     a,#0x05
+02E8 B5C090    1176            cjne    a,_command,L012002?
+02EB           1177   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:296: sendOnes(5);
+02EB 900005    1178            mov     dptr,#0x0005
+02EE 120100    1179            lcall   _sendOnes
+02F1           1180   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:297: command = 0;
+02F1 75C000    1181            mov     _command,#0x00
+02F4 8001      1182            sjmp    L012012?
+02F6           1183   L012002?:
+02F6           1184   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:301: sendOnes(1);
+02F6 900001    1185            mov     dptr,#0x0001
+02F9 120100    1186            lcall   _sendOnes
+02FC           1187   L012012?:
+02FC           1188   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:304: if(input == 0)
+02FC 209750    1189            jb      _P1_7,L012031?
+02FF           1190   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:306: TR0=1;
+02FF D28C      1191            setb    _TR0
+0301           1192   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:307: while(input == 0);
+0301           1193   L012013?:
+0301 3097D0    1194            jnb     _P1_7,L012013?
+0304           1195   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:308: TR0=0;
+0304 C28C      1196            clr     _TR0
+0306           1197   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:309: printf("%d",counter2);
+0306 AA00      1198            mov     r2,_counter2
+0308 E500      1199            mov     a,_counter2
+030A 33        1200            rlc     a
+030B 95E0      1201            subb    a,acc
+030D FB        1202            mov     r3,a
+030E C002      1203            push    ar2
+0310 C003      1204            push    ar3
+0312 7410      1205            mov     a,#__str_2
+0314 C0E0      1206            push    acc
+0316 74C0      1207            mov     a,#(__str_2 >> 8)
+0318 C0E0      1208            push    acc
+031A 7480      1209            mov     a,#0x80
+031C C0E0      1210            push    acc
+031E 120100    1211            lcall   _printf
+0321 E581      1212            mov     a,sp
+0323 24FB      1213            add     a,#0xfb
+0325 F581      1214            mov     sp,a
+0327           1215   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:310: if(counter2 == 20 || counter2 == 21)
+0327 7414      1216            mov     a,#0x14
+0329 B50050    1217            cjne    a,_counter2,L012057?
+032C 8001      1218            sjmp    L012016?
+032E           1219   L012057?:
+032E 7415      1220            mov     a,#0x15
+0330 B500D0    1221            cjne    a,_counter2,L012017?
+0333           1222   L012016?:
+0333           1223   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:311: command =2;
+0333 75C002    1224            mov     _command,#0x02
+0336           1225   L012017?:
+0336           1226   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:312: if(counter2 == 17 || counter2 == 18)
+0336 7411      1227            mov     a,#0x11
+0338 B50010    1228            cjne    a,_counter2,L012060?
+033B 8001      1229            sjmp    L012019?
+033D           1230   L012060?:
+033D 7412      1231            mov     a,#0x12
+033F B50090    1232            cjne    a,_counter2,L012020?
+0342           1233   L012019?:
+0342           1234   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:313: command =3;
+0342 75C003    1235            mov     _command,#0x03
+0345           1236   L012020?:
+0345           1237   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:314: if(counter2 == 4 ||counter2 == 5)
+0345 7404      1238            mov     a,#0x04
+0347 B500D0    1239            cjne    a,_counter2,L012063?
+034A 8001      1240            sjmp    L012022?
+034C           1241   L012063?:
+034C 7405      1242            mov     a,#0x05
+034E B50050    1243            cjne    a,_counter2,L012023?
+0351           1244   L012022?:
+0351           1245   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:315: command =4;
+0351 75C004    1246            mov     _command,#0x04
+0354           1247   L012023?:
+0354           1248   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:316: if(counter2 == 2 || counter2 == 1)
+0354 7402      1249            mov     a,#0x02
+0356 B50090    1250            cjne    a,_counter2,L012066?
+0359 8001      1251            sjmp    L012025?
+035B           1252   L012066?:
+035B 7401      1253            mov     a,#0x01
+035D B50010    1254            cjne    a,_counter2,L012026?
+0360           1255   L012025?:
+0360           1256   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:317: command =5;
+0360 75C005    1257            mov     _command,#0x05
+0363           1258   L012026?:
+0363           1259   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:318: printf("%d     ",command);
+0363 AAC0      1260            mov     r2,_command
+0365 E5C0      1261            mov     a,_command
+0367 33        1262            rlc     a
+0368 95E0      1263            subb    a,acc
+036A FB        1264            mov     r3,a
+036B C002      1265            push    ar2
+036D C003      1266            push    ar3
+036F 7450      1267            mov     a,#__str_3
+0371 C0E0      1268            push    acc
+0373 74C3      1269            mov     a,#(__str_3 >> 8)
+0375 C0E0      1270            push    acc
+0377 7480      1271            mov     a,#0x80
+0379 C0E0      1272            push    acc
+037B 120100    1273            lcall   _printf
+037E E581      1274            mov     a,sp
+0380 24FB      1275            add     a,#0xfb
+0382 F581      1276            mov     sp,a
+0384           1277   ;        C:\Users\apoll\Documents\2nd year uni\Project course\MagBot\EM-Robot\IR_Controller\irrecievertest.c:319: counter2 = 0;
+0384 750000    1278            mov     _counter2,#0x00
+0387 020100    1279            ljmp    L012031?
+038A           1280            rseg R_CSEG
+038A           1281   
+0000           1282            rseg R_XINIT
+0000           1283   
+0000           1284            rseg R_CONST
+0000           1285   __str_0:
+0000 1B        1286            db 0x1B
+0001 5B324A    1287            db '[2J'
+0004 00        1288            db 0x00
+0005           1289   __str_1:
+0005 56617269  1290            db 'Variable frequency generator for the EFM8LB1.'
+     61626C65
+     20667265
+     7175656E
+     63792067
+     656E6572
+     61746F72
+     20666F72
+     20746865
+     2045464D
+     384C4231
+     2E
+0032 0D        1291            db 0x0D
+0033 0A        1292            db 0x0A
+0034 43686563  1293            db 'Check pins P2'
+     6B207069
+     6E732050
+     32
+0041 2E302061  1294            db '.0 and P2.1 with the oscilloscope.'
+     6E642050
+     322E3120
+     77697468
+     20746865
+     206F7363
+     696C6C6F
+     73636F70
+     652E
+0063 0D        1295            db 0x0D
+0064 0A        1296            db 0x0A
+0065 00        1297            db 0x00
+0066           1298   __str_2:
+0066 2564      1299            db '%d'
+0068 00        1300            db 0x00
+0069           1301   __str_3:
+0069 2564      1302            db '%d'
+006B 09        1303            db 0x09
+006C 00        1304            db 0x00
+006D           1305   
+002E           1306            CSEG
+002E           1307   
+002E           1308   end
